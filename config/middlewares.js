@@ -2,11 +2,6 @@ const { isDevEnv } = require('../utils/isDevEnv');
  
 // all Devlaunchers internal projects domains
 const DevLaunchersSubdomains = [
- 'https://idea.devlaunchers.com',
- 'https://idea-staging.devlaunchers.com',
- 'https://idea-staging.devlaunchers.org',
- 'https://idea.devlaunchers.org',
- 'https://projects.devlaunchers.org',
  'https://projects-staging.devlaunchers.org',
  'https://dev-recruiters.vercel.app',
  'https://recruiting-staging.devlaunchers.org',

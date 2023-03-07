@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdevlaunchers_strapiv4=self.webpackChunkdevlaunchers_strapiv4||[]).push([[223],{32602:e=>{e.exports=JSON.parse('{"plugin.description.long":"Envoie vos erreurs Strapi \xE0 Sentry.","plugin.description.short":"Envoie vos erreurs Strapi \xE0 Sentry."}')}}]);

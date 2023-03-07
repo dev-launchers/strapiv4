@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdevlaunchers_strapiv4=self.webpackChunkdevlaunchers_strapiv4||[]).push([[4290],{44183:e=>{e.exports=JSON.parse('{"plugin.description.long":"G\u1EEDi l\u1ED7i Strapi l\xEAn Sentry.","plugin.description.short":"G\u1EEDi l\u1ED7i Strapi l\xEAn Sentry."}')}}]);

@@ -2,13 +2,15 @@ const { createModuleResolutionCache } = require("typescript");
 
 module.exports = {
 
-    async beforeCreate(event) {
+  async beforeCreate(event) {
+    console.log(event)
     const project = event.params.data.project;
     const applicantProject = await strapi.db.query('api::project.project').findOne({
-        where: {slug: project}
-      });
+      where: {slug: project}
+    });
     const projectID = applicantProject.id;
-    event.params.data.project = projectID
+
+    event.params.data.project = projectID;
   },
 
 }

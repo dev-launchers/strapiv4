@@ -19,23 +19,28 @@ const formatJSON = (jsonData) => {
 module.exports = {
 
   async beforeCreate(event) {
+    // get the project associated with this applicant from the db
     const project = event.params.data.project;
     const applicantProject = await strapi.db.query('api::project.project').findOne({
       where: { id: project }
     });
     try {
+      // insert slug and title into the applicant project obj
       const projectSlug = applicantProject.slug;
-      event.model.attributes.project.slug = projectSlug
+      event.model.attributes.project.slug = projectSlug;
+      event.model.attributes.project.title = applicantProject.title;
     } 
     catch (e) {
-      console.log("couldn't find project slug")
-      event.model.attributes.project.slug = ""
+      console.log("couldn't find project slug");
+      event.model.attributes.project.slug = "";
     }
   },
   async afterCreate(event) {
-    // use event object https://docs.strapi.io/dev-docs/backend-customization/models#hook-event-object
-    const relevantInfo = _.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
+    // insert proj title and remove unnecessary info from message
+    event.params.data.project = event.model.attributes.project.title;
+    var relevantInfo = _.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
 
+    // create the discord message
     const newApplicantMsg = new MessageBuilder()
       .setTitle("New Applicant!")
       .setURL(`${process.env.FRONTEND_URL}/projects/${event.model.attributes.project.slug}`)

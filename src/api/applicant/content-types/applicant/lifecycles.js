@@ -4,7 +4,7 @@ const { createModuleResolutionCache } = require("typescript");
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 // create new Webhook
 const hook = new Webhook(
-  "https://discordapp.com/api/webhooks/1083479577948598312/RoNhOrLetIdId_t4OPewef0mlJ28aLczRW-YCGGmqYmm9KSF0IJTXkMa9QglKQR2xOaM"
+  `${process.env.OPEN_POSITIONS_DISCORD_WEBHOOK}`
 );
 
 hook.setUsername("New Applicant Notifier")
@@ -19,54 +19,31 @@ const formatJSON = (jsonData) => {
 module.exports = {
 
   async beforeCreate(event) {
-    console.log("event as a whole");
-    console.log(event);
-
     const project = event.params.data.project;
-    console.log("project");
-    console.log(project);
     const applicantProject = await strapi.db.query('api::project.project').findOne({
       where: { id: project }
     });
-    console.log("applicantProject");
-    console.log(applicantProject);
     try {
       const projectSlug = applicantProject.slug;
       event.model.attributes.project.slug = projectSlug
     } 
     catch (e) {
       console.log("couldn't find project slug")
+      event.model.attributes.project.slug = ""
     }
   },
   async afterCreate(event) {
     // use event object https://docs.strapi.io/dev-docs/backend-customization/models#hook-event-object
-    // FIXME: remove debug code
-    console.log(event);
-    console.log(event.model.attributes.project);
-
-    const relevantInfo = _.omit(event.model.attributes, ['email', 'age', 'zip']);
+    const relevantInfo = _.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
 
     const newApplicantMsg = new MessageBuilder()
       .setTitle("New Applicant!")
-      .setURL(`https://www.example.com/projects/${event.model.attributes.project.slug}`);
-      // .setDescription(
-      //   formatJSON(relevantInfo)
-      // );
+      .setURL(`${process.env.FRONTEND_URL}/projects/${event.model.attributes.project.slug}`)
+      .setDescription(
+        formatJSON(relevantInfo)
+      );
 
     hook.send(newApplicantMsg);
-    // hook.send("test");
-    console.log(typeof process.env.OPEN_POSITIONS_DISCORD_WEBHOOK);
-    console.log(`test`);
-    // fetch("https://discordapp.com/api/webhooks/1083479577948598312/RoNhOrLetIdId_t4OPewef0mlJ28aLczRW-YCGGmqYmm9KSF0IJTXkMa9QglKQR2xOaM", {
-    //   "method": "POST",
-    //   "headers": {
-    //     "content-type": "application/json"
-    //   },
-    //   "body": JSON.stringify(newApplicantMsg)
-    // })
-    // .catch(e => {
-    //   console.log(e)
-    // })
   },
 
 }

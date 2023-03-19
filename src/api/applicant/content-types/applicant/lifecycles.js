@@ -7,7 +7,8 @@ const hook = new Webhook(
   "https://discordapp.com/api/webhooks/1083479577948598312/RoNhOrLetIdId_t4OPewef0mlJ28aLczRW-YCGGmqYmm9KSF0IJTXkMa9QglKQR2xOaM"
 );
 
-// hook.setAuthor("New Applicant Notifier", 'https://avatars.githubusercontent.com/u/53379976?s=200&v=4');
+hook.setUsername("New Applicant Notifier")
+.setAvatar('https://avatars.githubusercontent.com/u/53379976?s=200&v=4');
 
 const formatJSON = (jsonData) => {
   return `\`\`\`JSON\n${JSON.stringify(jsonData, null, 1)}\n\`\`\``;
@@ -47,13 +48,13 @@ module.exports = {
 
     const newApplicantMsg = new MessageBuilder()
       .setTitle("New Applicant!")
-      .setURL(`${process.env.FRONTEND_URL}/projects/${event.model.attributes.project.slug}`)
-      .setDescription(
-        formatJSON(relevantInfo)
-      );
+      .setURL(`https://www.example.com/projects/${event.model.attributes.project.slug}`);
+      // .setDescription(
+      //   formatJSON(relevantInfo)
+      // );
 
-    // hook.send(newApplicantMsg);
-    hook.send("test");
+    hook.send(newApplicantMsg);
+    // hook.send("test");
     console.log(typeof process.env.OPEN_POSITIONS_DISCORD_WEBHOOK);
     console.log(`test`);
     // fetch("https://discordapp.com/api/webhooks/1083479577948598312/RoNhOrLetIdId_t4OPewef0mlJ28aLczRW-YCGGmqYmm9KSF0IJTXkMa9QglKQR2xOaM", {

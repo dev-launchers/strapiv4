@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const lodash = require('lodash');
 const fetch = require('node-fetch');
 const { createModuleResolutionCache } = require("typescript");
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
@@ -31,14 +31,14 @@ module.exports = {
       event.model.attributes.project.title = applicantProject.title;
     } 
     catch (e) {
-      console.log("couldn't find project slug");
+      console.log(`couldn't find project slug for project ${project}`);
       event.model.attributes.project.slug = "";
     }
   },
   async afterCreate(event) {
     // insert proj title and remove unnecessary info from message
     event.params.data.project = event.model.attributes.project.title;
-    var relevantInfo = _.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
+    var relevantInfo = lodash.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
 
     // create the discord message
     const newApplicantMsg = new MessageBuilder()

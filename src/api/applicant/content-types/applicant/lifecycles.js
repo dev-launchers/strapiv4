@@ -4,8 +4,9 @@ const { createModuleResolutionCache } = require("typescript");
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 // create new Webhook
 const hook = new Webhook(
-  `${process.env.OPEN_POSITIONS_DISCORD_WEBHOOK}`
+  process.env.OPEN_POSITIONS_DISCORD_WEBHOOK.replace(/["']/g, "")
 );
+const frontend_url_sanitized = process.env.FRONTEND_URL.replace(/["']/g, "");
 
 hook.setUsername("New Applicant Notifier")
 .setAvatar('https://avatars.githubusercontent.com/u/53379976?s=200&v=4');
@@ -44,7 +45,7 @@ module.exports = {
     // create the discord message
     const newApplicantMsg = new MessageBuilder()
       .setTitle("New Applicant!")
-      .setURL(`${process.env.FRONTEND_URL}/projects/${event.model.attributes.project.slug}`)
+      .setURL(`${frontend_url_sanitized}/projects/${event.model.attributes.project.slug}`)
       .setDescription(
         formatJSON(relevantInfo)
       );

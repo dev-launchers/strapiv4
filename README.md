@@ -7,7 +7,8 @@
 4. Go to http://localhost:1337/admin to create an account
 
 # Running from Docker
-Alternatively, you can run it with docker. There are 2 make targets available to do this.
+Alternatively, you can run it with Docker. There are 2 make targets available to do this.
+- Ensure that Docker is running. This usually means that you need to start up Docker Desktop.
 - cd to the project's root directory
 - `make build-docker` to build the docker container. This may take a minute.
 - `make run-docker` to start up the strapiv4 server.

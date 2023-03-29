@@ -10,8 +10,9 @@ const hook = new Webhook(
 hook.setUsername("New Applicant Notifier")
 .setAvatar('https://avatars.githubusercontent.com/u/53379976?s=200&v=4');
 
+// use markdown block code to format this as JSON
 const formatJSON = (jsonData) => {
-  return `"```JSON\n" + `${JSON.stringify(jsonData, null, 1)}` + "\n```"`;
+  return "```JSON\n" + JSON.stringify(jsonData, null, 1) + "\n```";
 };
 
 

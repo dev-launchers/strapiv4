@@ -2,11 +2,19 @@ const lodash = require('lodash');
 const fetch = require('node-fetch');
 const { createModuleResolutionCache } = require("typescript");
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
+
+// sanitize URLs
+if (process.env.OPEN_POSITIONS_DISCORD_WEBHOOK != undefined) {
+  const discord_webhook_sanitized = process.env.OPEN_POSITIONS_DISCORD_WEBHOOK.replace(/["']/g, "");
+}
+if (process.env.FRONTEND_URL != undefined) {
+  const frontend_url_sanitized = process.env.FRONTEND_URL.replace(/["']/g, "");
+}
+
 // create new Webhook
 const hook = new Webhook(
-  process.env.OPEN_POSITIONS_DISCORD_WEBHOOK.replace(/["']/g, "")
+  discord_webhook_sanitized
 );
-const frontend_url_sanitized = process.env.FRONTEND_URL.replace(/["']/g, "");
 
 hook.setUsername("New Applicant Notifier")
 .setAvatar('https://avatars.githubusercontent.com/u/53379976?s=200&v=4');

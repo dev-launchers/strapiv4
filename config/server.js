@@ -7,4 +7,7 @@ module.exports = ({ env }) => ({
   },
   url: process.env.URL,
   proxy: true,
+  cron: {
+    enabled: true,
+  }
 });

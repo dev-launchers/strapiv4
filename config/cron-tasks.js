@@ -1,9 +1,9 @@
-const GoogleCalendarTask = require('./cron-tasks/googleCalendar');
+const eventReminder = require('./cron-tasks/eventReminder');
 
 module.exports = {
    myJob: {
       task: ({ strapi }) => {
-        GoogleCalendarTask.start()
+        eventReminder.start()
       },
       options: {
         rule: "*/1 * * * *",

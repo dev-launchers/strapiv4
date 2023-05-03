@@ -4,5 +4,6 @@ build-docker:
 run-docker:
 	docker run --env-file .env \
  	--mount type=bind,source=$(shell pwd)/src,target=/srv/app/src  \
+	--entrypoint "npm run develop" \
 	-p 1337:1337 \
 	-it strapiv4

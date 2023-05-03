@@ -4,12 +4,10 @@ const { createModuleResolutionCache } = require("typescript");
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 
 // sanitize URLs
-if (process.env.OPEN_POSITIONS_DISCORD_WEBHOOK != undefined) {
-  const discord_webhook_sanitized = process.env.OPEN_POSITIONS_DISCORD_WEBHOOK.replace(/["']/g, "");
-}
-if (process.env.FRONTEND_URL != undefined) {
-  const frontend_url_sanitized = process.env.FRONTEND_URL.replace(/["']/g, "");
-}
+const discord_webhook_sanitized = process.env.OPEN_POSITIONS_DISCORD_WEBHOOK.replace(/["']/g, "");
+
+const frontend_url_sanitized = process.env.FRONTEND_URL.replace(/["']/g, "");
+
 
 // create new Webhook
 const hook = new Webhook(

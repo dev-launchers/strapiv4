@@ -1,9 +1,10 @@
+# build dev docker img
 build-docker:
-	docker build -t strapiv4 .
+	docker build --tag strapiv4 -f Dockerfile.dev .
 
+# run dev docker img
 run-docker:
 	docker run --env-file .env \
  	--mount type=bind,source=$(shell pwd)/src,target=/srv/app/src  \
-	--entrypoint "npm run develop" \
 	-p 1337:1337 \
 	-it strapiv4

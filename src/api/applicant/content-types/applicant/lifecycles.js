@@ -44,9 +44,11 @@ module.exports = {
     }
   },
   async afterCreate(event) {
-    // insert proj title and remove unnecessary info from message
+    // insert proj title and include only necessary info in message
     event.params.data.project = event.model.attributes.project.title;
-    var relevantInfo = lodash.omit(event.params.data, ['email', 'age', 'zip', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'publishedAt']);
+    var { name, role, experience, commitment, project, level, skills } = event.params.data;
+    var relevantInfo = {
+      name: name, role: role, experience: experience, commitment: commitment, project: project, level: level, skills: skills }
 
     // create the discord message
     const newApplicantMsg = new MessageBuilder()

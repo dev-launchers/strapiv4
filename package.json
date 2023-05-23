@@ -54,6 +54,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^9.0.2",
     "babel-eslint": "^10.1.0"
   }
 }

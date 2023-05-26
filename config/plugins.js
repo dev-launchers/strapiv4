@@ -13,7 +13,7 @@ module.exports = ({env}) => ({
     sentry: {
       enabled: true,
       config: {
-        dsn: 'https://9b74d2bd2a50432da68982c3c4d72420@o4505235023921152.ingest.sentry.io/4505235032899584',
+        dsn: env('SENTRY_DSN'),
         sendMetadata: true,
       }
     },
@@ -22,7 +22,7 @@ module.exports = ({env}) => ({
         jwt: {
           expiresIn: '7d',
         },
-        jwtSecret: env('JWT_SECRET', 'NlpLY6zZ7JON8CHyNORWKw==')
+        jwtSecret: env('SENTRY_SECRET_KEY','https://9b74d2bd2a50432da68982c3c4d72420@o4505235023921152.ingest.sentry.io/4505235032899584'),
       },
     },
 });

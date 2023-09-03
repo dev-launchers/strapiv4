@@ -1,0 +1,1 @@
+{"version":3,"file":"bootstrap-api-prompts.js","sourceRoot":"","sources":["../../../src/plops/prompts/bootstrap-api-prompts.ts"],"names":[],"mappings":";;AAEA,MAAM,SAAS,GAA0B;IACvC;QACE,IAAI,EAAE,SAAS;QACf,IAAI,EAAE,cAAc;QACpB,OAAO,EAAE,IAAI;QACb,OAAO,EAAE,8BAA8B;KACxC;CACF,CAAC;AAEF,kBAAe,SAAS,CAAC"}

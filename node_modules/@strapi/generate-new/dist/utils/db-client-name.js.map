@@ -1,0 +1,1 @@
+{"version":3,"file":"db-client-name.js","sourceRoot":"","sources":["../../src/utils/db-client-name.ts"],"names":[],"mappings":";;AAAA;;GAEG;AACH,kBAAe,CAAC,EAAE,MAAM,EAAsB,EAAE,EAAE;IAChD,QAAQ,MAAM,EAAE;QACd,KAAK,eAAe;YAClB,OAAO,QAAQ,CAAC;QAClB;YACE,OAAO,MAAM,CAAC;KACjB;AACH,CAAC,CAAC"}

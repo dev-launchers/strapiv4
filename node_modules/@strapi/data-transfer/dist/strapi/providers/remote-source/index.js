@@ -1,0 +1,239 @@
+"use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _RemoteStrapiSourceProvider_instances, _RemoteStrapiSourceProvider_createStageReadStream, _RemoteStrapiSourceProvider_startStep, _RemoteStrapiSourceProvider_respond, _RemoteStrapiSourceProvider_endStep;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createRemoteStrapiSourceProvider = void 0;
+const stream_1 = require("stream");
+const fp_1 = require("lodash/fp");
+const providers_1 = require("../../../errors/providers");
+const constants_1 = require("../../remote/constants");
+const utils_1 = require("../utils");
+class RemoteStrapiSourceProvider {
+    constructor(options) {
+        _RemoteStrapiSourceProvider_instances.add(this);
+        this.name = 'source::remote-strapi';
+        this.type = 'source';
+        this.writeAsync = (stream, data) => {
+            return new Promise((resolve, reject) => {
+                stream.write(data, (error) => {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve();
+                });
+            });
+        };
+        this.options = options;
+        this.ws = null;
+        this.dispatcher = null;
+    }
+    createEntitiesReadStream() {
+        return __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_createStageReadStream).call(this, 'entities');
+    }
+    createLinksReadStream() {
+        return __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_createStageReadStream).call(this, 'links');
+    }
+    async createAssetsReadStream() {
+        const assets = {};
+        const stream = await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_createStageReadStream).call(this, 'assets');
+        const pass = new stream_1.PassThrough({ objectMode: true });
+        stream
+            .on('data', async (payload) => {
+            for (const item of payload) {
+                const { action } = item;
+                // Creates the stream to send the incoming asset through
+                if (action === 'start') {
+                    // Each asset has its own stream identified by its assetID
+                    assets[item.assetID] = { ...item.data, stream: new stream_1.PassThrough() };
+                    await this.writeAsync(pass, assets[item.assetID]);
+                }
+                // Writes the asset data to the created stream
+                else if (action === 'stream') {
+                    // Converts data into buffer
+                    const rawBuffer = item.data;
+                    const chunk = Buffer.from(rawBuffer.data);
+                    await this.writeAsync(assets[item.assetID].stream, chunk);
+                }
+                // The asset has been transferred
+                else if (action === 'end') {
+                    await new Promise((resolve, reject) => {
+                        const { stream: assetStream } = assets[item.assetID];
+                        assetStream
+                            .on('close', () => {
+                            // Deletes the stream for the asset
+                            delete assets[item.assetID];
+                            resolve();
+                        })
+                            .on('error', reject)
+                            .end();
+                    });
+                }
+            }
+        })
+            .on('close', () => {
+            pass.end();
+        });
+        return pass;
+    }
+    createConfigurationReadStream() {
+        return __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_createStageReadStream).call(this, 'configuration');
+    }
+    async getMetadata() {
+        const metadata = await this.dispatcher?.dispatchTransferAction('getMetadata');
+        return metadata ?? null;
+    }
+    assertValidProtocol(url) {
+        const validProtocols = ['https:', 'http:'];
+        if (!validProtocols.includes(url.protocol)) {
+            throw new providers_1.ProviderValidationError(`Invalid protocol "${url.protocol}"`, {
+                check: 'url',
+                details: {
+                    protocol: url.protocol,
+                    validProtocols,
+                },
+            });
+        }
+    }
+    async initTransfer() {
+        const query = this.dispatcher?.dispatchCommand({
+            command: 'init',
+        });
+        const res = (await query);
+        if (!res?.transferID) {
+            throw new providers_1.ProviderTransferError('Init failed, invalid response from the server');
+        }
+        return res.transferID;
+    }
+    async bootstrap() {
+        const { url, auth } = this.options;
+        let ws;
+        this.assertValidProtocol(url);
+        const wsProtocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${wsProtocol}//${url.host}${(0, utils_1.trimTrailingSlash)(url.pathname)}${constants_1.TRANSFER_PATH}/pull`;
+        // No auth defined, trying public access for transfer
+        if (!auth) {
+            ws = await (0, utils_1.connectToWebsocket)(wsUrl);
+        }
+        // Common token auth, this should be the main auth method
+        else if (auth.type === 'token') {
+            const headers = { Authorization: `Bearer ${auth.token}` };
+            ws = await (0, utils_1.connectToWebsocket)(wsUrl, { headers });
+        }
+        // Invalid auth method provided
+        else {
+            throw new providers_1.ProviderValidationError('Auth method not available', {
+                check: 'auth.type',
+                details: {
+                    auth: auth.type,
+                },
+            });
+        }
+        this.ws = ws;
+        const { retryMessageOptions } = this.options;
+        this.dispatcher = (0, utils_1.createDispatcher)(this.ws, retryMessageOptions);
+        const transferID = await this.initTransfer();
+        this.dispatcher.setTransferProperties({ id: transferID, kind: 'pull' });
+        await this.dispatcher.dispatchTransferAction('bootstrap');
+    }
+    async close() {
+        await this.dispatcher?.dispatchTransferAction('close');
+        await new Promise((resolve) => {
+            const { ws } = this;
+            if (!ws || ws.CLOSED) {
+                resolve();
+                return;
+            }
+            ws.on('close', () => resolve()).close();
+        });
+    }
+    async getSchemas() {
+        const schemas = (await this.dispatcher?.dispatchTransferAction('getSchemas')) ?? null;
+        return schemas;
+    }
+}
+_RemoteStrapiSourceProvider_instances = new WeakSet(), _RemoteStrapiSourceProvider_createStageReadStream = async function _RemoteStrapiSourceProvider_createStageReadStream(stage) {
+    const startResult = await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_startStep).call(this, stage);
+    if (startResult instanceof Error) {
+        throw startResult;
+    }
+    const { id: processID } = startResult;
+    const stream = new stream_1.PassThrough({ objectMode: true });
+    const listener = async (raw) => {
+        const parsed = JSON.parse(raw.toString());
+        // If not a message related to our transfer process, ignore it
+        if (!parsed.uuid || parsed?.data?.type !== 'transfer' || parsed?.data?.id !== processID) {
+            this.ws?.once('message', listener);
+            return;
+        }
+        const { uuid, data: message } = parsed;
+        const { ended, error, data } = message;
+        if (ended) {
+            await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_respond).call(this, uuid);
+            await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_endStep).call(this, stage);
+            stream.end();
+            return;
+        }
+        if (error) {
+            await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_respond).call(this, uuid);
+            await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_endStep).call(this, stage);
+            stream.destroy(error);
+            return;
+        }
+        // if we get a single items instead of a batch
+        // TODO V5: in v5 only allow array
+        for (const item of (0, fp_1.castArray)(data)) {
+            stream.push(item);
+        }
+        this.ws?.once('message', listener);
+        await __classPrivateFieldGet(this, _RemoteStrapiSourceProvider_instances, "m", _RemoteStrapiSourceProvider_respond).call(this, uuid);
+    };
+    this.ws?.once('message', listener);
+    return stream;
+}, _RemoteStrapiSourceProvider_startStep = async function _RemoteStrapiSourceProvider_startStep(step) {
+    try {
+        return await this.dispatcher?.dispatchTransferStep({ action: 'start', step });
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            return e;
+        }
+        if (typeof e === 'string') {
+            return new providers_1.ProviderTransferError(e);
+        }
+        return new providers_1.ProviderTransferError('Unexpected error');
+    }
+}, _RemoteStrapiSourceProvider_respond = async function _RemoteStrapiSourceProvider_respond(uuid) {
+    return new Promise((resolve, reject) => {
+        this.ws?.send(JSON.stringify({ uuid }), (e) => {
+            if (e) {
+                reject(e);
+            }
+            else {
+                resolve(e);
+            }
+        });
+    });
+}, _RemoteStrapiSourceProvider_endStep = async function _RemoteStrapiSourceProvider_endStep(step) {
+    try {
+        await this.dispatcher?.dispatchTransferStep({ action: 'end', step });
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            return e;
+        }
+        if (typeof e === 'string') {
+            return new providers_1.ProviderTransferError(e);
+        }
+        return new providers_1.ProviderTransferError('Unexpected error');
+    }
+    return null;
+};
+const createRemoteStrapiSourceProvider = (options) => {
+    return new RemoteStrapiSourceProvider(options);
+};
+exports.createRemoteStrapiSourceProvider = createRemoteStrapiSourceProvider;
+//# sourceMappingURL=index.js.map

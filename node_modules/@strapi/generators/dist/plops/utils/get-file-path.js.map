@@ -1,0 +1,1 @@
+{"version":3,"file":"get-file-path.js","sourceRoot":"","sources":["../../../src/plops/utils/get-file-path.ts"],"names":[],"mappings":";;AAAA,kBAAe,CAAC,WAAmB,EAAE,EAAE;IACrC,IAAI,WAAW,KAAK,KAAK,EAAE;QACzB,OAAO,eAAe,CAAC;KACxB;IAED,IAAI,WAAW,KAAK,QAAQ,EAAE;QAC5B,OAAO,6BAA6B,CAAC;KACtC;IAED,IAAI,WAAW,KAAK,MAAM,EAAE;QAC1B,OAAO,IAAI,CAAC;KACb;IAED,OAAO,cAAc,CAAC;AACxB,CAAC,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"machine-id.js","sourceRoot":"","sources":["../../src/utils/machine-id.ts"],"names":[],"mappings":";;AAAA,qDAAgD;AAChD,mCAAoC;AAEpC,kBAAe,GAAG,EAAE;IAClB,IAAI;QACF,MAAM,QAAQ,GAAG,IAAA,+BAAa,GAAE,CAAC;QACjC,OAAO,QAAQ,CAAC;KACjB;IAAC,OAAO,KAAK,EAAE;QACd,MAAM,QAAQ,GAAG,IAAA,mBAAU,GAAE,CAAC;QAC9B,OAAO,QAAQ,CAAC;KACjB;AACH,CAAC,CAAC"}

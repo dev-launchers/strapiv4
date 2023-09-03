@@ -1,0 +1,1 @@
+{"version":3,"file":"remove-dynamic-zones.js","sourceRoot":"","sources":["../../../src/sanitize/visitors/remove-dynamic-zones.ts"],"names":[],"mappings":";;AAAA,uDAA6D;AAG7D,MAAM,OAAO,GAAY,CAAC,EAAE,GAAG,EAAE,SAAS,EAAE,EAAE,EAAE,MAAM,EAAE,EAAE,EAAE;IAC1D,IAAI,IAAA,sCAAsB,EAAC,SAAS,CAAC,EAAE;QACrC,MAAM,CAAC,GAAG,CAAC,CAAC;KACb;AACH,CAAC,CAAC;AAEF,kBAAe,OAAO,CAAC"}

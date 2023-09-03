@@ -1,0 +1,1 @@
+{"version":3,"file":"exclude-colors.js","sourceRoot":"","sources":["../../src/formats/exclude-colors.ts"],"names":[],"mappings":";;AAAA,qCAAiC;AAEjC;;;GAGG;AACH,kBAAe,gBAAM,CAAC,MAAM,CAAC,CAAC,EAAE,OAAO,EAAE,EAAE,EAAE;IAC3C,IAAI,OAAO,OAAO,KAAK,QAAQ,EAAE;QAC/B,OAAO,OAAO,CAAC;KAChB;IAED,OAAO,OAAO,CAAC,OAAO;IACpB,4CAA4C;IAC5C,6EAA6E,EAC7E,EAAE,CACH,CAAC;AACJ,CAAC,CAAC,CAAC"}

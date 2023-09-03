@@ -1,0 +1,1 @@
+{"version":3,"file":"remove-morph-to-relations.js","sourceRoot":"","sources":["../../../src/sanitize/visitors/remove-morph-to-relations.ts"],"names":[],"mappings":";;AAAA,uDAAmE;AAGnE,MAAM,OAAO,GAAY,CAAC,EAAE,GAAG,EAAE,SAAS,EAAE,EAAE,EAAE,MAAM,EAAE,EAAE,EAAE;IAC1D,IAAI,IAAA,4CAA4B,EAAC,SAAS,CAAC,EAAE;QAC3C,MAAM,CAAC,GAAG,CAAC,CAAC;KACb;AACH,CAAC,CAAC;AAEF,kBAAe,OAAO,CAAC"}

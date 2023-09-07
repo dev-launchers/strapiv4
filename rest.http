@@ -1,0 +1,7 @@
+POST http://localhost:1337/api/auth/local HTTP/1.1
+content-type: application/json
+
+{
+  "identifier": "student1234",
+  "password": "student1234"
+}

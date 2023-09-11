@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_resources_single_project_resources",
+  "info": {
+    "displayName": "SingleProjectResource",
+    "icon": "book",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "icon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "resourceType": {
+      "type": "enumeration",
+      "enum": [
+        "main-resources",
+        "other-resources"
+      ]
+    }
+  }
+}

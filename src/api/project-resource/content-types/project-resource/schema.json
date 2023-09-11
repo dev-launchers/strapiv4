@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Resources": {
+    "mainResources": {
       "displayName": "SingleProjectResource",
       "type": "component",
       "repeatable": true,
@@ -22,6 +22,11 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::project.project"
+    },
+    "otherResources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "resources.single-project-resource"
     }
   }
 }

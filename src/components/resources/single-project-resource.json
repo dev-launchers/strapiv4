@@ -14,20 +14,14 @@
       "type": "string"
     },
     "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
-    },
-    "resourceType": {
-      "type": "enumeration",
-      "enum": [
-        "main-resources",
-        "other-resources"
       ]
     }
   }

@@ -40,6 +40,8 @@ module.exports = createCoreController(
             "project.team.leaders.leader.profile",
             "project.team.members.member.profile",
             "project.heroImage",
+            "mainResources",
+            "otherResources",
           ],
         });
 

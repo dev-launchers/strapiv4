@@ -23,6 +23,9 @@
         "videos",
         "audios"
       ]
+    },
+    "moreInfo": {
+      "type": "string"
     }
   }
 }

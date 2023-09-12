@@ -9,8 +9,8 @@ const { createCoreController } = require("@strapi/strapi").factories;
 module.exports = createCoreController(
   "api::project-resource.project-resource",
   ({ strapi }) => ({
-    async findOne(ctx) {
-      const { id } = ctx.params;
+    async find(ctx) {
+      const { userId } = ctx.request.query;
       let entries = await strapi.db
         .query("api::project-resource.project-resource")
         .findMany({
@@ -21,14 +21,14 @@ module.exports = createCoreController(
                   {
                     leaders: {
                       leader: {
-                        id: id,
+                        id: userId,
                       },
                     },
                   },
                   {
                     members: {
                       member: {
-                        id: id,
+                        id: userId,
                       },
                     },
                   },

@@ -55,7 +55,7 @@
 			"response": []
 		},
 		{
-			"name": "get projects",
+			"name": "list projects",
 			"event": [
 				{
 					"listen": "test",

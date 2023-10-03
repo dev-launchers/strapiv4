@@ -1,0 +1,340 @@
+{
+	"info": {
+		"_postman_id": "8507e5ab-aa46-4820-adc2-fcea8fe80ef0",
+		"name": "applicant-integration-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23207395",
+		"_collection_link": "https://planetary-sunset-570862.postman.co/workspace/DevLaunchers~ccbd0f9c-ee35-4275-b2ce-f2bfbb1fd054/collection/23207395-8507e5ab-aa46-4820-adc2-fcea8fe80ef0?action=share&source=collection_link&creator=23207395"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"identifier\": \"integration-test@devlaunchers.org\",\n  \"password\": \"integration-test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/local",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"local"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list applicants",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const applicant = pm.response.json().data[0];",
+							"console.log(applicant)",
+							"pm.test(\"Applicant is applicant1\", () => {",
+							"  pm.expect(applicant.attributes.email).to.eql(\"applicant1@gmail.com\");",
+							"  pm.expect(applicant.attributes.name).to.eql(\"applicant1\");",
+							"  pm.expect(applicant.attributes.age).to.eql(24);",
+							"  pm.expect(applicant.attributes.role).to.eql(\"back-end developer\");",
+							"  pm.expect(applicant.attributes.zip).to.eql(\"8765\");",
+							"  pm.expect(applicant.attributes.experience).to.eql(\"beginner\");",
+							"  pm.expect(applicant.attributes.commitment).to.eql(1);",
+							"  pm.expect(applicant.attributes.accepted).to.eql(false);",
+							"  pm.expect(applicant.attributes.level).to.eql(\"beginner\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Applicant data is valid\", () => {",
+							"  pm.expect(applicant).to.be.an(\"object\")",
+							"  pm.expect(applicant.id).to.be.an(\"number\")",
+							"  pm.expect(applicant.attributes).to.be.an(\"object\")",
+							"});",
+							"",
+							"",
+							"const expectedSchema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"data\": {",
+							"      \"type\": \"array\",",
+							"      \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"properties\": {",
+							"          \"id\": {",
+							"            \"type\": \"integer\"",
+							"          },",
+							"          \"attributes\": {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"              \"email\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"email\"",
+							"              },",
+							"              \"name\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"age\": {",
+							"                \"type\": \"integer\"",
+							"              },",
+							"              \"role\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"zip\": {",
+							"                \"type\": \"string\", ",
+							"              },",
+							"              \"experience\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"commitment\": {",
+							"              \"type\": \"number\",",
+							"              },",
+							"              \"accepted\": {",
+							"                \"type\": \"boolean\"",
+							"              },",
+							"              \"reason\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"level\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"createdAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              },",
+							"              \"updatedAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              },",
+							"              \"publishedAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              }",
+							"            },",
+							"          }",
+							"        },",
+							"        \"required\": [\"id\", \"attributes\"]",
+							"      }",
+							"    },",
+							"    \"meta\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"pagination\": {",
+							"          \"type\": \"object\",",
+							"          \"properties\": {",
+							"            \"page\": {",
+							"              \"type\": \"integer\"",
+							"            },",
+							"            \"pageSize\": {",
+							"              \"type\": \"integer\"",
+							"            },",
+							"            \"pageCount\": {",
+							"              \"type\": \"integer\"",
+							"            },",
+							"            \"total\": {",
+							"              \"type\": \"integer\"",
+							"            }",
+							"          },",
+							"        }",
+							"      },",
+							"    }",
+							"  },",
+							"  \"required\": [\"data\", \"meta\"]",
+							"}",
+							"",
+							"",
+							"pm.test(\"Verify JSON Schema\", ()=>{",
+							"    pm.response.to.have.jsonSchema(expectedSchema)",
+							"})",
+							"",
+							"pm.globals.set(\"applicantId\", applicant.id)",
+							"console.log(applicant.id)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/applicants",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"applicants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get applicant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const applicant = pm.response.json().data;",
+							"console.log(applicant)",
+							"pm.test(\"Applicant is applicant1\", () => {",
+							"  pm.expect(applicant.id).to.eql(1);",
+							"  pm.expect(applicant.attributes.email).to.eql(\"applicant1@gmail.com\");",
+							"  pm.expect(applicant.attributes.name).to.eql(\"applicant1\");",
+							"  pm.expect(applicant.attributes.age).to.eql(24);",
+							"  pm.expect(applicant.attributes.role).to.eql(\"back-end developer\");",
+							"  pm.expect(applicant.attributes.zip).to.eql(\"8765\");",
+							"  pm.expect(applicant.attributes.experience).to.eql(\"beginner\");",
+							"  pm.expect(applicant.attributes.commitment).to.eql(1);",
+							"  pm.expect(applicant.attributes.accepted).to.eql(false);",
+							"  pm.expect(applicant.attributes.level).to.eql(\"beginner\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Applicant data is valid\", () => {",
+							"  pm.expect(applicant).to.be.an(\"object\")",
+							"  pm.expect(applicant.id).to.be.an(\"number\")",
+							"  pm.expect(applicant.attributes).to.be.an(\"object\")",
+							"});",
+							"",
+							"",
+							"const expectedSchema = {",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"data\": {",
+							"      \"type\": \"object\",",
+							"      \"items\": {",
+							"        \"type\": \"object\",",
+							"        \"properties\": {",
+							"          \"id\": {",
+							"            \"type\": \"integer\"",
+							"          },",
+							"          \"attributes\": {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"              \"email\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"email\"",
+							"              },",
+							"              \"name\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"age\": {",
+							"                \"type\": \"integer\"",
+							"              },",
+							"              \"role\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"zip\": {",
+							"                \"type\": \"string\", ",
+							"              },",
+							"              \"experience\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"commitment\": {",
+							"              \"type\": \"number\",",
+							"              },",
+							"              \"accepted\": {",
+							"                \"type\": \"boolean\"",
+							"              },",
+							"              \"reason\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"level\": {",
+							"                \"type\": \"string\"",
+							"              },",
+							"              \"createdAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              },",
+							"              \"updatedAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              },",
+							"              \"publishedAt\": {",
+							"                \"type\": \"string\",",
+							"                \"format\": \"date-time\"",
+							"              }",
+							"            },",
+							"          }",
+							"        },",
+							"        \"required\": [\"id\", \"attributes\"]",
+							"      }",
+							"    },",
+							"    \"meta\": {",
+							"      \"type\": \"object\",",
+							"    }",
+							"  },",
+							"  \"required\": [\"data\", \"meta\"]",
+							"}",
+							"",
+							"",
+							"pm.test(\"Verify JSON Schema\", ()=>{",
+							"    pm.response.to.have.jsonSchema(expectedSchema)",
+							"})",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/applicants/{{applicantId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"applicants",
+						"{{applicantId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

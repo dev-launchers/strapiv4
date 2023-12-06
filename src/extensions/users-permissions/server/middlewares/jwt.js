@@ -19,24 +19,6 @@ module.exports = (options, { strapi }) => {
       }
       const token = body.jwt;
       if (token) {
-        /*
-          if in dev env, disable secure option because secure option
-          makes it so the cookie can only be sent through https, but in
-          development envrionment we use http
-        */
-        // TODO: Replace this with a reusable function
-        const isDev = process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test'
-        if (isDev) {
-          ctx.cookies.set('token', token);
-        } else {
-          ctx.cookies.set('token', token, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 Days
-            sameSite: 'none'
-          });
-        }
-
         // Local auth is used for integration test. Don't redirect
         if (ctx.url == '/api/auth/local') {
           return

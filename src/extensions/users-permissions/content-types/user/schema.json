@@ -23,7 +23,8 @@
       "type": "email",
       "minLength": 6,
       "configurable": false,
-      "required": true
+      "required": true,
+      "private": true
     },
     "provider": {
       "type": "string",
@@ -99,37 +100,48 @@
       "mappedBy": "user"
     },
     "discordId": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "googleId": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "discordUsername": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "userId": {
-      "type": "uid"
+      "type": "uid",
+      "private": true
     },
     "birthday": {
-      "type": "date"
+      "type": "date",
+      "private": true
     },
     "country": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "zipCode": {
-      "type": "integer"
+      "type": "integer",
+      "private": true
     },
     "hasAcceptedTermsOfService": {
-      "type": "boolean"
+      "type": "boolean",
+      "private": true
     },
     "hasSubscribedEmails": {
-      "type": "boolean"
+      "type": "boolean",
+      "private": true
     },
     "discord_avatar": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "discord_discriminator": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "job": {
       "type": "enumeration",

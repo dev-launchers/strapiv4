@@ -99,7 +99,8 @@
       "mappedBy": "user"
     },
     "discordId": {
-      "type": "string"
+      "type": "string",
+      "private": true
     },
     "googleId": {
       "type": "string",

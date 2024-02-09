@@ -92,12 +92,6 @@
       "target": "api::profile.profile",
       "inversedBy": "user"
     },
-    "time_capsules": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::time-capsule.time-capsule",
-      "mappedBy": "user"
-    },
     "discordId": {
       "type": "string",
       "private": true

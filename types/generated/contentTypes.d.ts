@@ -640,11 +640,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::profile.profile'
     >;
-    time_capsules: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::time-capsule.time-capsule'
-    >;
     discordId: Attribute.String & Attribute.Private;
     googleId: Attribute.String & Attribute.Private;
     discordUsername: Attribute.String;
@@ -1487,49 +1482,6 @@ export interface ApiTeamMembershipTeamMembership extends Schema.CollectionType {
   };
 }
 
-export interface ApiTimeCapsuleTimeCapsule extends Schema.CollectionType {
-  collectionName: 'time_capsules';
-  info: {
-    singularName: 'time-capsule';
-    pluralName: 'time-capsules';
-    displayName: 'TimeCapsule';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    generateDayInformation: Attribute.Text;
-    acquiredKnowledge: Attribute.Text;
-    sessionRating: Attribute.Text;
-    gaveHelp: Attribute.Text;
-    volunteerHours: Attribute.Float;
-    receivedHelp: Attribute.Text;
-    pairUpQuestion: Attribute.Text;
-    extraInformation: Attribute.Text;
-    user: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1564,7 +1516,6 @@ declare module '@strapi/types' {
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;
       'api::sendmail.sendmail': ApiSendmailSendmail;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
-      'api::time-capsule.time-capsule': ApiTimeCapsuleTimeCapsule;
     }
   }
 }

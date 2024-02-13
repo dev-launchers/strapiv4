@@ -74,6 +74,8 @@
 			},
 			"response": []
 		},
+
+
 		{
 			"name": "auth",
 			"request": {
@@ -101,6 +103,7 @@
 			},
 			"response": []
 		},
+
 		{
 			"name": "get user",
 			"event": [
@@ -147,8 +150,98 @@
 				}
 			},
 			"response": []
+		},
+
+		{
+			"name": "notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var schema = {",
+							"    \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"data\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": [{",
+							"                \"type\": \"object\",",
+							"                \"properties\": {",
+							"                    \"id\": {\"type\": \"integer\"},",
+							"                    \"attributes\": {",
+							"                        \"type\": \"object\",",
+							"                        \"properties\": {",
+							"                            \"createdAt\": {\"type\": \"string\"},",
+							"                            \"updatedAt\": {\"type\": \"string\"},",
+							"                            \"Read\": {\"type\": \"boolean\"},",
+							"                            \"Title\": {\"type\": \"string\"},",
+							"                            \"Content\": {\"type\": \"string\"},",
+							"                            \"TimeCreated\": {\"type\": \"string\"},",
+							"                            \"Collection\": {\"type\": \"string\"},",
+							"                            \"ObjectID\": {\"type\": \"integer\"}",
+							"                        },",
+							"                        \"required\": [\"createdAt\", \"updatedAt\", \"Read\", \"Title\", \"Content\", \"TimeCreated\", \"Collection\", \"ObjectID\"]",
+							"                    }",
+							"                },",
+							"                \"required\": [\"id\", \"attributes\"]",
+							"            }]",
+							"        },",
+							"        \"meta\": {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"                \"pagination\": {",
+							"                    \"type\": \"object\",",
+							"                    \"properties\": {",
+							"                        \"page\": {\"type\": \"integer\"},",
+							"                        \"pageSize\": {\"type\": \"integer\"},",
+							"                        \"pageCount\": {\"type\": \"integer\"},",
+							"                        \"total\": {\"type\": \"integer\"}",
+							"                    },",
+							"                    \"required\": [\"page\", \"pageSize\", \"pageCount\", \"total\"]",
+							"                }",
+							"            },",
+							"            \"required\": [\"pagination\"]",
+							"        }",
+							"    },",
+							"    \"required\": [\"data\", \"meta\"]",
+							"};",
+							"",
+							"pm.test('Test Notification', function () {",
+							"    var result = tv4.validateResult(pm.response.json(), schema);",
+							"    if (!result.valid){",
+							"        console.log(result);",
+							"    }",
+							"    pm.expect(result.valid).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET", 
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{base_url}}/notifications",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications"
+					]
+				}
+			},
+			"response": []
 		}
+
 	],
+
+
 	"event": [
 		{
 			"listen": "prerequest",
@@ -179,3 +272,4 @@
 		}
 	]
 }
+

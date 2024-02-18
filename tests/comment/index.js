@@ -10,7 +10,7 @@ beforeAll(async () => {
 describe("/api/comments", () => {
   it("should add comment", async () => {
     await request(strapi.server.httpServer)
-      .post("/api/comments?populate=*")
+      .post("/api/comments")
       .send({
         data: { author: "tester2", idea_card: { id: 1 }, text: "test comment" },
       })

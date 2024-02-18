@@ -14,10 +14,6 @@ jobs:
               with:
                 node-version: '18.x'
             - run: npm install
-            - run: npm run test
-              env:
-                CI: false
             - uses: ArtiomTr/jest-coverage-report-action@v2
-              with:
-                coverage-file: ./coverage/coverage-final.json
-                base-coverage-file: ./coverage/coverage-final.json
+              env:
+                FRONTEND_URL: "not_used"

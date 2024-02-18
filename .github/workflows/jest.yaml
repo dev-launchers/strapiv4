@@ -13,7 +13,6 @@ jobs:
               uses: actions/setup-node@v1
               with:
                 node-version: '18.x'
-            - run: npm install
             - uses: ArtiomTr/jest-coverage-report-action@v2
               env:
                 FRONTEND_URL: "not_used"

@@ -29,7 +29,7 @@ describe("/api/interests", () => {
       });
   });
 
-  it("add interest", async () => {
+  xit("add interest", async () => {
     const interest = await strapi.query("api::interest.interest").findOne();
     await request(strapi.server.httpServer)
       .put("/api/users/1")

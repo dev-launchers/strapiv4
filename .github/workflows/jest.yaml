@@ -17,3 +17,7 @@ jobs:
             - uses: ArtiomTr/jest-coverage-report-action@v2
               env:
                 FRONTEND_URL: "not_used"
+              with:
+                test-script: npm run test:coverage
+                coverage-file: ./coverage/report.json
+                base-coverage-file: ./coverage/report.json

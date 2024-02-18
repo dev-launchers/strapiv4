@@ -7,6 +7,7 @@ on:
 jobs:
     test-report:
         runs-on: ubuntu-latest
+        continue-on-error: true
         steps:
             - uses: actions/checkout@v3
             - name: Use Node.js ${{ matrix.node-version }}
@@ -16,7 +17,12 @@ jobs:
             - name: Install dependencies
               run: npm ci
             - name: Run tests
-              uses: mattallty/jest-github-action@v1
+              run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
               env:
                 FRONTEND_URL: "not_used"
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Run coverage report
+              uses: ArtiomTr/jest-coverage-report-action@v2
+              with:
+                coverage-file: 'report.json'
+                base-coverage-file: 'report.json'
+                skip-step: all

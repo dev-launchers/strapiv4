@@ -5,6 +5,7 @@ module.exports = {
     },
   },
   collectCoverageFrom: ["src/api/**/*.js"],
+  reporters: [['github-actions', {silent: false}], 'default', 'summary'],
   coverageReporters: ["text"],
   testPathIgnorePatterns: [
     "/node_modules/",

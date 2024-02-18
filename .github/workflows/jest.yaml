@@ -21,7 +21,7 @@ jobs:
                 FRONTEND_URL: "not_used"
             - name: Run coverage report
               uses: ArtiomTr/jest-coverage-report-action@v2
-                with:
-                  coverage-file: 'report.json'
-                  base-coverage-file: 'report.json'
-                  skip-step: all
+              with:
+                coverage-file: 'report.json'
+                base-coverage-file: 'report.json'
+                skip-step: all

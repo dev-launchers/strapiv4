@@ -16,7 +16,7 @@ jobs:
             - name: Install dependencies
               run: npm ci
             - name: Run tests
-              run: npm jest --ci --json --coverage --testLocationInResults --outputFile=report.json
+              run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
               env:
                 FRONTEND_URL: "not_used"
             - name: Run coverage report

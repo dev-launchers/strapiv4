@@ -1,0 +1,17 @@
+name: 'coverage'
+on:
+  push:
+    branches:
+      - becevka/jest-tests
+    workflow_dispatch:
+jobs:
+    coverage:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                node-version: '18.x'
+            - run: npm install
+            - uses: ArtiomTr/jest-coverage-report-action@v2

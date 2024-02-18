@@ -13,15 +13,9 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: '18.x'
-            - name: Install dependencies
-              run: npm ci
-            - name: Run tests
-              run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
-              env:
-                FRONTEND_URL: "not_used"
             - name: Run coverage report
               uses: ArtiomTr/jest-coverage-report-action@v2
+              env:
+                FRONTEND_URL: "not_used"
               with:
-                coverage-file: 'report.json'
                 base-coverage-file: 'report.json'
-                skip-step: all

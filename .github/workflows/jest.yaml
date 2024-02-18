@@ -18,6 +18,4 @@ jobs:
               env:
                 FRONTEND_URL: "not_used"
               with:
-                test-script: npm run test:coverage
-                coverage-file: ./coverage/report.json
-                base-coverage-file: ./coverage/report.json
+                test-script: npx jest --forceExit

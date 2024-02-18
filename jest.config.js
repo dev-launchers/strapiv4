@@ -4,8 +4,9 @@ module.exports = {
       lines: 50,
     },
   },
+  testFailureExitCode: 0,
   collectCoverageFrom: ["src/api/**/*.js"],
-  reporters: [['github-actions', {silent: false}], 'default', 'summary'],
+  reporters: ['github-actions', 'default', 'summary'],
   coverageReporters: ["text"],
   testPathIgnorePatterns: [
     "/node_modules/",

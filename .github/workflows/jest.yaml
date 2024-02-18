@@ -13,7 +13,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: '18.x'
-            - name: Run coverage report
+            - name: Run test and coverage reports
               uses: ArtiomTr/jest-coverage-report-action@v2
               env:
                 FRONTEND_URL: "not_used"

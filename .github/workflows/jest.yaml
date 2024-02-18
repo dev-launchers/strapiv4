@@ -16,12 +16,7 @@ jobs:
             - name: Install dependencies
               run: npm ci
             - name: Run tests
-              run: npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json
+              uses: mattallty/jest-github-action@v1
               env:
                 FRONTEND_URL: "not_used"
-            - name: Run coverage report
-              uses: ArtiomTr/jest-coverage-report-action@v2
-              with:
-                coverage-file: 'report.json'
-                base-coverage-file: 'report.json'
-                skip-step: all
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

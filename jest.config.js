@@ -13,4 +13,5 @@ module.exports = {
     ".cache",
   ],
   testEnvironment: "node",
+  testTimeout: 30000,
 };

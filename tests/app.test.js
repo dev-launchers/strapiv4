@@ -1,8 +1,6 @@
 const fs = require('fs');
 const { setupStrapi, cleanupStrapi, grantPrivileges } = require("./helpers/strapi");
 
-jest.setTimeout(30000)
-
 beforeAll(async () => {
   await setupStrapi();
   await grantPrivileges();

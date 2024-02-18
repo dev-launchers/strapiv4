@@ -8,8 +8,8 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "test": "jest --forceExit --runInBand",
-    "test:coverage": "jest --coverage --forceExit --runInBand"
+    "test": "jest --runInBand",
+    "test:coverage": "jest --coverage --runInBand"
   },
   "dependencies": {
     "@strapi/plugin-documentation": "4.15.0",

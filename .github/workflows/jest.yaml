@@ -1,11 +1,11 @@
-name: 'coverage'
+name: 'jest-test-report'
 on:
   push:
     branches:
       - becevka/jest-tests
     workflow_dispatch:
 jobs:
-    coverage:
+    test-report:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -13,8 +13,15 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: '18.x'
-            - uses: ArtiomTr/jest-coverage-report-action@v2
-              with:
-                base-coverage-file: 'report.json'
+            - name: Install dependencies
+              run: npm ci
+            - name: Run tests
+              run: npm jest --ci --json --coverage --testLocationInResults --outputFile=report.json
               env:
                 FRONTEND_URL: "not_used"
+            - name: Run coverage report
+              uses: ArtiomTr/jest-coverage-report-action@v2
+                with:
+                  coverage-file: 'report.json'
+                  base-coverage-file: 'report.json'
+                  skip-step: all

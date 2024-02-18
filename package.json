@@ -68,7 +68,6 @@
       "src/api/**/*.js"
     ],
     "coverageReporters": [
-      "clover",
       "json",
       "text"
     ],

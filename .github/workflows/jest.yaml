@@ -14,5 +14,7 @@ jobs:
               with:
                 node-version: '18.x'
             - uses: ArtiomTr/jest-coverage-report-action@v2
+              with:
+                base-coverage-file: 'report.json'
               env:
                 FRONTEND_URL: "not_used"

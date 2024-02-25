@@ -1,10 +1,18 @@
  # Dev Launchers Strapi Service
 
 # Getting Started
-1. Copy the `.env.example` file into `.env`
-2. Run `npm install`
-3. Run `npm run develop`
-4. Go to http://localhost:1337/admin to create an account
+1. Clone the project into your computer
+2. At the root of the project, create a `.env` file
+3. Copy `.env.example` file content to the new `.env` file
+4. Run `npm install`
+5. Run `npm run develop`
+6. Go to `http://localhost:1337/admin` to create an account
+7. Fill "First name","Email", "Password" and "Confirm Password" fields
+![Step-7!](/assets/images/Step-7.png "Step-7.png")
+8. If you want to be updated about new features and upcoming improvements, check the box
+![Step-8!](/assets/images/Step-8.png "Step-8.png")
+9. Click "Let's start" button
+![Step-9!](/assets/images/Step-9.png "Step-9.png")
 
 # Running from Docker
 Alternatively, you can run it with Docker. There are 2 make targets available to do this.

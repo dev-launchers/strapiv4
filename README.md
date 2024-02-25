@@ -1,9 +1,9 @@
  # Dev Launchers Strapi Service
 
 # Getting Started
-2. Run `npm run init` first time to install dependencies and initialize your local database
-3. Run `npm run develop`
-4. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`. 
+1. Run `npm run init` first time to install dependencies and initialize your local database
+2. Run `npm run develop`
+3. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`. 
 
 # Running from Docker
 Alternatively, you can run it with Docker. There are 2 make targets available to do this.

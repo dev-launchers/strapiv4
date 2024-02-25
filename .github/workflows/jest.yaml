@@ -1,6 +1,6 @@
 name: 'jest-test-report'
 on:
-  push:
+  pull_request:
     branches:
       - becevka/jest-tests
     workflow_dispatch:

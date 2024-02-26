@@ -16,7 +16,7 @@
       "type": "string"
     },
     "Content": {
-      "type": "string"
+      "type": "text"
     },
     "Read": {
       "type": "boolean"
@@ -25,16 +25,10 @@
       "type": "datetime"
     },
     "entityType": {
-      "type": "string",
-      "enum": [
-        "ideaCard",
-        "comment"
-      ],
-      "description": "The type of entity related to this notification"
+      "type": "string"
     },
     "entityId": {
-      "type": "integer",
-      "description": "The ID of the entity related to this notification."
+      "type": "integer"
     }
   }
 }

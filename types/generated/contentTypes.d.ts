@@ -1136,7 +1136,7 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
   };
   attributes: {
     Title: Attribute.String;
-    Content: Attribute.String;
+    Content: Attribute.Text;
     Read: Attribute.Boolean;
     TimeCreated: Attribute.DateTime;
     entityType: Attribute.String;

@@ -24,15 +24,17 @@
     "TimeCreated": {
       "type": "datetime"
     },
-    "Collection": {
-      "type": "enumeration",
+    "entityType": {
+      "type": "string",
       "enum": [
-        "IdeaCard",
-        "Comment"
-      ]
+        "ideaCard",
+        "comment"
+      ],
+      "description": "The type of entity related to this notification"
     },
-    "ObjectID": {
-      "type": "integer"
+    "entityId": {
+      "type": "integer",
+      "description": "The ID of the entity related to this notification."
     }
   }
 }

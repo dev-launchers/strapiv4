@@ -9,16 +9,14 @@ module.exports = {
   },
 
   async afterCreate(event) {
-    console.log(event.result)
-
     const { id: id, ideaName: ideaName, createdAt: timeCreated } = event.result;
     
     await strapi.entityService.create('api::notification.notification', {
       data: {
         Title:"A new idea has been created",
         Content: "You created idea " + ideaName,
-        Collection: "IdeaCard",
-        ObjectID: id,
+        entityType: "IdeaCard",
+        entityId: id,
         TimeCreated: timeCreated,
         Read: false
       },

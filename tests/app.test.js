@@ -18,3 +18,4 @@ require('./user');
 require('./idea-card');
 require('./comment');
 require('./interest');
+require('./project');

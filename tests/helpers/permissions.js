@@ -1,38 +1,39 @@
+const readWrite = {
+  find: { enabled: true, policy: "" },
+  findOne: { enabled: true, policy: "" },
+  create: { enabled: true, policy: "" },
+  update: { enabled: true, policy: "" },
+  delete: { enabled: true, policy: "" },
+};
+
+const readOnly = {
+  find: { enabled: true, policy: "" },
+  findOne: { enabled: true, policy: "" },
+};
+
+
 const authenticatedRolePermissions = {
   name: "Authenticated",
   description: "Default role given to authenticated user.",
   permissions: {
     "api::idea-card": {
       controllers: {
-        "idea-card": {
-          find: { enabled: true, policy: "" },
-          findOne: { enabled: true, policy: "" },
-          create: { enabled: true, policy: "" },
-          update: { enabled: true, policy: "" },
-          delete: { enabled: true, policy: "" },
-        },
+        "idea-card": readWrite,
       },
     },
     "api::comment": {
       controllers: {
-        comment: {
-          find: { enabled: true, policy: "" },
-          findOne: { enabled: true, policy: "" },
-          create: { enabled: true, policy: "" },
-          update: { enabled: true, policy: "" },
-          delete: { enabled: true, policy: "" },
-        },
+        comment: readWrite,
       },
     },
     "api::interest": {
       controllers: {
-        interest: {
-          find: { enabled: true, policy: "" },
-          findOne: { enabled: true, policy: "" },
-          create: { enabled: true, policy: "" },
-          update: { enabled: true, policy: "" },
-          delete: { enabled: true, policy: "" },
-        },
+        interest: readWrite,
+      },
+    },
+    "api::project": {
+      controllers: {
+        project: readOnly,
       },
     },
     "plugin::users-permissions": {

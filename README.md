@@ -18,6 +18,9 @@ Once the docker container is running, the strapi server will auto-reload with yo
 
 Also, if the container goes down for some reason, you do not need to rebuild it again. Run `make run-docker` and it will start up again.
 
+# Testing
+To run tests, please run `npm test` or `npm run test:coverage` to include coverage report. With Jest plugin installed in VSCode you can run individual suites and tests in Test Explorer.
+
 # Contributing
 Follow the [contributing guide](./CONTRIBUTING.md)
 
@@ -30,7 +33,3 @@ Once you are ready to create a new release, create a PR to merge main branch to 
 # Update Strapi Version
 Go to https://github.com/strapi/strapi/releases to find the latest version, then update all `@strapi` packages in
 `package.json` to this version and run `npm install`.
-
-# Integration Test
-To run the integration test envrionment, set `NODE_ENV=test` in `.env` file. The login email is `integration-test@devlaunchers.org`
-password is `wQ46^BEsVbf9VD&D3ddSPCUP`. Data is stored in `integration-test/data.db`.

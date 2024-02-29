@@ -11,3 +11,5 @@ build/*
 .strapi-updater.json
 
 documentation/
+
+coverage/

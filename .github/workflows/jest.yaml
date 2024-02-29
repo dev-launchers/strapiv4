@@ -1,0 +1,21 @@
+name: 'jest-test-report'
+on:
+  pull_request:
+    branches:
+      - becevka/jest-tests
+    workflow_dispatch:
+jobs:
+    test-report:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                node-version: '18.x'
+            - name: Run test and coverage reports
+              uses: ArtiomTr/jest-coverage-report-action@v2
+              env:
+                FRONTEND_URL: "not_used"
+              with:
+                base-coverage-file: 'report.json'

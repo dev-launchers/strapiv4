@@ -31,21 +31,34 @@ const stopStrapi = async (instance) => {
   await instance.stop();
 };
 
+const createUserWithAuthenticatedRole = async (roleId) => {
+  config.user.role = roleId;
+  const email = config.admin.email;
+  const existing = await strapi.plugins[
+    "users-permissions"
+  ].services.user.fetchAll({ where: { email } });
+  let result;
+  if (existing.length > 0) {
+    result = await strapi.plugins["users-permissions"].services.user.edit(
+      existing[0].id,
+      config.user
+    );
+  } else {
+    result = await strapi.plugins["users-permissions"].services.user.add(
+      config.user
+    );
+  }
+  return result.id;
+};
+
 const createAdminUser = async () => {
   const email = config.admin.email;
-  const user = {
-    email: config.admin.email,
-    password: config.admin.password,
-    firstname: "Admin",
-    lastname: "User",
-    isActive: true,
-    roles: [1],
-  };
-  const admin = await strapi.admin.services.user.findOneByEmail(email);
-  if (admin) {
-    await strapi.admin.services.user.updateById(admin.id, user);
+  config.admin.roles = [1];
+  const existing = await strapi.admin.services.user.findOneByEmail(email);
+  if (existing) {
+    await strapi.admin.services.user.updateById(existing.id, config.admin);
   } else {
-    await strapi.admin.services.user.create(user);
+    await strapi.admin.services.user.create(config.admin);
   }
 };
 
@@ -59,6 +72,7 @@ const grantPrivileges = async (name, permissions) => {
     .plugin("users-permissions")
     .service("role")
     .updateRole(roleId, permissions);
+  return roleId;
 };
 
 const setupGoogleAuthProvider = async () => {
@@ -92,40 +106,61 @@ const setupGoogleAuthProvider = async () => {
 
 const createInterests = async () => {
   const service = strapi.service("api::interest.interest");
-  const interest = await service.findOne({});
-  if (interest) {
+  let existing = await service.findOne({});
+  if (existing) {
     return;
   }
   for (const interest of config.interests) {
-    await service.create({ data: { interest } });
+    existing = await service.create({ data: { interest } });
   }
+  return existing.id;
 };
 
-const createProject = async () => {
+const createProject = async (interestId, userId) => {
   const service = strapi.service("api::project.project");
-  const project = await service.findOne({});
-  if (project) {
+  const existing = await service.findOne({});
+  if (existing) {
     return;
   }
+  config.project.interests = [interestId];
+  config.project.team = {
+    members: [
+      {
+        member: userId,
+        role: "Developer",
+      },
+    ],
+    leaders: [
+      {
+        leader: userId,
+        role: "Project Manager",
+      },
+    ],
+  };
   await service.create({ data: config.project });
 };
 
-const run = async () => {
+const run = async (clean) => {
   setupEnv(async () => {
     console.log("Environment setup");
     const instance = await setupStrapi();
     console.log("Strapi server initialized");
     await createAdminUser();
     console.log("Admin user created");
-    await grantPrivileges("Authenticated", authenticatedRolePermissions);
+    const roleId = await grantPrivileges(
+      "Authenticated",
+      authenticatedRolePermissions
+    );
     console.log("Authenticated role privileges granted");
     await grantPrivileges("Public", publicRolePermissions);
     console.log("Public role privileges granted");
+    const userId = await createUserWithAuthenticatedRole(roleId);
+    console.log("User with authenticated role created");
     await setupGoogleAuthProvider();
     console.log("Google auth provider setup");
-    await createInterests();
+    const interestId = await createInterests();
     console.log("Interests created");
-    await createProject();
+    await createProject(interestId, userId);
     console.log("Project created");
     console.log("Stopping Strapi server...");
     console.log("Please run 'npm run develop' to start the server.");

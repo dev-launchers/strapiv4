@@ -9,11 +9,22 @@ module.exports = {
     URL: "http://localhost:1337",
     STRAPI_LOG_LEVEL: "debug",
     NODE_ENV: "development",
-    FRONTEND_URL: "not_used",
+    FRONTEND_URL: "http://localhost:3000",
   },
   admin: {
     email: "local-admin@devlaunchers.org",
     password: "W&x5ZzOMtBCVt1YAUiuSzt~5",
+    firstname: "Admin",
+    lastname: "User",
+    isActive: true,
+  },
+  user: {
+    username: "tester",
+    email: "tester@test.com",
+    provider: "local",
+    password: "k2OSo9Td",
+    confirmed: true,
+    blocked: null,
   },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {

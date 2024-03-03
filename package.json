@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "init": "npm install && strapi build && node ./init/setup.js",
+    "init": "npm ci && strapi build && node ./init/setup.js",
+    "init:db": "node ./init/cleanup.js && node ./init/setup.js",
+    "init:permissions": "node ./init/set-permissions.js",
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",

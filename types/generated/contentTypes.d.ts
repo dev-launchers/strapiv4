@@ -666,6 +666,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::idea-card.idea-card'
     >;
+    comments: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::comment.comment'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -830,7 +835,7 @@ export interface ApiCommentComment extends Schema.CollectionType {
     author: Attribute.String;
     users_permissions_user: Attribute.Relation<
       'api::comment.comment',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;

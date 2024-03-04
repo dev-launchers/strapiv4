@@ -7,4 +7,4 @@ bases:
 images:
 - name: devlaunchers/strapi
   newName: devlaunchers/strapi
-  newTag: 56a678c-202402251104 # {"$imagepolicy": "strapiv4-staging:strapi:tag"}
+  newTag: a8f28b1-202403040424 # {"$imagepolicy": "strapiv4-staging:strapi:tag"}

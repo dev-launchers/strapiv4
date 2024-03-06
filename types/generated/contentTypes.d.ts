@@ -649,9 +649,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     googleId: Attribute.String;
     discordUsername: Attribute.String;
     userId: Attribute.UID;
-    birthday: Attribute.Date;
-    country: Attribute.String;
-    zipCode: Attribute.Integer;
+    birthday: Attribute.Date  & Attribute.Private;;
+    country: Attribute.String  & Attribute.Private;;
+    zipCode: Attribute.Integer  & Attribute.Private;;
     hasAcceptedTermsOfService: Attribute.Boolean;
     hasSubscribedEmails: Attribute.Boolean;
     discord_avatar: Attribute.String;
@@ -1174,7 +1174,6 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
   };
 }
 
->>>>>>> main
 export interface ApiOpportunityOpportunity extends Schema.CollectionType {
   collectionName: 'opportunities';
   info: {

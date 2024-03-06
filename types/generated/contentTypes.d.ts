@@ -649,9 +649,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     googleId: Attribute.String;
     discordUsername: Attribute.String;
     userId: Attribute.UID;
-    birthday: Attribute.Date  & Attribute.Private;
-    country: Attribute.String  & Attribute.Private;
-    zipCode: Attribute.Integer  & Attribute.Private;
+    birthday: Attribute.Date & Attribute.Private;
+    country: Attribute.String & Attribute.Private;
+    zipCode: Attribute.Integer & Attribute.Private;
     hasAcceptedTermsOfService: Attribute.Boolean;
     hasSubscribedEmails: Attribute.Boolean;
     discord_avatar: Attribute.String;

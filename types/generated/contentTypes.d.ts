@@ -856,6 +856,39 @@ export interface ApiCommentComment extends Schema.CollectionType {
   };
 }
 
+export interface ApiDlTalCommunityDlTalCommunity extends Schema.CollectionType {
+  collectionName: 'dl_tal_communities';
+  info: {
+    singularName: 'dl-tal-community';
+    pluralName: 'dl-tal-communities';
+    displayName: 'DLTalCommunity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    emailID: Attribute.Email;
+    skills: Attribute.String;
+    roles: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::dl-tal-community.dl-tal-community',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::dl-tal-community.dl-tal-community',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiGithubRepoGithubRepo extends Schema.CollectionType {
   collectionName: 'github_repos';
   info: {
@@ -1106,6 +1139,42 @@ export interface ApiNewsletterNewsletter extends Schema.CollectionType {
   };
 }
 
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Title: Attribute.String;
+    Content: Attribute.String;
+    Read: Attribute.Boolean;
+    TimeCreated: Attribute.DateTime;
+    Collection: Attribute.Enumeration<['IdeaCard', 'Comment']>;
+    ObjectID: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+>>>>>>> main
 export interface ApiOpportunityOpportunity extends Schema.CollectionType {
   collectionName: 'opportunities';
   info: {
@@ -1492,12 +1561,14 @@ declare module '@strapi/types' {
       'api::applicant.applicant': ApiApplicantApplicant;
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
+      'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
       'api::point.point': ApiPointPoint;
       'api::profile.profile': ApiProfileProfile;

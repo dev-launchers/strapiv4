@@ -25,7 +25,11 @@
       "type": "datetime"
     },
     "entityType": {
-      "type": "string"
+      "type": "enumeration",
+      "enum": [
+        "IdeaCard",
+        "Comment"
+      ]
     },
     "entityId": {
       "type": "integer"

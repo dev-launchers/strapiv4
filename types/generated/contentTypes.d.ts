@@ -1139,7 +1139,7 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
     Content: Attribute.Text;
     Read: Attribute.Boolean;
     TimeCreated: Attribute.DateTime;
-    entityType: Attribute.String;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
     entityId: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cfef57e3-4b1b-405e-a386-bad8ba1d004a",
+		"_postman_id": "46c7907f-d93d-40ef-be72-8a090667e3a5",
 		"name": "strapiv4-integration-test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32697271"
@@ -74,8 +74,6 @@
 			},
 			"response": []
 		},
-
-
 		{
 			"name": "auth",
 			"request": {
@@ -103,7 +101,6 @@
 			},
 			"response": []
 		},
-
 		{
 			"name": "get user",
 			"event": [
@@ -183,7 +180,7 @@
 							"    }\r",
 							"}, function (err, response) {\r",
 							"    pm.expect(err).to.be.null;\r",
-							"    pm.expect(response.code).to.be.oneOf([200, 201]);\r",
+							"    pm.expect(response.code).to.equal(200);\r",
 							"    // Get the ideaCardId\r",
 							"    let ideaCardId = response.json().data.id;\r",
 							"\r",
@@ -227,7 +224,7 @@
 							"            }\r",
 							"        }, function (err, response) {\r",
 							"            pm.expect(err).to.be.null;\r",
-							"            pm.expect(response.code).to.be.oneOf([200, 201]);\r",
+							"            pm.expect(response.code).to.equal(200);\r",
 							"            // Get commentId\r",
 							"            let commentId = response.json().data.id;\r",
 							"\r",
@@ -276,10 +273,7 @@
 			},
 			"response": []
 		}
-
 	],
-
-
 	"event": [
 		{
 			"listen": "prerequest",
@@ -310,4 +304,3 @@
 		}
 	]
 }
-

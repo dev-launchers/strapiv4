@@ -29,7 +29,7 @@ module.exports = {
       async afterCreate({ result }) {
         const { projects } = result
         //ensure the new user is a member of a team before the team-membership entry is created
-        if (projects){
+        if (projects) {
           for (const project of projects) {
             await strapi.service("api::team-membership.team-membership").create({
               data: {
@@ -43,11 +43,11 @@ module.exports = {
       },
 
       async beforeUpdate({ params }) {
-        const joinProject = params.data.projects.connect;
-        const leftProject = params.data.projects.disconnect;
+        const joinProject = params?.data?.projects?.connect;
+        const leftProject = params?.data?.projects?.disconnect;
         const userId = params.data.id;
         // Find and update the leaveDate field in team-membership collection if a user leaves a project
-        if (leftProject.length > 0) {
+        if (leftProject?.length > 0) {
           for (const projectObj of leftProject) {
             const projectMembership = await strapi.query("api::team-membership.team-membership").findOne({
               where: {
@@ -67,7 +67,7 @@ module.exports = {
           }
         }
         // Create new team-membership entry if a user joins a new project
-        if (joinProject.length > 0) {
+        if (joinProject?.length > 0) {
           for (const projectObj of joinProject) {
             await strapi.service("api::team-membership.team-membership").create({
               data: {

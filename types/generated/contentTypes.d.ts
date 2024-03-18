@@ -833,7 +833,7 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'api::idea-card.idea-card'
     >;
     author: Attribute.String;
-    users_permissions_user: Attribute.Relation<
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'

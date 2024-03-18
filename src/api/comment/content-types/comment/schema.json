@@ -24,7 +24,7 @@
     "author": {
       "type": "string"
     },
-    "users_permissions_user": {
+    "authorId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",

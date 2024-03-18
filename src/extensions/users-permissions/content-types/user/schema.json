@@ -165,7 +165,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::comment.comment",
-      "mappedBy": "users_permissions_user"
+      "mappedBy": "authorId"
     }
   }
 }

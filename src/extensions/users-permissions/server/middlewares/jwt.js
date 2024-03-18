@@ -5,7 +5,7 @@ module.exports = (options, { strapi }) => {
       then set the jwt in the auth header
     */
     const token = ctx.cookies.get('token');
-    if (token) {
+    if (token && ctx.url.startsWith('/api')) {
       ctx.request.header.authorization = 'Bearer ' + token;
     }
     // Execute the action.

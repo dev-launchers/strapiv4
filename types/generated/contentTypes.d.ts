@@ -649,9 +649,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     googleId: Attribute.String;
     discordUsername: Attribute.String;
     userId: Attribute.UID;
-    birthday: Attribute.Date;
-    country: Attribute.String;
-    zipCode: Attribute.Integer;
+    birthday: Attribute.Date & Attribute.Private;
+    country: Attribute.String & Attribute.Private;
+    zipCode: Attribute.Integer & Attribute.Private;
     hasAcceptedTermsOfService: Attribute.Boolean;
     hasSubscribedEmails: Attribute.Boolean;
     discord_avatar: Attribute.String;
@@ -849,6 +849,39 @@ export interface ApiCommentComment extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDlTalCommunityDlTalCommunity extends Schema.CollectionType {
+  collectionName: 'dl_tal_communities';
+  info: {
+    singularName: 'dl-tal-community';
+    pluralName: 'dl-tal-communities';
+    displayName: 'DLTalCommunity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    emailID: Attribute.Email;
+    skills: Attribute.String;
+    roles: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::dl-tal-community.dl-tal-community',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::dl-tal-community.dl-tal-community',
       'oneToOne',
       'admin::user'
     > &
@@ -1099,6 +1132,41 @@ export interface ApiNewsletterNewsletter extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::newsletter.newsletter',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Title: Attribute.String;
+    Content: Attribute.String;
+    Read: Attribute.Boolean;
+    TimeCreated: Attribute.DateTime;
+    Collection: Attribute.Enumeration<['IdeaCard', 'Comment']>;
+    ObjectID: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
       'oneToOne',
       'admin::user'
     > &
@@ -1492,12 +1560,14 @@ declare module '@strapi/types' {
       'api::applicant.applicant': ApiApplicantApplicant;
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
+      'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
       'api::point.point': ApiPointPoint;
       'api::profile.profile': ApiProfileProfile;

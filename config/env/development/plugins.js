@@ -1,9 +1,13 @@
-module.exports = ({env}) => ({
-    upload: {
-        providerOptions: {
-            localServer: {
-            }
-        }
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: "local",
+      providerOptions: {
+        localServer: {
+          maxage: 300000,
+        },
+      },
     },
-    sentry: {},
+  },
+  sentry: {},
 });

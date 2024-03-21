@@ -640,11 +640,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::profile.profile'
     >;
-    time_capsules: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::time-capsule.time-capsule'
-    >;
     discordId: Attribute.String;
     googleId: Attribute.String;
     discordUsername: Attribute.String;

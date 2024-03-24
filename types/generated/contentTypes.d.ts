@@ -640,18 +640,13 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::profile.profile'
     >;
-    time_capsules: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::time-capsule.time-capsule'
-    >;
-    discordId: Attribute.String;
-    googleId: Attribute.String;
+    discordId: Attribute.String & Attribute.Private;
+    googleId: Attribute.String & Attribute.Private;
     discordUsername: Attribute.String;
     userId: Attribute.UID;
-    birthday: Attribute.Date;
-    country: Attribute.String;
-    zipCode: Attribute.Integer;
+    birthday: Attribute.Date & Attribute.Private;
+    country: Attribute.String & Attribute.Private;
+    zipCode: Attribute.Integer & Attribute.Private;
     hasAcceptedTermsOfService: Attribute.Boolean;
     hasSubscribedEmails: Attribute.Boolean;
     discord_avatar: Attribute.String;
@@ -1128,6 +1123,41 @@ export interface ApiNewsletterNewsletter extends Schema.CollectionType {
   };
 }
 
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Title: Attribute.String;
+    Content: Attribute.Text;
+    Read: Attribute.Boolean;
+    TimeCreated: Attribute.DateTime;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
+    entityId: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiOpportunityOpportunity extends Schema.CollectionType {
   collectionName: 'opportunities';
   info: {
@@ -1452,49 +1482,6 @@ export interface ApiTeamMembershipTeamMembership extends Schema.CollectionType {
   };
 }
 
-export interface ApiTimeCapsuleTimeCapsule extends Schema.CollectionType {
-  collectionName: 'time_capsules';
-  info: {
-    singularName: 'time-capsule';
-    pluralName: 'time-capsules';
-    displayName: 'TimeCapsule';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    generateDayInformation: Attribute.Text;
-    acquiredKnowledge: Attribute.Text;
-    sessionRating: Attribute.Text;
-    gaveHelp: Attribute.Text;
-    volunteerHours: Attribute.Float;
-    receivedHelp: Attribute.Text;
-    pairUpQuestion: Attribute.Text;
-    extraInformation: Attribute.Text;
-    user: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::time-capsule.time-capsule',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1521,6 +1508,7 @@ declare module '@strapi/types' {
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
       'api::point.point': ApiPointPoint;
       'api::profile.profile': ApiProfileProfile;
@@ -1528,7 +1516,6 @@ declare module '@strapi/types' {
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;
       'api::sendmail.sendmail': ApiSendmailSendmail;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
-      'api::time-capsule.time-capsule': ApiTimeCapsuleTimeCapsule;
     }
   }
 }

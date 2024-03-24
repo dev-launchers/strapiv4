@@ -74,8 +74,8 @@ module.exports = [
     config: {
       key: 'strapi::session',
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      secure: process.env.NODE_ENV === "development" ? false : true,
+      sameSite: process.env.NODE_ENV === "development" ? 'Lax' : 'None',
     },
   },
   'strapi::poweredBy',

@@ -16,7 +16,7 @@
       "type": "string"
     },
     "Content": {
-      "type": "string"
+      "type": "text"
     },
     "Read": {
       "type": "boolean"
@@ -24,14 +24,14 @@
     "TimeCreated": {
       "type": "datetime"
     },
-    "Collection": {
+    "entityType": {
       "type": "enumeration",
       "enum": [
         "IdeaCard",
         "Comment"
       ]
     },
-    "ObjectID": {
+    "entityId": {
       "type": "integer"
     }
   }

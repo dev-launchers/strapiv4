@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7bf7e66a-8b24-4bbb-bd79-2faf6ecc6c1d",
+		"_postman_id": "46c7907f-d93d-40ef-be72-8a090667e3a5",
 		"name": "strapiv4-integration-test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19614747"
+		"_exporter_id": "32697271"
 	},
 	"item": [
 		{
@@ -113,13 +113,6 @@
 							"  pm.expect(user.username).to.eql(\"integration-test\");\r",
 							"  pm.expect(user.email).to.eql(\"integration-test@devlaunchers.org\");\r",
 							"  pm.expect(user.discordUsername).to.eql(\"integration-test\");\r",
-							"  pm.expect(user.discordId).to.eql(\"integration-test#3025\");\r",
-							"  pm.expect(user.googleId).to.eql(\"integration-test\");\r",
-							"  pm.expect(user.userId).to.eql(\"5169825f-5cbc-450a-9443-561b2a42059a\");\r",
-							"  pm.expect(user.birthday).to.eql(\"1996-08-15\");\r",
-							"  pm.expect(user.country).to.eql(\"U.S.\");\r",
-							"  pm.expect(user.zipCode).to.eql(77478);\r",
-							"\r",
 							"  pm.expect(user.projects.length).to.equal(1);\r",
 							"  const project = user.projects[0];\r",
 							"  pm.expect(project.slug).to.equal(\"dev-recruiting\");\r",
@@ -150,6 +143,131 @@
 							"key": "populate",
 							"value": "*"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Create a new IdeaCard\r",
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:1337/api/idea-cards',\r",
+							"    method: 'POST',\r",
+							"    header:'Content-Type:application/json',\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw : JSON.stringify({\r",
+							"            data: {\r",
+							"                \"ideaName\": \"integration-test\",\r",
+							"                \"tagline\": \"test\",\r",
+							"                \"description\": \"ideaDescription\",\r",
+							"                \"targetAudience\": \"test\",\r",
+							"                \"author\": \"integration-test\",\r",
+							"                \"features\": \"testing\",\r",
+							"                \"experience\": \"tester\",\r",
+							"                \"extraInfo\": \"tesst\",\r",
+							"                \"status\": \"submitted\",\r",
+							"                \"involveLevel\": \"none\",\r",
+							"                \"ideaOwner\": \"integration-test\"\r",
+							"            }\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, response) {\r",
+							"    pm.expect(err).to.be.null;\r",
+							"    pm.expect(response.code).to.equal(200);\r",
+							"    // Get the ideaCardId\r",
+							"    let ideaCardId = response.json().data.id;\r",
+							"\r",
+							"    // GET notifications\r",
+							"    pm.sendRequest({\r",
+							"        url: \"http://localhost:1337/api/notifications\",\r",
+							"        method: \"GET\",\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"    }, function (err, response) {\r",
+							"        pm.expect(err).to.be.null;\r",
+							"        pm.expect(response.code).to.equal(200);\r",
+							"\r",
+							"        let notifications = response.json().data;\r",
+							"            \r",
+							"        // Find the notification with the entityType == \"IdeaCard\" and entityId == IdeaCardId\r",
+							"        let relatedNotification = notifications.find(notification => \r",
+							"        notification.attributes.entityType === \"IdeaCard\" && \r",
+							"        notification.attributes.entityId === ideaCardId\r",
+							"        );\r",
+							"        pm.expect(relatedNotification).to.not.be.undefined;\r",
+							"\r",
+							"\r",
+							"        // Create a comment\r",
+							"        pm.sendRequest({\r",
+							"            url: 'http://localhost:1337/api/comments',\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"                'Content-Type': 'application/json',\r",
+							"            },\r",
+							"            body: {\r",
+							"                mode: 'raw',\r",
+							"                raw: JSON.stringify({\r",
+							"                    data: {\r",
+							"                        \"text\": \"Great idea!\",\r",
+							"                        \"idea_card\": ideaCardId,\r",
+							"                        \"author\": \"integration-test\"\r",
+							"                    }\r",
+							"                })\r",
+							"            }\r",
+							"        }, function (err, response) {\r",
+							"            pm.expect(err).to.be.null;\r",
+							"            pm.expect(response.code).to.equal(200);\r",
+							"            // Get commentId\r",
+							"            let commentId = response.json().data.id;\r",
+							"\r",
+							"            // GET notifications for comment\r",
+							"            pm.sendRequest({\r",
+							"                url: \"http://localhost:1337/api/notifications\",\r",
+							"                method: \"GET\",\r",
+							"                headers: {\r",
+							"                    'Content-Type': 'application/json'\r",
+							"                },\r",
+							"            }, function (err, response) {\r",
+							"                pm.expect(err).to.be.null;\r",
+							"                pm.expect(response.code).to.equal(200);\r",
+							"\r",
+							"                notifications = response.json().data;\r",
+							"                //Find the notification with the entityType == \"Comment\" and entityId == commentId\r",
+							"                let relatedNotificationForComment = notifications.find(notification => \r",
+							"                    notification.attributes.entityType === \"Comment\" && \r",
+							"                    parseInt(notification.attributes.entityId, 10) === commentId\r",
+							"                );\r",
+							"\r",
+							"                pm.expect(relatedNotificationForComment).to.not.be.undefined;\r",
+							"            });\r",
+							"        });\r",
+							"\r",
+							"    });\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/notifications",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"notifications"
 					]
 				}
 			},

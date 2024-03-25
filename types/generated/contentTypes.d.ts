@@ -640,8 +640,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::profile.profile'
     >;
-    discordId: Attribute.String;
-    googleId: Attribute.String;
+    discordId: Attribute.String & Attribute.Private;
+    googleId: Attribute.String & Attribute.Private;
     discordUsername: Attribute.String;
     userId: Attribute.UID;
     birthday: Attribute.Date & Attribute.Private;

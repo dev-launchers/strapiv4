@@ -159,6 +159,12 @@
       "relation": "oneToMany",
       "target": "api::idea-card.idea-card",
       "mappedBy": "ideaOwner"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "authorId"
     }
   }
 }

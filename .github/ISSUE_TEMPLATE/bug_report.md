@@ -21,7 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+Screenshots/videos are a must to help explain your problem. Otherwise we may not be able to figure out the exact issue you are having. 
 
 **Environment**
  Where does this issue appear, operating system, browser environment details.

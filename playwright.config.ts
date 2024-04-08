@@ -12,6 +12,7 @@ export default defineConfig({
     timeout: 120 * 1000,
     env: {
       NODE_ENV: 'test',
+      FRONTEND_URL: "not_used"
     },
   },
   use: {

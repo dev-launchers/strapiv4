@@ -3,7 +3,7 @@ module.exports = {
   async afterCreate(event) {
     const { author: commentAuthor, text: commentText, createdAt: timeCreated } = event.result;
     const commentId = event.result.id
-    const comment = await strapi.entityService.findOne("api::comment.comment", id, {
+    const comment = await strapi.entityService.findOne("api::comment.comment", commentId, {
       populate: ["idea_card"],
     })
     

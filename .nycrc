@@ -1,5 +1,6 @@
 {
   "include": ["src/api/**/*.js", "src/index.js"],
+  "check-coverage": true,
   "reporter": ["text", "json"],
   "watermarks": {
     "lines": [50, 95],

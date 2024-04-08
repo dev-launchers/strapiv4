@@ -22,5 +22,5 @@ jobs:
       uses: ArtiomTr/jest-coverage-report-action@v2
       with:
         skip-step: 'all'
-        coverage-file: './coverage/coverage-final.json'
-        base-coverage-file: './coverage/coverage-final.json'
+        coverage-file: 'coverage/coverage-final.json'
+        base-coverage-file: 'report.json'

@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   globalSetup: require.resolve('./tests/global-setup'),
-  reporter: process.env.CI ? 'github' : 'list',
+  reporter: process.env.CI ? [['github'], ['html']] : 'list',
   webServer: {
     command: 'npm run init:test',
     url: 'http://localhost:1337',
@@ -12,7 +12,8 @@ export default defineConfig({
     timeout: 120 * 1000,
     env: {
       NODE_ENV: 'test',
-      FRONTEND_URL: "not_used"
+      FRONTEND_URL: 'not_used',
+      PLAYWRIGHT: 'true'
     },
   },
   use: {

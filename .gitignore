@@ -6,4 +6,5 @@ build/*
 .strapi-updater.json
 documentation/
 test-results/
+playwright-report/
 public/uploads/*

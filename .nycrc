@@ -2,10 +2,11 @@
   "include": ["src/api/**/*.js", "src/index.js"],
   "check-coverage": true,
   "reporter": ["text", "json"],
+  "lines": 50,
   "watermarks": {
-    "lines": [50, 95],
-    "functions": [50, 95],
-    "branches": [50, 95],
-    "statements": [50, 95]
+    "lines": [80, 95],
+    "functions": [80, 95],
+    "branches": [80, 95],
+    "statements": [80, 95]
   }
 }

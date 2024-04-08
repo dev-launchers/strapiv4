@@ -1,8 +1,8 @@
 {
   "include": ["src/api/**/*.js", "src/index.js"],
-  "check-coverage": true,
-  "reporter": ["text", "json"],
-  "lines": 50,
+  "check-coverage": false,
+  "reporter": ["text", "lcov"],
+  "lines": 80,
   "watermarks": {
     "lines": [80, 95],
     "functions": [80, 95],

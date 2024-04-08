@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   globalSetup: require.resolve('./tests/global-setup'),
-  reporter: process.env.CI ? [['github'], ['html']] : 'list',
+  reporter: process.env.CI ? [['github'], ['dot']] : 'list',
   webServer: {
     command: 'npm run init:test',
     url: 'http://localhost:1337',

@@ -1,5 +1,6 @@
 node_modules/*
 .cache/*
+.nyc_output/
 .env
 .tmp/*
 build/*
@@ -7,4 +8,5 @@ build/*
 documentation/
 test-results/
 playwright-report/
+coverage/
 public/uploads/*

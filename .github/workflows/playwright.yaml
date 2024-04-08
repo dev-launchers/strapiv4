@@ -23,3 +23,4 @@ jobs:
       with:
         skip-step: 'all'
         coverage-file: './coverage/coverage-final.json'
+        base-coverage-file: './coverage/coverage-final.json'

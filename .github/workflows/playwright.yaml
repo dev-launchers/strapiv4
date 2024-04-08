@@ -14,11 +14,13 @@ jobs:
         node-version: 20
     - name: Install dependencies
       run: npm ci
-    - name: Run tests and post coverage report
-      uses: ArtiomTr/jest-coverage-report-action@v2
+    - name: Run Playwright tests
+      run: npm run test:coverage
       env:
         CI: true
+    - name: Post coverage report
+      uses: ArtiomTr/jest-coverage-report-action@v2
       with:
-        skip-step: 'install'
-        test-script: 'npm run test:coverage'
-        base-coverage-file: 'report.json'
+        skip-step: 'all'
+        coverage-file: './coverage/coverage-final.json'
+        base-coverage-file: './coverage/coverage-final.json'

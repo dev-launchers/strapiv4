@@ -9,7 +9,7 @@ module.exports = {
     
     await strapi.entityService.create('api::notification.notification', {
       data: {
-        Title: commentAuthor + " commented on " + comment?.idea_card?.ideaName,
+        Title: commentAuthor + " commented on " + event.result.idea_card?.ideaName,
         Content: commentText,
         entityType: "Comment",
         entityId: commentId,

@@ -5,6 +5,7 @@ const _ = require("lodash");
 
 const authenticatedRolePermissions = require("./permissions/authenticated");
 const publicRolePermissions = require("./permissions/public");
+const { argv } = require("process");
 
 const setupEnv = (cb) => {
   fs.writeFile(".env", convertToEnv(config.env), cb);
@@ -104,7 +105,7 @@ const setupGoogleAuthProvider = async () => {
   await pluginStore.set({ key: "grant", value: currentGrantConfig });
 };
 
-const createInterests = async () => {
+const createInterests = async (userId) => {
   const service = strapi.service("api::interest.interest");
   let existing = await service.findOne({});
   if (existing) {
@@ -113,12 +114,15 @@ const createInterests = async () => {
   for (const interest of config.interests) {
     existing = await service.create({ data: { interest } });
   }
+  await strapi.plugins["users-permissions"].services.user.edit(userId, {
+    interests: [existing.id],
+  });
   return existing.id;
 };
 
 const createProject = async (interestId, userId) => {
   const service = strapi.service("api::project.project");
-  const existing = await service.findOne({});
+  let existing = await service.findOne({});
   if (existing) {
     return;
   }
@@ -137,11 +141,13 @@ const createProject = async (interestId, userId) => {
       },
     ],
   };
-  await service.create({ data: config.project });
+  existing = await service.create({ data: config.project });
+  await strapi.plugins["users-permissions"].services.user.edit(userId, {
+    projects: [existing.id],
+  });
 };
 
-const run = async (clean) => {
-  setupEnv(async () => {
+const run = async () => {
     console.log("Environment setup");
     const instance = await setupStrapi();
     console.log("Strapi server initialized");
@@ -158,14 +164,15 @@ const run = async (clean) => {
     console.log("User with authenticated role created");
     await setupGoogleAuthProvider();
     console.log("Google auth provider setup");
-    const interestId = await createInterests();
+    const interestId = await createInterests(userId);
     console.log("Interests created");
     await createProject(interestId, userId);
     console.log("Project created");
-    console.log("Stopping Strapi server...");
-    console.log("Please run 'npm run develop' to start the server.");
-    await stopStrapi(instance);
-  });
+    if (!argv.includes("--no-stop")) {
+      console.log("Stopping Strapi server...");
+      console.log("Please run 'npm run develop' to start the server.");
+      await stopStrapi(instance);
+    }
 };
 
 run();

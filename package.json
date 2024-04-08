@@ -6,11 +6,13 @@
   "scripts": {
     "init": "npm ci && strapi build && node ./init/setup.js",
     "init:db": "node ./init/cleanup.js && node ./init/setup.js",
+    "init:test": "npm run init:db & node -e \"setTimeout(()=>{}, 20000)\" && npm run develop",
     "init:permissions": "node ./init/set-permissions.js",
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "test": "playwright test"
   },
   "dependencies": {
     "@strapi/plugin-documentation": "4.15.0",
@@ -59,6 +61,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.9"
+    "@babel/eslint-parser": "^7.22.9",
+    "@playwright/test": "^1.42.1",
+    "nyc": "^15.1.0"
   }
 }

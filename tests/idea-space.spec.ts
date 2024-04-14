@@ -30,6 +30,8 @@ test.describe('/api/idea-cards', () => {
 
         idea = await api(request).getData(`/api/idea-cards/${ideaId}`);
         expect(idea.attributes.ideaName).toBe("Testing");
+        expect(idea.attributes.author).toBeUndefined();
+        expect(idea.attributes.ideaOwner).toBeUndefined();
     });
 });
 

@@ -1,15 +1,12 @@
 module.exports = {
 
   async afterCreate(event) {
-    const { author: commentAuthor, text: commentText, createdAt: timeCreated } = event.result;
+    const { idea_card: idea, author: commentAuthor, text: commentText, createdAt: timeCreated } = event.result;
     const commentId = event.result.id
-    const comment = await strapi.entityService.findOne("api::comment.comment", commentId, {
-      populate: ["idea_card"],
-    })
     
     await strapi.entityService.create('api::notification.notification', {
       data: {
-        Title: commentAuthor + " commented on " + comment?.idea_card?.ideaName,
+        Title: commentAuthor + " commented on " + idea?.ideaName,
         Content: commentText,
         entityType: "Comment",
         entityId: commentId,

@@ -33,3 +33,5 @@ Go to https://github.com/strapi/strapi/releases to find the latest version, then
 # Testing
 To run tests, please run `npm test` or `npm run test:coverage` to include coverage report. 
 With Playwright plugin installed in VSCode you can run individual suites and tests in Test Explorer.
+We use Istanbul (nyc) for code coverage, using text, cobertura and lcov report formats. Istnabul is configured using `.nycrc` file.
+Code Coverage plugin can be used to review non-covered code based on generated `coverage/lcov.info`.

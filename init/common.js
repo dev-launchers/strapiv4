@@ -11,6 +11,7 @@ const convertToEnv = (object) => {
   let envFile = "";
   for (const key of Object.keys(object)) {
     envFile += `${key}=${object[key]}\n`;
+    // Prevent overriding the NODE_ENV to `development` while running tests.
     if (key === 'NODE_ENV' && process.env.NODE_ENV === 'test') {
         continue;
     }
@@ -38,8 +39,9 @@ const cleanUpStrapi = async () => {
 
   await strapi.destroy();
 
-  if (dbSettings && dbSettings.connection && dbSettings.connection.filename) {
+  if (dbSettings?.connection?.filename) {
     const tmpDbFile = dbSettings.connection.filename;
+    // Remove the test database file if it exists
     if (fs.existsSync(tmpDbFile)) {
       fs.unlinkSync(tmpDbFile);
     }

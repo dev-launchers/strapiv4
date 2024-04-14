@@ -25,6 +25,8 @@ jobs:
         filename: 'coverage/cobertura-coverage.xml'
         badge: true
         format: 'markdown'
+        hide_complexity: true
+        thresholds: '65 85'
         output: 'both'
 
     - name: Add Coverage PR Comment

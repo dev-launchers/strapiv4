@@ -6,7 +6,7 @@
   "scripts": {
     "init": "npm ci && strapi build && node ./init/setup.js",
     "init:db": "node ./init/cleanup.js && node ./init/setup.js",
-    "init:test": "npm run init:db & node -e \"setTimeout(()=>{}, 20000)\" && npm run develop",
+    "init:test": "npm run init:db & node -e \"setTimeout(()=>{}, 20000)\" && strapi develop --no-build",
     "init:permissions": "node ./init/set-permissions.js",
     "develop": "strapi develop",
     "start": "strapi start",

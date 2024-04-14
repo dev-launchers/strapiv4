@@ -1,8 +1,6 @@
 name: 'playwright-test-report'
 on:
   pull_request:
-    branches:
-      - becevka/playwright-tests
     workflow_dispatch:
 jobs:
   test-report:

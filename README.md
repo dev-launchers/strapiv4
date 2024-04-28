@@ -30,7 +30,8 @@ Once you are ready to create a new release, create a PR to merge main branch to 
 Go to https://github.com/strapi/strapi/releases to find the latest version, then update all `@strapi` packages in
 `package.json` to this version and run `npm install`.
 
-# Integration Test
-To run the integration test envrionment, set `NODE_ENV=test` in `.env` file. 
-The login email is `integration-test@devlaunchers.org` and password is `wQ46^BEsVbf9VD&D3ddSPCUP`. 
-Data is stored in `integration-test/data.db`.
+# Testing
+To run tests, please run `npm test` or `npm run test:coverage` to include coverage report. 
+With Playwright plugin installed in VSCode you can run individual suites and tests in Test Explorer.
+We use Istanbul (nyc) for code coverage, using text, cobertura and lcov report formats. Istnabul is configured using `.nycrc` file.
+Code Coverage plugin can be used to review non-covered code based on generated `coverage/lcov.info`.

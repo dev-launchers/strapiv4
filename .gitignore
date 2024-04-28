@@ -1,8 +1,12 @@
 node_modules/*
 .cache/*
+.nyc_output/
 .env
 .tmp/*
 build/*
 .strapi-updater.json
 documentation/
+test-results/
+playwright-report/
+coverage/
 public/uploads/*

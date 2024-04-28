@@ -1,0 +1,16 @@
+{
+  "include": ["src/api/**/*.js", "src/components/**/*.js", "src/extensions/**/*.js", "src/index.js"],
+  "check-coverage": false,
+  "reporter": ["text", "cobertura", "lcov"],
+  "skip-full": true,
+  "branches": 85,
+  "lines": 85,
+  "functions": 85,
+  "statements": 85,
+  "watermarks": {
+    "lines": [65, 85],
+    "functions": [65, 85],
+    "branches": [65, 85],
+    "statements": [65, 85]
+  }
+}

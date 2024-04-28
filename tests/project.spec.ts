@@ -30,6 +30,6 @@ test.describe('/api/project', () => {
         expect(leader.role).toBe("Project Manager");
         
         expect(project.interests.data.length).toBe(1);
-        expect(project.interests.data[0].attributes.interest).toBe(config.interests[config.interests.length - 1]);
+        expect(project.interests.data[0].attributes.interest).toBe(config.interests[0]);
     });
 });

@@ -14,7 +14,7 @@ test.describe('/api/users', () => {
         expect(project.slug).toBe("dev-recruiting");
         expect(user.interests.length).toBe(1);
         const interest = user.interests[0];
-        expect(interest.interest).toBe("Python");
+        expect(interest.interest).toBe(config.interests[0]);
     });
 
     test("should show user by id if allowed", async ({ request }) => {

@@ -158,15 +158,19 @@ const createInterests = async (userId) => {
   const service = strapi.service("api::interest.interest");
   let existing = await service.findOne({});
   if (existing) {
-    return;
+    return existing.id;
   }
+  let interestId = null;
   for (const interest of config.interests) {
     existing = await service.create({ data: { interest } });
+    if (!interestId) {
+      interestId = existing.id;
+    }
   }
   await strapi.plugins["users-permissions"].services.user.edit(userId, {
-    interests: [existing.id],
+    interests: [interestId],
   });
-  return existing.id;
+  return interestId;
 };
 
 const createProject = async (interestId, userId) => {

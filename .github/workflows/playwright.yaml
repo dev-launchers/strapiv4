@@ -1,7 +1,7 @@
 name: 'playwright-test-report'
 on:
   pull_request:
-    workflow_dispatch:
+  workflow_dispatch:
 jobs:
   test-report:
     runs-on: ubuntu-latest

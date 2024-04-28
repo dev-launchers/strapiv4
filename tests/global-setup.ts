@@ -1,7 +1,14 @@
 import { request } from '@playwright/test';
-const config = require('../init/config');
+import { bootstrapDatabase } from '../init/common';
+import config from '../init/config';
 
 async function globalSetup() {
+    process.env.NODE_ENV = 'test';
+    process.env.PLAYWRIGHT = 'true';
+
+    console.log('Bootstrapping test database...');
+    await bootstrapDatabase();
+    
     const context = await request.newContext({
         baseURL: 'http://localhost:1337',
     });
@@ -11,7 +18,11 @@ async function globalSetup() {
             password: config.user.password
         }
     });
-    process.env.API_TOKEN = (await response.json()).jwt;
+    const session = await response.json();
+    process.env.API_TOKEN = session.jwt;
+    process.env.USER_ID = session.user.id;
 }
+
+
 
 export default globalSetup;

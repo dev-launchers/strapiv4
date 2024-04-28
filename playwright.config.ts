@@ -2,9 +2,10 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   globalSetup: require.resolve('./tests/global-setup'),
+  globalTeardown: require.resolve('./tests/global-teardown'),
   reporter: process.env.CI ? [['github'], ['dot']] : 'list',
   webServer: {
-    command: 'npm run init:test',
+    command: 'npm run strapi:test',
     url: 'http://localhost:1337',
     reuseExistingServer: !process.env.CI,
     stdout: 'pipe',

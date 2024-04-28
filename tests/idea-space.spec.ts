@@ -16,8 +16,6 @@ test.describe('/api/idea-cards', () => {
             extraInfo: "Yes",
             involveLevel: "minimum",
             status: "workshopping",
-            author: 1,
-            ideaOwner: 1,
         });
         expect(newIdea.attributes.ideaName).toBe("Testing");
         ideaId = newIdea.id;

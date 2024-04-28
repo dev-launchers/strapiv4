@@ -6,12 +6,12 @@
   "scripts": {
     "init": "npm ci && strapi build && node ./init/setup.js",
     "init:db": "node ./init/cleanup.js && node ./init/setup.js",
-    "init:test": "npm run init:db & node -e \"setTimeout(()=>{}, 20000)\" && strapi develop --no-build",
     "init:permissions": "node ./init/set-permissions.js",
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
+    "strapi:test": "strapi develop --no-build",
     "test": "playwright test",
     "test:coverage": "nyc playwright test"
   },

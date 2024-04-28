@@ -1,7 +1,10 @@
-const config = require("./config");
 const Strapi = require("@strapi/strapi");
 const fs = require("fs");
 const _ = require("lodash");
+
+const authenticatedRolePermissions = require("./permissions/authenticated");
+const publicRolePermissions = require("./permissions/public");
+const config = require("./config");
 
 const setupEnv = (cb) => {
   fs.writeFile(".env", convertToEnv(config.env), cb);
@@ -11,10 +14,6 @@ const convertToEnv = (object) => {
   let envFile = "";
   for (const key of Object.keys(object)) {
     envFile += `${key}=${object[key]}\n`;
-    // Prevent overriding the NODE_ENV to `development` while running tests.
-    if (key === 'NODE_ENV' && process.env.NODE_ENV === 'test') {
-        continue;
-    }
     process.env[key] = object[key];
   }
   return envFile;
@@ -48,22 +47,56 @@ const cleanUpStrapi = async () => {
   }
 };
 
-const createUserWithAuthenticatedRole = async (roleId) => {
-  config.user.role = roleId;
-  const email = config.admin.email;
+const bootstrapDatabase = async () => {
+  const instance = await setupStrapi();
+  console.log("Strapi server initialized");
+  await createAdminUser();
+  console.log("Admin user created");
+  const roleId = await grantPrivileges(
+    "Authenticated",
+    authenticatedRolePermissions
+  );
+  console.log("Authenticated role privileges granted");
+  await grantPrivileges("Public", publicRolePermissions);
+  console.log("Public role privileges granted");
+  const userId = await createUserWithAuthenticatedRole(roleId, config.user);
+  await createUserWithAuthenticatedRole(roleId, config.user2);
+  console.log("User with authenticated role created");
+  await setupGoogleAuthProvider();
+  console.log("Google auth provider setup");
+  const interestId = await createInterests(userId);
+  console.log("Interests created");
+  await createProject(interestId, userId);
+  console.log("Project created");
+  return instance;
+};
+
+const cleanUpDatabase = async (strapi) => {
+  const dbSettings = strapi.config.get("database.connection");
+
+  if (dbSettings?.connection?.filename) {
+    const tmpDbFile = dbSettings.connection.filename;
+    // Remove the test database file if it exists
+    if (fs.existsSync(tmpDbFile)) {
+      fs.unlinkSync(tmpDbFile);
+      console.log("Test database file removed: ", tmpDbFile);
+    }
+  }
+};
+
+const createUserWithAuthenticatedRole = async (roleId, user) => {
+  user.role = roleId;
   const existing = await strapi.plugins[
     "users-permissions"
-  ].services.user.fetchAll({ where: { email } });
+  ].services.user.fetchAll({ filters: { email: user.email } });
   let result;
   if (existing.length > 0) {
     result = await strapi.plugins["users-permissions"].services.user.edit(
       existing[0].id,
-      config.user
+      user
     );
   } else {
-    result = await strapi.plugins["users-permissions"].services.user.add(
-      config.user
-    );
+    result = await strapi.plugins["users-permissions"].services.user.add(user);
   }
   return result.id;
 };
@@ -168,6 +201,8 @@ module.exports = {
   setupStrapi,
   stopStrapi,
   cleanUpStrapi,
+  cleanUpDatabase,
+  bootstrapDatabase,
   createUserWithAuthenticatedRole,
   createAdminUser,
   grantPrivileges,

@@ -4,11 +4,12 @@ import config from '../init/config';
 
 async function globalSetup() {
     process.env.NODE_ENV = 'test';
-    process.env.PLAYWRIGHT = 'true';
+    process.env.NODE_ENV = 'test';
+    process.env.FRONTEND_URL = 'not_used';
 
     console.log('Bootstrapping test database...');
     await bootstrapDatabase();
-    
+
     const context = await request.newContext({
         baseURL: 'http://localhost:1337',
     });

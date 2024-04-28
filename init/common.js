@@ -34,17 +34,8 @@ const stopStrapi = async (instance) => {
 const cleanUpStrapi = async () => {
   await Strapi().load();
 
-  const dbSettings = strapi.config.get("database.connection");
-
+  cleanUpDatabase(strapi);
   await strapi.destroy();
-
-  if (dbSettings?.connection?.filename) {
-    const tmpDbFile = dbSettings.connection.filename;
-    // Remove the test database file if it exists
-    if (fs.existsSync(tmpDbFile)) {
-      fs.unlinkSync(tmpDbFile);
-    }
-  }
 };
 
 const bootstrapDatabase = async () => {

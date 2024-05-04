@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { api } from './utils';
+import { api, strapiConnect } from './utils';
 import * as config from '../init/config';
 
 

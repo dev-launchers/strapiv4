@@ -165,6 +165,12 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "authorId"
+    },
+    "subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subscription.subscription",
+      "mappedBy": "user"
     }
   }
 }

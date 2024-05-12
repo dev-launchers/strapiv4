@@ -12,27 +12,11 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
-      "type": "string"
-    },
-    "Content": {
-      "type": "text"
-    },
-    "Read": {
-      "type": "boolean"
-    },
-    "TimeCreated": {
+    "createdDateTime": {
       "type": "datetime"
     },
-    "entityType": {
-      "type": "enumeration",
-      "enum": [
-        "IdeaCard",
-        "Comment"
-      ]
-    },
-    "entityId": {
-      "type": "integer"
+    "readDateTime": {
+      "type": "datetime"
     }
   }
 }

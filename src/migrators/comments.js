@@ -5,7 +5,6 @@ module.exports = async (strapi) => {
   const comments = await strapi.db.query("api::comment.comment").findMany({
     where: {
       user: null,
-      author: { $not: null },
     },
     offset: 0,
     limit: 1000,

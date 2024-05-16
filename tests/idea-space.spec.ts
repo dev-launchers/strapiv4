@@ -65,8 +65,8 @@ test.describe('comment migration', () => {
 
     test("should update comment author", async () => {
         const strapi = await strapiConnect();
-        const params = { where: { id: commentId }, populate: ["user"] };
-        await strapi.db.query("api::comment.comment").update({ where: { id: commentId }, data: { user: null } });
+        const params = { populate: ["user"] };
+        await strapi.db.query("api::comment.comment").update({ where: { author: user.username }, data: { user: null } });
         let comment = await strapi.db.query("api::comment.comment").findOne(params);
         expect(comment.user).toBeNull();
         await migrateComments(strapi);

@@ -49,7 +49,7 @@ test.describe('/api/comments', () => {
         const comment = await api(request).getLast("/api/comments");
         expect(comment.attributes.text).toBe("test comment");
         expect(comment.attributes.author).toBe(user.username);
-        expect(comment.attributes.authorId).toBeUndefined();
+        expect(comment.attributes.user).toBeUndefined();
     });
 
 });
@@ -58,15 +58,15 @@ test.describe('comment migration', () => {
 
     test("should update comment author", async () => {
         const strapi = await strapiConnect();
-        const params = { populate: ["authorId"] };
-        await strapi.db.query("api::comment.comment").update({ where: { author: user.username }, data: { authorId: null } });
+        const params = { populate: ["user"] };
+        await strapi.db.query("api::comment.comment").update({ where: { author: user.username }, data: { user: null } });
         let comment = await strapi.db.query("api::comment.comment").findOne(params);
-        expect(comment.authorId).toBeNull();
+        expect(comment.user).toBeNull();
         await migrateComments(strapi);
         comment = await strapi.db.query("api::comment.comment").findOne(params);
         expect(comment.text).toBe("test comment");
         expect(comment.author).toBe(user.username);
-        expect(comment.authorId.username).toBe(user.username);
+        expect(comment.user.username).toBe(user.username);
     });
 
 });

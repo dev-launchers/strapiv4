@@ -2,7 +2,7 @@ module.exports = async (strapi) => {
   strapi.log.info("Migrating comments");
   const comments = await strapi.db.query("api::comment.comment").findMany({
     where: {
-      authorId: null,
+      user: null,
     },
     offset: 0,
     limit: -1,
@@ -13,7 +13,7 @@ module.exports = async (strapi) => {
     if (user) {
       await strapi.db
         .query("api::comment.comment")
-        .update({ where: { id: comment.id }, data: { authorId: user } });
+        .update({ where: { id: comment.id }, data: { user } });
     }
   }
   strapi.log.info("Done migrating comments");

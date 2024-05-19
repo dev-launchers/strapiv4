@@ -1,5 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { get } from 'http';
+import { expect } from '@playwright/test';
+import Strapi, { LoadedStrapi } from "@strapi/strapi";
+
+let instance:LoadedStrapi;
 
 const api = (request) => {
     const getAndCheck = async (url, status) => {
@@ -60,4 +62,12 @@ const api = (request) => {
     }
 }
 
-export { api };
+const strapiConnect = async () => {
+    if (instance === undefined) {
+        await Strapi().load();
+        instance = strapi;
+    }
+    return instance;
+}
+
+export { api, strapiConnect };

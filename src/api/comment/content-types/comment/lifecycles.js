@@ -3,8 +3,8 @@ module.exports = {
   beforeCreate(event) {
     // Set author to the user sending the request
     const ctx = strapi.requestContext.get();
-    event.params.data.authorId = ctx.state.user;
-    console.log("create comment ctx", ctx)
+    event.params.data.user = ctx.state.user;
+    event.params.data.author = ctx.state.user.username;
   },
 
   async afterCreate(event) {

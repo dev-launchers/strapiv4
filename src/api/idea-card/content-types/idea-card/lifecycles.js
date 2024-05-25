@@ -16,7 +16,8 @@ module.exports = {
         content: author + " added new idea, " + ideaName + "-" + tagline +  "is created",
         entityType: "IdeaCard",
         entityId: id,
-        createdDateTime: timeCreated
+        createdDateTime: timeCreated,
+        read: false
       },
     });
   },
@@ -45,6 +46,7 @@ module.exports = {
           entityType: 'IdeaCard',
           entityId: id,
           createdDateTime: createdAt,
+          read: false
         },
       });
     } else {
@@ -58,6 +60,7 @@ module.exports = {
           entityType: 'IdeaCard',
           entityId: id,
           createdDateTime: createdAt,
+          read: false
         },
       });
     }

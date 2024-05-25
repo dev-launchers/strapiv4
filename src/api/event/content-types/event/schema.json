@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Event"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "entityId": {
+      "type": "biginteger"
+    },
+    "entityType": {
+      "type": "enumeration",
+      "enum": [
+        "IdeaCard"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "text"
+    },
+    "createdDateTime": {
+      "type": "datetime"
+    }
+  }
+}

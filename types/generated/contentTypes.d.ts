@@ -1464,7 +1464,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Attribute.DateTime;
@@ -1479,7 +1479,6 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     TimeCreated: Attribute.DateTime;
     entityId: Attribute.Integer & Attribute.Required;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::subscription.subscription',
       'oneToOne',

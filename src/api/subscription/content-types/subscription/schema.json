@@ -35,6 +35,11 @@
     },
     "TimeCreated": {
       "type": "datetime"
+    },
+    "entityId": {
+      "type": "integer",
+      "required": true,
+      "unique": false
     }
   }
 }

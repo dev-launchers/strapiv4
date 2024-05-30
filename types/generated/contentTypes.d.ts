@@ -1477,6 +1477,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     >;
     entityType: Attribute.Enumeration<['IdeaCard']>;
     TimeCreated: Attribute.DateTime;
+    entityId: Attribute.Integer & Attribute.Required;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -21,8 +21,7 @@ test.describe('/api/subscriptions', () => {
 
         const subscription = subscriptions.data
             .find(item => (item.attributes.entityId === newIdea.id && item.attributes.entityType === "IdeaCard"));
-        console.log('subscription ->', subscription);
-        // expect(subscription.attributes.user.id).toBe(user.id)
+        // expect(subscription.attributes.user.id).toBe(user.id);
         expect(subscription.attributes.TimeCreated).toBeDefined();
         expect(subscription.attributes.active).toBe(true);
     })

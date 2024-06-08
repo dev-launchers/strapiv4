@@ -1,11 +1,14 @@
+const auth = require("../extensions/users-permissions/controllers/auth");
+
 module.exports = async (strapi) => {
   strapi.log.info("Migrating comments");
   const comments = await strapi.db.query("api::comment.comment").findMany({
     where: {
       user: null,
+      author: { $not: null },
     },
     offset: 0,
-    limit: -1,
+    limit: 1000,
   });
   strapi.log.info(`Comments to be migrated: ${comments.length}`);
   for (const comment of comments) {

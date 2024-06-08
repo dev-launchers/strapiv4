@@ -1,12 +1,12 @@
 #syntax=docker/dockerfile:1.2
-FROM strapi/base
+FROM node:20-alpine
 WORKDIR /srv/app
 COPY ./package.json ./
 COPY ./package-lock.json ./
-RUN npm run init
 COPY config ./config
 COPY public ./public
+COPY init ./init
 COPY src ./src
-RUN npm run build
+RUN npm run init || true
 EXPOSE 1337
 CMD ["npm", "run", "develop"]

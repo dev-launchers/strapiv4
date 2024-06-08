@@ -1,6 +1,7 @@
 'use strict';
 
-const bootstrapUserPermissions = require('./extensions/users-permissions/server/bootstrap')
+const bootstrapUserPermissions = require('./extensions/users-permissions/server/bootstrap');
+const runMigrations = require('./migrators');
 
 module.exports = {
   /**
@@ -22,6 +23,8 @@ module.exports = {
 
   async bootstrap({ strapi }) {
     await bootstrapUserPermissions({ strapi });
+
+    await runMigrations(strapi);
 
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],

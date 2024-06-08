@@ -1,3 +1,5 @@
+const _ = require("lodash/fp");
+
 module.exports = (options, { strapi }) => {
   return async (ctx, next) => {
     /*
@@ -10,6 +12,17 @@ module.exports = (options, { strapi }) => {
     }
     // Execute the action.
     await next();
+    
+    if (ctx.response.status == 403) {
+      const ability = ctx.state?.auth?.ability;
+      const config = _.prop("config.auth")(ctx.state.route);
+      if (ability && config?.scope && ctx.response.body?.error) {
+        const error = ctx.response.body.error;
+        const dissallowedScopes = config.scope.filter(scope => !ability.can(scope));
+        error.message = `You are not allowed to perform the following actions: ${dissallowedScopes}`;
+        error.details = {dissallowedScopes};
+      }
+    }
     // Check if the route is local login or login with a provider
     // Set token in cookie
     if (ctx.url.startsWith('/api/auth/')) {

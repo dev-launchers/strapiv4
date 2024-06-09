@@ -33,9 +33,6 @@
         "IdeaCard"
       ]
     },
-    "TimeCreated": {
-      "type": "datetime"
-    },
     "entityId": {
       "type": "integer",
       "required": true,

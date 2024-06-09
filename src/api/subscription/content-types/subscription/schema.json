@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscriptions",
+  "info": {
+    "singularName": "subscription",
+    "pluralName": "subscriptions",
+    "displayName": "Subscription",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "createdAt": {
+      "type": "datetime"
+    },
+    "TimeUnsubscribed": {
+      "type": "datetime"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "entityType": {
+      "type": "enumeration",
+      "enum": [
+        "IdeaCard"
+      ]
+    },
+    "TimeCreated": {
+      "type": "datetime"
+    },
+    "entityId": {
+      "type": "integer",
+      "required": true,
+      "unique": false
+    }
+  }
+}

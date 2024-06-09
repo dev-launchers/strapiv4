@@ -8,16 +8,28 @@ module.exports = {
   },
 
   async afterCreate(event) {
-    const { id: id, ideaName: ideaName, createdAt: timeCreated } = event.result;
-    
-    await strapi.entityService.create('api::notification.notification', {
+    const { id: id, ideaName: ideaName, createdAt: timeCreated, tagline: tagline } = event.result;
+    const author = event.params.data.author.username;
+
+    const ctx = strapi.requestContext.get();
+
+    await strapi.entityService.create('api::subscription.subscription', {
       data: {
-        Title:"A new idea has been created",
-        Content: "You created idea " + ideaName,
         entityType: "IdeaCard",
         entityId: id,
-        TimeCreated: timeCreated,
-        Read: false
+        TimeCreated: new Date(),
+        active: true,
+        user: ctx.state.user,
+      },
+    });
+    
+    strapi.entityService.create('api::event.event', {
+      data: {
+        title:"Idea Submitted Successfully",
+        content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
+        entityType: "IdeaCard",
+        entityId: id,
+        createdDateTime: timeCreated
       },
     });
   }

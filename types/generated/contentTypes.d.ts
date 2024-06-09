@@ -884,6 +884,39 @@ export interface ApiDlTalCommunityDlTalCommunity extends Schema.CollectionType {
   };
 }
 
+export interface ApiEventEvent extends Schema.CollectionType {
+  collectionName: 'events';
+  info: {
+    singularName: 'event';
+    pluralName: 'events';
+    displayName: 'Event';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    entityId: Attribute.Integer;
+    entityType: Attribute.Enumeration<['IdeaCard']>;
+    title: Attribute.String;
+    content: Attribute.Text;
+    createdDateTime: Attribute.DateTime;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiGithubRepoGithubRepo extends Schema.CollectionType {
   collectionName: 'github_repos';
   info: {
@@ -1146,6 +1179,11 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
+    event: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'api::event.event'
+    >;
     createdDateTime: Attribute.DateTime;
     readDateTime: Attribute.DateTime;
     user: Attribute.Relation<
@@ -1451,6 +1489,45 @@ export interface ApiSendmailSendmail extends Schema.CollectionType {
   };
 }
 
+export interface ApiSubscriptionSubscription extends Schema.CollectionType {
+  collectionName: 'subscriptions';
+  info: {
+    singularName: 'subscription';
+    pluralName: 'subscriptions';
+    displayName: 'Subscription';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    TimeUnsubscribed: Attribute.DateTime;
+    active: Attribute.Boolean;
+    user: Attribute.Relation<
+      'api::subscription.subscription',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    entityType: Attribute.Enumeration<['IdeaCard']>;
+    TimeCreated: Attribute.DateTime;
+    entityId: Attribute.Integer & Attribute.Required;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTeamMembershipTeamMembership extends Schema.CollectionType {
   collectionName: 'team_memberships';
   info: {
@@ -1514,6 +1591,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
+      'api::event.event': ApiEventEvent;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
@@ -1527,6 +1605,7 @@ declare module '@strapi/types' {
       'api::project.project': ApiProjectProject;
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;
       'api::sendmail.sendmail': ApiSendmailSendmail;
+      'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
     }
   }

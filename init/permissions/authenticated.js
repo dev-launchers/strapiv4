@@ -29,6 +29,11 @@ module.exports = {
         comment: readWrite,
       },
     },
+    "api::event": {
+      controllers: {
+        event: readOnly,
+      },
+    },
     "api::idea-card": {
       controllers: {
         "idea-card": readWrite,
@@ -69,6 +74,11 @@ module.exports = {
         project: readOnly,
       },
     },
+    "api::subscription": {
+      controllers: {
+        subscription: readOnly,
+      },
+    },
     "plugin::users-permissions": {
       controllers: {
         auth: {
@@ -84,6 +94,7 @@ module.exports = {
           count: { enabled: true, policy: "" },
           create: { enabled: true, policy: "" },
           findOne: { enabled: true, policy: "" },
+          find: { enabled: true, policy: "" },
           me: { enabled: true, policy: "" },
           update: { enabled: true, policy: "" },
         },

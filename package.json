@@ -13,6 +13,7 @@
     "strapi": "strapi",
     "strapi:test": "strapi develop --no-build",
     "test": "playwright test",
+    "test:notification": "playwright test tests/notification.spec.ts",
     "test:coverage": "nyc playwright test"
   },
   "dependencies": {

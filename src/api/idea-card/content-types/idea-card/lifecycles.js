@@ -16,7 +16,7 @@ module.exports = {
       data: {
         entityType: "IdeaCard",
         entityId: id,
-        TimeCreated: new Date(),
+        createdDateTime: new Date(),
         active: true,
         user: ctx.state.user,
       },

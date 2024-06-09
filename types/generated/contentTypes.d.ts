@@ -1467,8 +1467,8 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    createdAt: Attribute.DateTime;
-    TimeUnsubscribed: Attribute.DateTime;
+    createdDateTime: Attribute.DateTime;
+    unsubscribedDateTime: Attribute.DateTime;
     active: Attribute.Boolean;
     user: Attribute.Relation<
       'api::subscription.subscription',
@@ -1476,8 +1476,8 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     entityType: Attribute.Enumeration<['IdeaCard']>;
-    TimeCreated: Attribute.DateTime;
     entityId: Attribute.Integer & Attribute.Required;
+    createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::subscription.subscription',

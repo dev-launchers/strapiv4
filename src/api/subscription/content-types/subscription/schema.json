@@ -12,10 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "createdAt": {
+    "createdDateTime": {
       "type": "datetime"
     },
-    "TimeUnsubscribed": {
+    "unsubscribedDateTime": {
       "type": "datetime"
     },
     "active": {

@@ -35,7 +35,6 @@ const cleanUpStrapi = async () => {
   await Strapi().load();
 
   cleanUpDatabase(strapi);
-  await strapi.destroy();
 };
 
 const bootstrapDatabase = async () => {
@@ -64,6 +63,7 @@ const bootstrapDatabase = async () => {
 
 const cleanUpDatabase = async (strapi) => {
   const dbSettings = strapi.config.get("database.connection");
+  await strapi.destroy();
 
   if (dbSettings?.connection?.filename) {
     const tmpDbFile = dbSettings.connection.filename;

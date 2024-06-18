@@ -751,6 +751,12 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     level: Attribute.Enumeration<['beginner', 'intermediate', 'advanced']> &
       Attribute.Required;
     skills: Attribute.Component<'skills.skills', true>;
+    yearsExperience: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetMinMax<{
+        min: 0;
+        max: 100;
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -66,6 +66,12 @@
       "type": "component",
       "repeatable": true,
       "component": "skills.skills"
+    },
+    "yearsExperience": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "max": 100
     }
   }
 }

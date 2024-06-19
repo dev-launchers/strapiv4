@@ -4,60 +4,55 @@ import Strapi, { LoadedStrapi } from "@strapi/strapi";
 let instance:LoadedStrapi;
 
 const api = (request) => {
-    const getAndCheck = async (url, status) => {
+    const getAndCheck = async (url, expectedStatus=200) => {
         const response = await request.get(url);
-        if (response.status() !== status) {
+        if (response.status() !== expectedStatus) {
             console.log(`GET ${response.url()}`);
             console.log(await response.status());
             console.log(await response.text());
         }
-        expect(response.status()).toBe(status);
+        expect(response.status()).toBe(expectedStatus);
         return response.json();
     }
 
     return {
         getLast: async (url) => {
-            const data = await getAndCheck(url, 200);
+            const data = await getAndCheck(url);
             return data.data[data.data.length - 1];
         },
 
         getData: async (url) => {
-            const data = await getAndCheck(url, 200);
+            const data = await getAndCheck(url);
             return data.data;
         },
 
-        get: async (url) => {
-            const data = await getAndCheck(url, 200);
+        get: async (url, expectedStatus=200) => {
+            const data = await getAndCheck(url, expectedStatus);
             return data;
         },
 
-        getAndExpect: async (url, status) => {
-            const data = await getAndCheck(url, status);
-            return data;
-        },
-
-        post: async (url, payload) => {
+        post: async (url, payload, expectedStatus=200) => {
             const response = await request.post(url, { data: { data: payload } });
-            if (!response.ok()) {
+            if (response.status() !== expectedStatus) {
                 console.log(`POST ${response.url()}`);
                 console.log(await response.status());
                 console.log(await response.text());
             }
-            expect(response.ok()).toBeTruthy();
+            expect(response.status()).toBe(expectedStatus);
             const data = await response.json();
-            return data.data;
+            return expectedStatus >= 400 ? data : data.data;
         },
 
-        put: async (url, payload) => {
+        put: async (url, payload, expectedStatus=200) => {
             const response = await request.put(url, { data: payload });
-            if (!response.ok()) {
+            if (response.status() !== expectedStatus) {
                 console.log(`PUT ${response.url()}`);
                 console.log(await response.status());
                 console.log(await response.text());
             }
-            expect(response.ok()).toBeTruthy();
+            expect(response.status()).toBe(expectedStatus);
             const data = await response.json();
-            return data;
+            return expectedStatus >= 400 ? data : data.data;
         }
     }
 }

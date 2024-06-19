@@ -33,6 +33,11 @@ test.describe('/api/idea-cards', () => {
         expect(idea.attributes.author).toBeUndefined();
         expect(idea.attributes.ideaOwner).toBeUndefined();
     });
+
+    test("should give error for invalid idea", async ({ request }) => {
+        const response = await api(request).get("/api/idea-cards/undefined", 400);
+        expect(response.error.message).toBe('Id should be a number');
+    });
 });
 
 test.describe('/api/comments', () => {

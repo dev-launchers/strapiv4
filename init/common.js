@@ -69,7 +69,7 @@ const cleanUpDatabase = async (strapi) => {
     const tmpDbFile = dbSettings.connection.filename;
     // Remove the test database file
     fs.rmSync(tmpDbFile, { maxRetries: 5, retryDelay: 1000, force: true});
-    console.log("Test database file removed: ", tmpDbFile);
+    console.log("Database file removed: ", tmpDbFile);
   }
 };
 

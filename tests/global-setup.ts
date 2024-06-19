@@ -4,7 +4,6 @@ import config from '../init/config';
 
 async function globalSetup() {
     process.env.NODE_ENV = 'test';
-    process.env.PLAYWRIGHT = 'true';
     process.env.FRONTEND_URL = 'not_used';
 
     console.log('Bootstrapping test database...');
@@ -23,7 +22,5 @@ async function globalSetup() {
     process.env.API_TOKEN = session.jwt;
     process.env.USER_ID = session.user.id;
 }
-
-
 
 export default globalSetup;

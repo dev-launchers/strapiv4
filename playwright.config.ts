@@ -14,7 +14,6 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
       FRONTEND_URL: 'not_used',
-      PLAYWRIGHT: 'true'
     },
   },
   use: {

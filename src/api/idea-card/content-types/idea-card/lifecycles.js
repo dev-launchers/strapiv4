@@ -30,7 +30,6 @@ module.exports = {
         entityType: "IdeaCard",
         entityId: id,
         createdDateTime: timeCreated,
-        read: false
       },
     });
   },

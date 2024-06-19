@@ -48,5 +48,17 @@ test.describe('/api/event', () => {
         expect(event.attributes.content).toBe(`${config.user.username} has updated idea Testing2 - approved`);
     });
 
+    test("Create new event on comment create", async ({ request }) => {
+        await api(request).post("/api/comments", {
+            idea_card: { id: ideaId },
+            text: "test comment"
+        });
+        const events = await api(request).get("/api/events");
+        const event = events.data.reverse()
+        .find(item => (item.attributes.entityId === ideaId && item.attributes.entityType === "IdeaCard"));
+        expect(event.attributes.title).toBe(`${config.user.username} commented on Testing2`);
+        expect(event.attributes.content).toBe("test comment");
+    });
+
     
 });

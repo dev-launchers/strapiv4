@@ -1186,6 +1186,11 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
   attributes: {
     createdDateTime: Attribute.DateTime;
     readDateTime: Attribute.DateTime;
+    user: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

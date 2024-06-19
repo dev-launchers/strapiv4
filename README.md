@@ -1,9 +1,11 @@
  # Dev Launchers Strapi Service
 
 # Getting Started
-1. Run `npm run init` first time to install dependencies and initialize your local database
-2. Run `npm run develop`
-3. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`. 
+1. Use Node v20
+2. Setup NVM or alternative version manager for easy updates of versions (https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating, https://www.npmjs.com/package/n)
+3. Run `npm run init` first time to install dependencies and initialize your local database
+4. Run `npm run develop`
+5. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`. 
 
 # Running from Docker
 Alternatively, you can run it with Docker. There are 2 make targets available to do this.
@@ -35,3 +37,10 @@ To run tests, please run `npm test` or `npm run test:coverage` to include covera
 With Playwright plugin installed in VSCode you can run individual suites and tests in Test Explorer.
 We use Istanbul (nyc) for code coverage, using text, cobertura and lcov report formats. Istnabul is configured using `.nycrc` file.
 Code Coverage plugin can be used to review non-covered code based on generated `coverage/lcov.info`.
+
+## Integration testing with Postgres testcontainers
+Within CI we run all tests with Postgres using Testcontainers.
+If your test is running fine locally, but failing in CI, you can debug it locally by running `npm run test:postgres`.
+there are few prerequisites:
+- install docker environment using either Docker Desktop (https://www.docker.com/products/docker-desktop/) or alternatives like Podman or Colima
+- setup your environment using following, if using alternatives, https://node.testcontainers.org/supported-container-runtimes/

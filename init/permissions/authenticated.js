@@ -49,6 +49,11 @@ module.exports = {
         notification: readWrite,
       },
     },
+    "api::subscription": {
+      controllers: {
+        subscription: readOnly,
+      },
+    },
     "api::opportunity": {
       controllers: {
         opportunity: readOnly,

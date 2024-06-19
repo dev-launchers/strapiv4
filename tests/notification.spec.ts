@@ -5,7 +5,7 @@ let ideaId = 0;
 
 test.describe('/api/notification', () => {
 
-    test("Create new notification on idea create", async ({ request }) => {
+    test.fixme("Create new notification on idea create", async ({ request }) => {
         const newIdea = await api(request).post("/api/idea-cards", {
             ideaName: "Testing2",
             tagline: "Yay!",

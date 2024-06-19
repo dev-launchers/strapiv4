@@ -29,6 +29,11 @@ module.exports = {
         comment: readWrite,
       },
     },
+    "api::event": {
+      controllers: {
+        event: readOnly,
+      },
+    },
     "api::idea-card": {
       controllers: {
         "idea-card": readWrite,
@@ -46,7 +51,12 @@ module.exports = {
     },
     "api::notification": {
       controllers: {
-        notification: readWrite,
+        notification: readOnly,
+      },
+    },
+    "api::subscription": {
+      controllers: {
+        subscription: readOnly,
       },
     },
     "api::opportunity": {

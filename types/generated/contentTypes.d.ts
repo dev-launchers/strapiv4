@@ -666,6 +666,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::comment.comment'
     >;
+    subscriptions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::subscription.subscription'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -828,7 +833,7 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'api::idea-card.idea-card'
     >;
     author: Attribute.String;
-    authorId: Attribute.Relation<
+    user: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -892,17 +897,16 @@ export interface ApiEventEvent extends Schema.CollectionType {
     displayName: 'Event';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    entityId: Attribute.BigInteger;
+    entityId: Attribute.Integer;
     entityType: Attribute.Enumeration<['IdeaCard']>;
     title: Attribute.String;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::event.event',
       'oneToOne',
@@ -1484,6 +1488,45 @@ export interface ApiSendmailSendmail extends Schema.CollectionType {
   };
 }
 
+export interface ApiSubscriptionSubscription extends Schema.CollectionType {
+  collectionName: 'subscriptions';
+  info: {
+    singularName: 'subscription';
+    pluralName: 'subscriptions';
+    displayName: 'Subscription';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdDateTime: Attribute.DateTime;
+    unsubscribedDateTime: Attribute.DateTime;
+    active: Attribute.Boolean;
+    user: Attribute.Relation<
+      'api::subscription.subscription',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    entityType: Attribute.Enumeration<['IdeaCard']>;
+    entityId: Attribute.Integer & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTeamMembershipTeamMembership extends Schema.CollectionType {
   collectionName: 'team_memberships';
   info: {
@@ -1561,6 +1604,7 @@ declare module '@strapi/types' {
       'api::project.project': ApiProjectProject;
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;
       'api::sendmail.sendmail': ApiSendmailSendmail;
+      'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
     }
   }

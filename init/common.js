@@ -35,7 +35,6 @@ const cleanUpStrapi = async () => {
   await Strapi().load();
 
   cleanUpDatabase(strapi);
-  await strapi.destroy();
 };
 
 const bootstrapDatabase = async () => {
@@ -64,12 +63,13 @@ const bootstrapDatabase = async () => {
 
 const cleanUpDatabase = async (strapi) => {
   const dbSettings = strapi.config.get("database.connection");
+  await strapi.destroy();
 
   if (dbSettings?.connection?.filename) {
     const tmpDbFile = dbSettings.connection.filename;
     // Remove the test database file
     fs.rmSync(tmpDbFile, { maxRetries: 5, retryDelay: 1000, force: true});
-    console.log("Test database file removed: ", tmpDbFile);
+    console.log("Database file removed: ", tmpDbFile);
   }
 };
 

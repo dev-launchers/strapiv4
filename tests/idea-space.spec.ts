@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { api } from './utils';
+import { api, strapiConnect } from './utils';
+import { user } from '../init/config';
+import migrateComments from '../src/migrators/comments';
 
 let ideaId = 0;
 
@@ -31,13 +33,17 @@ test.describe('/api/idea-cards', () => {
         expect(idea.attributes.author).toBeUndefined();
         expect(idea.attributes.ideaOwner).toBeUndefined();
     });
+
+    test("should give error for invalid idea", async ({ request }) => {
+        const response = await api(request).get("/api/idea-cards/undefined", 400);
+        expect(response.error.message).toBe('Id should be a number');
+    });
 });
 
 test.describe('/api/comments', () => {
 
     test('should add comment', async ({ request }) => {
         const newComment = await api(request).post("/api/comments", {
-            author: "tester2",
             idea_card: { id: ideaId },
             text: "test comment"
         });
@@ -45,8 +51,27 @@ test.describe('/api/comments', () => {
     });
 
     test("should list comments", async ({ request }) => {
-        const comments = await api(request).getLast("/api/comments");
-        expect(comments.attributes.text).toBe("test comment");
+        const comment = await api(request).getLast("/api/comments");
+        expect(comment.attributes.text).toBe("test comment");
+        expect(comment.attributes.author).toBe(user.username);
+        expect(comment.attributes.user).toBeUndefined();
+    });
+
+});
+
+test.describe('comment migration', () => {
+
+    test("should update comment author", async () => {
+        const strapi = await strapiConnect();
+        const params = { populate: ["user"] };
+        await strapi.db.query("api::comment.comment").update({ where: { author: user.username }, data: { user: null } });
+        let comment = await strapi.db.query("api::comment.comment").findOne(params);
+        expect(comment.user).toBeNull();
+        await migrateComments(strapi);
+        comment = await strapi.db.query("api::comment.comment").findOne(params);
+        expect(comment.text).toBe("test comment");
+        expect(comment.author).toBe(user.username);
+        expect(comment.user.username).toBe(user.username);
     });
 
 });

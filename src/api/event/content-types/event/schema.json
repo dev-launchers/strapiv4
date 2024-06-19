@@ -7,12 +7,12 @@
     "displayName": "Event"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "entityId": {
-      "type": "biginteger"
+      "type": "integer"
     },
     "entityType": {
       "type": "enumeration",

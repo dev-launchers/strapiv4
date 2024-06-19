@@ -25,6 +25,6 @@ test.describe('/api/users', () => {
     });
 
     test.fixme("should not show user by id if other", async ({ request }) => {
-        await api(request).getAndExpect("/api/users/2", 403);
+        await api(request).get("/api/users/2", 403);
     });
 });

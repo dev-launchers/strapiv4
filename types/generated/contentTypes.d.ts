@@ -897,17 +897,16 @@ export interface ApiEventEvent extends Schema.CollectionType {
     displayName: 'Event';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
-    entityId: Attribute.BigInteger;
+    entityId: Attribute.Integer;
     entityType: Attribute.Enumeration<['IdeaCard']>;
     title: Attribute.String;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::event.event',
       'oneToOne',

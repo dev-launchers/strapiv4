@@ -44,7 +44,7 @@ const api = (request) => {
         },
 
         put: async (url, payload, expectedStatus=200) => {
-            const response = await request.put(url, { data: payload });
+            const response = await request.put(url, { data: { data: payload } });
             if (response.status() !== expectedStatus) {
                 console.log(`PUT ${response.url()}`);
                 console.log(await response.status());

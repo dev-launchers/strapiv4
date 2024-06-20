@@ -1151,12 +1151,13 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    Title: Attribute.String;
-    Content: Attribute.Text;
-    Read: Attribute.Boolean;
-    TimeCreated: Attribute.DateTime;
-    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
-    entityId: Attribute.Integer;
+    createdDateTime: Attribute.DateTime;
+    readDateTime: Attribute.DateTime;
+    user: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

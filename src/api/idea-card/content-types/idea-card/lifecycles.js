@@ -29,7 +29,7 @@ module.exports = {
         content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
         entityType: "IdeaCard",
         entityId: id,
-        createdDateTime: timeCreated
+        createdDateTime: timeCreated,
       },
     });
   },

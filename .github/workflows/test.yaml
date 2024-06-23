@@ -16,7 +16,7 @@ jobs:
       # TODO: Add step for linting
 
     - name: Run Playwright tests
-      run: npm run test:postgres
+      run: npm run test:coverage
       env:
         CI: true
     - name: Code Coverage Summary Report

@@ -16,7 +16,10 @@ const run = async () => {
 
     program.on('close', (code) => {
         console.log('Tests finished with code', code);  
-        container.stop().then(() => console.log('PG container stopped'));
+        container.stop().then(() => {
+            console.log('PG container stopped');
+            process.exit(code);
+        });
     }); 
 };
 

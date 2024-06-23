@@ -55,6 +55,25 @@ test.describe('/api/comments', () => {
 
 });
 
+test.describe('user details access', () => {
+
+    test("should not allow access to most of user fields", async ({ request }) => {
+        const idea = await api(request).getData(`api/idea-cards/${ideaId}?populate[ideaOwner][populate]&populate[author][populate]&populate[comments][populate][user][populate]=profile`);
+        const commentUser = idea.attributes.comments.data[0].attributes.user.data.attributes;
+        expect(commentUser.username).toBe(user.username);
+        expect(commentUser.email).toBeUndefined();
+        expect(commentUser.job).toBeUndefined();
+        expect(commentUser.discordUsername).toBeUndefined();
+        const profile = commentUser.profile.data;
+        expect(profile.id).toBe(1);
+        expect(profile.attributes.profilePictureUrl).toBe(user.profile.profilePictureUrl);
+        expect(profile.attributes.displayName).toBe(user.profile.displayName);
+        expect(profile.attributes.bio).toBeUndefined();
+    });
+
+});
+
+
 /*
 test.describe('/api/comments', () => {
 

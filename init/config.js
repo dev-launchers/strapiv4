@@ -1,3 +1,5 @@
+const { profile } = require("console");
+
 module.exports = {
   google: {
     enabled: true,
@@ -25,6 +27,11 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    profile: {
+      displayName: "Tester One",
+      bio: "I am a tester 1",
+      profilePictureUrl: "https://i.imgur.com/123.jpg",
+    },
     professionalRole: {
       "category": "Development",
       "name": "Fullstack Developer"
@@ -37,10 +44,15 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    profile: {
+      displayName: "Tester Two",
+      bio: "I am a tester 2",
+      profilePictureUrl: "https://i.imgur.com/124.jpg",
+    },
     professionalRole: {
       "category": "Product / UX",
       "name": "UX Researcher"
-    }
+    },
   },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {

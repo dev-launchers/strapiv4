@@ -85,4 +85,11 @@ module.exports = [
   'strapi::favicon',
   'strapi::public',
   'plugin::users-permissions.jwt',
+  {
+    name: 'global::restrict-user-details',
+    config: {
+      allowedUserFields: ['id', 'username', 'profile'],
+      allowedProfileFields: ['id', 'profilePictureUrl', 'displayName'],
+    }
+  }
 ];

@@ -889,6 +889,39 @@ export interface ApiDlTalCommunityDlTalCommunity extends Schema.CollectionType {
   };
 }
 
+export interface ApiEventEvent extends Schema.CollectionType {
+  collectionName: 'events';
+  info: {
+    singularName: 'event';
+    pluralName: 'events';
+    displayName: 'Event';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    entityId: Attribute.Integer;
+    entityType: Attribute.Enumeration<['IdeaCard']>;
+    title: Attribute.String;
+    content: Attribute.Text;
+    createdDateTime: Attribute.DateTime;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiGithubRepoGithubRepo extends Schema.CollectionType {
   collectionName: 'github_repos';
   info: {
@@ -1557,6 +1590,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
+      'api::event.event': ApiEventEvent;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;

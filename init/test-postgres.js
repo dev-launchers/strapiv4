@@ -9,10 +9,7 @@ const run = async () => {
     process.env.TEST_CONTAINER= 'true';
 
     console.log('Running tests...');
-    const program = spawn('nyc', ['playwright', 'test']);
-
-    program.stdout.pipe(process.stdout);
-    program.stderr.pipe(process.stderr);
+    const program = spawn('nyc', ['playwright', 'test'], { stdio: 'inherit' });
 
     program.on('close', (code) => {
         console.log('Tests finished with code', code);  

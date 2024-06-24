@@ -2,8 +2,6 @@ import Strapi from "@strapi/strapi";
 import { cleanUpDatabase } from "../init/common";
 
 async function globalTeardown() {
-    console.log('GITHUB_WORKSPACE');
-    console.log(process.env['GITHUB_WORKSPACE']);
     if (process.env.TEST_CONTAINER !== 'true') {
         await Strapi();
         console.log('Deleting test database...');

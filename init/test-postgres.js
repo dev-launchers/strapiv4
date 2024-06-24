@@ -9,8 +9,6 @@ const run = async () => {
     process.env.TEST_CONTAINER= 'true';
 
     console.log('Running tests...');
-    console.log('GITHUB_WORKSPACE');
-    console.log(process.env['GITHUB_WORKSPACE']);
     const program = spawn('nyc', ['playwright', 'test'], { stdio: 'inherit', env: process.env });
 
     program.on('close', (code) => {

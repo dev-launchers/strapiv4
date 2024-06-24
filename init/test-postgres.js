@@ -9,10 +9,12 @@ const run = async () => {
     process.env.TEST_CONTAINER= 'true';
 
     console.log('Running tests...');
-    const program = spawn('nyc', ['playwright', 'test'], { stdio: 'inherit' });
+    console.log('GITHUB_WORKSPACE');
+    console.log(process.env['GITHUB_WORKSPACE']);
+    const program = spawn('nyc', ['playwright', 'test'], { stdio: 'inherit', env: process.env });
 
     program.on('close', (code) => {
-        console.log('Tests finished with code', code);  
+        console.log('Tests finished with exit code', code);  
         container.stop().then(() => {
             console.log('PG container stopped');
             process.exit(code);

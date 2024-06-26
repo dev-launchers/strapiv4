@@ -7,7 +7,8 @@ async function globalSetup() {
     process.env.FRONTEND_URL = 'not_used';
 
     console.log('Bootstrapping test database...');
-    await bootstrapDatabase();
+    const strapiInstance = await bootstrapDatabase();
+    strapiInstance.listen();
 
     const context = await request.newContext({
         baseURL: 'http://localhost:1337',

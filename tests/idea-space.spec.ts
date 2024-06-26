@@ -71,7 +71,7 @@ test.describe('comment migration', () => {
         expect(comment.user).toBeNull();
         await migrateComments(strapi);
         comment = await strapi.db.query("api::comment.comment").findOne(params);
-        expect(comment.text).toBe("test comment");
+        expect(comment.text).toBe("test comment2");
         expect(comment.author).toBe(user.username);
         expect(comment.user.username).toBe(user.username);
     });

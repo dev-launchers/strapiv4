@@ -55,11 +55,7 @@
     },
     "level": {
       "type": "enumeration",
-      "enum": [
-        "beginner",
-        "intermediate",
-        "advanced"
-      ],
+      "enum": ["beginner", "intermediate", "advanced"],
       "required": true
     },
     "skills": {
@@ -67,7 +63,7 @@
       "repeatable": true,
       "component": "skills.skills"
     },
-    "yearsExperience": {
+    "yearsOfExperience": {
       "type": "decimal",
       "required": true,
       "min": 0,

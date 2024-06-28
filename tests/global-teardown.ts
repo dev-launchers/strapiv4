@@ -1,17 +1,17 @@
-import Strapi from "@strapi/strapi";
-import { cleanUpDatabase, stopStrapi } from "../init/common";
+import { cleanUpDatabase } from "../init/common";
 
 async function globalTeardown() {
-    await Strapi();
-    console.log('Stopping Strapi server...');
-    await stopStrapi(strapi);
-    if (process.env.TEST_CONTAINER !== 'true') {
-        console.log('Deleting test database...');
-        await cleanUpDatabase(strapi);
+    if (process.env.TEST_CONTAINER === 'true') {
+        const container = global.postgresContainer;
+        if (container) {
+            await container.stop();
+            console.log('PG container stopped');
+        }
+        console.log('Stopping Strapi server...');
+        await global.strapiInstance.destroy();
     } else {
-        // need to keep this line, otherwise github annotations will not work
-        console.log('GITHUB_WORKSPACE is set to:', process.env['GITHUB_WORKSPACE']);
-        console.log('Skipping database cleanup because tests are running in a container');
+        console.log('Stopping Strapi and deleting test database...');
+        await cleanUpDatabase(global.strapiInstance);
     }
 }
 

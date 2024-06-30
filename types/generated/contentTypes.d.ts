@@ -630,11 +630,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::idea-card.idea-card'
     >;
-    point: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::point.point'
-    >;
     profile: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -840,6 +835,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
     >;
     author: Attribute.String;
     user: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1293,11 +1293,6 @@ export interface ApiPointPoint extends Schema.CollectionType {
     volunteerHours: Attribute.Float &
       Attribute.Required &
       Attribute.DefaultTo<0>;
-    user: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

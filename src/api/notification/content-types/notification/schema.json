@@ -12,27 +12,21 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
-      "type": "string"
-    },
-    "Content": {
-      "type": "text"
-    },
-    "Read": {
-      "type": "boolean"
-    },
-    "TimeCreated": {
+    "createdDateTime": {
       "type": "datetime"
     },
-    "entityType": {
-      "type": "enumeration",
-      "enum": [
-        "IdeaCard",
-        "Comment"
-      ]
+    "readDateTime": {
+      "type": "datetime"
     },
-    "entityId": {
-      "type": "integer"
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event"
     }
   }
 }

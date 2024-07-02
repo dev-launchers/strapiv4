@@ -4,6 +4,7 @@ import { user } from '../init/config';
 import migrateComments from '../src/migrators/comments';
 
 let ideaId = 0;
+let commentId = 0;
 
 test.describe('/api/idea-cards', () => {
 
@@ -47,6 +48,7 @@ test.describe('/api/comments', () => {
             idea_card: { id: ideaId },
             text: "test comment"
         });
+        commentId = newComment.id;
         expect(newComment.attributes.text).toBe("test comment");
     });
 
@@ -63,8 +65,8 @@ test.describe('comment migration', () => {
 
     test("should update comment author", async () => {
         const strapi = await strapiConnect();
-        const params = { populate: ["user"] };
-        await strapi.db.query("api::comment.comment").update({ where: { author: user.username }, data: { user: null } });
+        const params = { where: { id: commentId }, populate: ["user"] };
+        await strapi.db.query("api::comment.comment").update({ where: { id: commentId }, data: { user: null } });
         let comment = await strapi.db.query("api::comment.comment").findOne(params);
         expect(comment.user).toBeNull();
         await migrateComments(strapi);

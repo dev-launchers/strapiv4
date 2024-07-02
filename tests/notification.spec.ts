@@ -75,7 +75,7 @@ test.describe('/api/notification', () => {
             .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification).toBeUndefined();
 
-        const notificationFound = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`);
-        expect(notificationFound).toBeUndefined();
+        const error = await api(request).getAndExpect(`/api/notifications/${newNotification.id}?populate=*`, 403);
+        expect(error.error.name).toBe('ForbiddenError');
     });
 });

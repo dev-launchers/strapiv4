@@ -1,5 +1,5 @@
 {
-  "include": ["src/api/**/*.js", "src/components/**/*.js", "src/extensions/**/*.js", "src/index.js"],
+  "include": ["src/api/**/*.js", "src/components/**/*.js", "src/extensions/**/*.js", "src/migrators/**/*.js", "src/index.js"],
   "check-coverage": false,
   "reporter": ["text", "cobertura", "lcov"],
   "skip-full": true,

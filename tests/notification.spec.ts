@@ -46,6 +46,43 @@ test.describe('/api/notification', () => {
         expect(notification.attributes.readDateTime).toBeNull();
     });
 
+    test("Ensure notifications are allowed by policy", async ({ request }) => {
+        const strapiInstance = await strapiConnect();
+        const testId = 8888;
+
+        const myUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+            where: { username: config.user.username }
+        });
+
+        const newEvent = await strapiInstance.entityService.create('api::event.event', {
+            data: {
+                title: 'Testing User Access to Notifications',
+                content: 'Testing User Access to Notifications',
+                entityType: "IdeaCard",
+                entityId: testId,
+                createdDateTime: new Date(),
+            },
+        });
+        const newNotification = await strapiInstance.entityService.create("api::notification.notification", {
+            data: {
+                event: newEvent.id,
+                createdDateTime: new Date(),
+                user: myUser,
+            },
+        });
+        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notification = notifications.data
+            .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
+        expect(notification.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
+        expect(notification.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
+        expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
+
+        const notificationById = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`);
+        expect(notificationById.data.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
+        expect(notificationById.data.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
+        expect(notificationById.data.attributes.user.data.attributes.username).toBe(config.user.username);
+    });
+
     test("Ensure notifications are filtered by policy", async ({ request }) => {
         const strapiInstance = await strapiConnect();
         const testId = 9999;

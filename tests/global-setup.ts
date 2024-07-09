@@ -15,6 +15,13 @@ async function globalSetup() {
         global.postgresContainer = container;
     }
 
+    if (process.env.TEST_CONTAINER === 'true') {
+        const container = await new PostgreSqlContainer().start();
+        console.log(`PG container started on port ${container.getPort()}`);
+        process.env.DATABASE_PORT = container.getPort().toString();
+        global.postgresContainer = container;
+    }
+
     console.log('Bootstrapping test database...');
     const strapiInstance = await bootstrapDatabase();
     await strapiInstance.listen();

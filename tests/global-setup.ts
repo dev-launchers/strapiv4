@@ -6,6 +6,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 async function globalSetup() {
     process.env.NODE_ENV = 'test';
     process.env.FRONTEND_URL = 'not_used';
+    process.env.URL = 'http://localhost:1337';
 
     if (process.env.TEST_CONTAINER === 'true') {
         const container = await new PostgreSqlContainer().start();
@@ -20,7 +21,7 @@ async function globalSetup() {
     global.strapiInstance = strapiInstance;
 
     const context = await request.newContext({
-        baseURL: 'http://localhost:1337',
+        baseURL: process.env.URL,
     });
     const response = await context.post('/api/auth/local', {
         data: {

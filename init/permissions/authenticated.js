@@ -94,6 +94,7 @@ module.exports = {
           count: { enabled: true, policy: "" },
           create: { enabled: true, policy: "" },
           findOne: { enabled: true, policy: "" },
+          find: { enabled: true, policy: "" },
           me: { enabled: true, policy: "" },
           update: { enabled: true, policy: "" },
         },

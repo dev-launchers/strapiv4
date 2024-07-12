@@ -5,6 +5,7 @@ const _ = require("lodash");
 const authenticatedRolePermissions = require("./permissions/authenticated");
 const publicRolePermissions = require("./permissions/public");
 const config = require("./config");
+const { default: init } = require("@strapi/strapi/dist/Strapi");
 
 const setupEnv = (cb) => {
   fs.writeFile(".env", convertToEnv(config.env), cb);
@@ -57,6 +58,13 @@ const bootstrapDatabase = async () => {
   const interestId = await createInterests(userId);
   console.log("Interests created");
   await createProject(interestId, userId);
+  console.log("Project created");
+
+  // creating project without associating team
+  const userId2 = await createUserWithAuthenticatedRole(roleId, config.user3);
+  const interestId2 = await createInterests(userId2);
+  console.log("Interests created");
+  await createProjectWithoutTeam(interestId2, userId2);
   console.log("Project created");
   return instance;
 };
@@ -145,7 +153,7 @@ const setupGoogleAuthProvider = async () => {
 
 const createInterests = async (userId) => {
   const service = strapi.service("api::interest.interest");
-  let existing = await service.findOne({});
+  let existing = await service.findOne(userId);
   if (existing) {
     return existing.id;
   }
@@ -189,6 +197,18 @@ const createProject = async (interestId, userId) => {
   });
 };
 
+const createProjectWithoutTeam = async (interestId, userId) => {
+  const service = strapi.service("api::project.project");
+  let existing = await service.findOne(interestId);
+  if (existing) {
+    return;
+  }
+  config.projectWithoutTeam.interests = [interestId];
+  existing = await service.create({ data: config.projectWithoutTeam });
+  await strapi.plugins["users-permissions"].services.user.edit(userId, {
+    projects: [existing.id],
+  });
+};
 module.exports = {
   setupEnv,
   setupStrapi,

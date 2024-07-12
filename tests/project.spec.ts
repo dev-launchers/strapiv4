@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { api } from './utils';
+import { test, expect, request } from '@playwright/test';
+import { api, strapiConnect } from './utils';
 import * as config from '../init/config';
 
 test.describe('/api/project', () => {
@@ -32,4 +32,12 @@ test.describe('/api/project', () => {
         expect(project.interests.data.length).toBe(1);
         expect(project.interests.data[0].attributes.interest).toBe(config.interests[0]);
     });
+
+    test("Get project when team is not attached to the project", async({request}) => {
+        
+        const projectData = await api(request).getData("/api/projects/test-dev-recruiting");
+        const project = projectData.attributes;
+        expect(project.slug).toBe(config.projectWithoutTeam.slug);
+        expect(project.team).toBe(null);
+    })
 });

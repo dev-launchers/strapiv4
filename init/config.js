@@ -34,9 +34,29 @@ module.exports = {
     confirmed: true,
     blocked: null,
   },
+  user3: {
+    username: "tester3",
+    email: "tester3@test.com",
+    provider: "local",
+    password: "k2OSo9Td",
+    confirmed: true,
+    blocked: null,
+  },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {
     slug: "dev-recruiting",
+    title: "Dev Recruit",
+    catchPhase:
+      "Join a new Project or Product that aligns with your personal goals!",
+    vision:
+      "Dev Recruit will allow members and non-members to browse ideas, products and projects.",
+    description: "Dev Recruit Project",
+    commitmentLevel: "Medium to High",
+    signupFormUrl: "http://localhost:3000",
+    isListed: true,
+  },
+  projectWithoutTeam: {
+    slug: "test-dev-recruiting",
     title: "Dev Recruit",
     catchPhase:
       "Join a new Project or Product that aligns with your personal goals!",

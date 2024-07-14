@@ -1,12 +1,14 @@
-import { test, expect, request } from '@playwright/test';
-import { api } from './utils';
+import { test, expect } from '@playwright/test';
+import { api, strapiConnect } from './utils';
 import config from '../init/config';
+import { createTextChangeRange } from 'typescript';
 
-let user1Jwt, user2Jwt, notificationId;
 
-test.describe('/api/notification policy', () => {
+let ideaId = 0;
 
-    test.fixme("Create new notification on idea create", async ({ request }) => {
+test.describe('/api/notification', () => {
+
+    test("Create new notification on idea create", async ({ request }) => {
         const newIdea = await api(request).post("/api/idea-cards", {
             ideaName: "Testing2",
             tagline: "Yay!",
@@ -19,75 +21,104 @@ test.describe('/api/notification policy', () => {
             status: "workshopping",
         });
         ideaId = newIdea.id;
-        const notifications = await api(request).get("/api/notifications");
+
+        const notifications = await api(request).get("/api/notifications?populate=*");
         const notification = notifications.data
-        .find(item => (item.attributes.entityId === newIdea.id && item.attributes.entityType === "IdeaCard"));
-        expect(notification.attributes.Title).toBe("A new idea has been created");
-        expect(notification.attributes.Content).toBe("You created idea Testing2");
+            .find(item => (item.attributes.event.data.attributes.entityId === newIdea.id && item.attributes.event.data.attributes.entityType === "IdeaCard"));
+        expect(notification.attributes.event.data.attributes.title).toBe("Idea Submitted Successfully");
+        expect(notification.attributes.event.data.attributes.content).toBe(`${config.user.username} added new idea, Testing2 - Yay! is created`);
+        expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
+        expect(notification.attributes.createdDateTime).not.toBeNull();
+        expect(notification.attributes.readDateTime).toBeNull();
     });
 
-    test.fixme("Create new notification on comment create", async ({ request }) => {
+    test("Create new notification on comment create", async ({ request }) => {
         const newComment = await api(request).post("/api/comments", {
             author: "tester2",
             idea_card: { id: ideaId },
             text: "test comment"
         });
-        const notifications = await api(request).get("/api/notifications");
-        const notification = notifications.data
-        .find(item => (item.attributes.entityId === newComment.id && item.attributes.entityType === "Comment"));
-        expect(notification.attributes.Title).toBe("tester2 commented on Testing2");
-        expect(notification.attributes.Content).toBe("test comment");
+        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notification = notifications.data.reverse()
+            .find(item => (item.attributes.event.data.attributes.entityId === ideaId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
+        expect(notification.attributes.event.data.attributes.title).toBe(`${config.user.username} commented on Testing2`);
+        expect(notification.attributes.event.data.attributes.content).toBe('test comment');
+        expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
+        expect(notification.attributes.createdDateTime).not.toBeNull();
+        expect(notification.attributes.readDateTime).toBeNull();
     });
 
-    test.beforeAll(async ({ request }) => {
-        const apiContext = api(request);
-        // Authenticate user1
-        const user1LoginResponse = await apiContext.post('/api/auth/local', {
-            identifier: config.user.username,
-            password: config.user.password,
-        });
-        user1Jwt = user1LoginResponse.jwt;
+    test("Ensure notifications are allowed by policy", async ({ request }) => {
+        const strapiInstance = await strapiConnect();
+        const testId = 8888;
 
-        // Authenticate user2
-        const user2LoginResponse = await apiContext.post('/api/auth/local', {
-            identifier: config.user2.username,
-            password: config.user2.password,
+        const myUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+            where: { username: config.user.username }
         });
-        user2Jwt = user2LoginResponse.jwt;
 
-        // Create a notification for user1
-        const notificationResponse = await apiContext.post('/api/notifications', {
-            createdDateTime: new Date().toISOString(),
-            readDateTime: null,
-            user: user1LoginResponse.user.id,
+        const newEvent = await strapiInstance.entityService.create('api::event.event', {
+            data: {
+                title: 'Testing User Access to Notifications',
+                content: 'Testing User Access to Notifications',
+                entityType: "IdeaCard",
+                entityId: testId,
+                createdDateTime: new Date(),
+            },
         });
-        notificationId = notificationResponse.id;
+        const newNotification = await strapiInstance.entityService.create("api::notification.notification", {
+            data: {
+                event: newEvent.id,
+                createdDateTime: new Date(),
+                user: myUser,
+            },
+        });
+        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notification = notifications.data
+            .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
+        expect(notification.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
+        expect(notification.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
+        expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
+
+        const notificationById = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`);
+        expect(notificationById.data.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
+        expect(notificationById.data.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
+        expect(notificationById.data.attributes.user.data.attributes.username).toBe(config.user.username);
     });
 
     test("Ensure notifications are filtered by policy", async ({ request }) => {
-        const apiContext = api(request);
+        const strapiInstance = await strapiConnect();
+        const testId = 9999;
 
-        // Fetch notifications as user1
-        const user1NotificationsResponse = await request.get('/api/notifications', {
-            headers: {
-                Authorization: `Bearer ${user1Jwt}`,
+        const otherUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+            where: { username: config.user2.username }
+        });
+
+        const newEvent = await strapiInstance.entityService.create('api::event.event', {
+            data: {
+                title: 'Testing User Access to Notifications',
+                content: 'Testing User Access to Notifications',
+                entityType: "IdeaCard",
+                entityId: testId,
+                createdDateTime: new Date(),
             },
         });
-        const user1Notifications = await user1NotificationsResponse.json();
-
-        // Validate that notifications for user1 are returned
-        expect(user1Notifications.data.length).toBeGreaterThan(0);
-        expect(user1Notifications.data[0].id).toBe(notificationId);
-
-        // Fetch notifications as user2
-        const user2NotificationsResponse = await request.get('/api/notifications', {
-            headers: {
-                Authorization: `Bearer ${user2Jwt}`,
+        const newNotification = await strapiInstance.entityService.create("api::notification.notification", {
+            data: {
+                event: newEvent.id,
+                createdDateTime: new Date(),
+                user: otherUser,
             },
         });
-        const user2Notifications = await user2NotificationsResponse.json();
+        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notification = notifications.data
+            .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
+        expect(notification).toBeUndefined();
 
-        // Validate that no notifications are returned for user2
-        expect(user2Notifications.data.length).toBe(0);
+        const error = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`, 403);
+        expect(error.error.name).toBe('ForbiddenError');
+
+        const error2 = await api(request).get(`/api/notifications/9999?populate=*`, 404);
+        expect(error2.error.name).toBe('NotFoundError');
+
     });
-});
+})

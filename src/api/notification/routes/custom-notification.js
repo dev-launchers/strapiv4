@@ -6,7 +6,7 @@ module.exports = {
         handler: 'notification.find',
         config: {
           // Attaching the "is-notification-user" policy found at "./src/api/notification/policies/is-notification-user.js".
-          policies: ['api::notification.is-notification-owner']
+          policies: ['api::notification.notification-owner-filter']
         }
       },
       {
@@ -14,7 +14,7 @@ module.exports = {
         path: "/notifications/:id",
         handler: "notification.findOne",
         config: {
-          policies: ["api::notification.is-notification-owner"]
+          policies: ["api::notification.notification-owner-filter"]
         }
       }
     ]

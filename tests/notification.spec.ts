@@ -10,7 +10,7 @@ test.describe('/api/notification', () => {
 
     test("Create new notification on idea create", async ({ request }) => {
         const newIdea = await api(request).post("/api/idea-cards", {
-            ideaName: "Testing2",
+            ideaName: "TestNotificationIdea",
             tagline: "Yay!",
             description: "I am testing",
             targetAudience: "Yes",

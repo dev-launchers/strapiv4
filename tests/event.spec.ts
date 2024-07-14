@@ -8,7 +8,7 @@ test.describe('/api/event', () => {
 
     test("Create new event on idea create", async ({ request }) => {
         const newIdea = await api(request).post("/api/idea-cards", {
-            ideaName: "Testing2",
+            ideaName: "TestEventIdea",
             tagline: "Yay!",
             description: "I am testing",
             targetAudience: "Yes",

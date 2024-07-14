@@ -17,8 +17,8 @@ module.exports = (config, { strapi }) => {
         const handler = ctx.state.route.handler; // for example: "user.me" or "api::profile.profile.findOne"
         const user = ctx.state.user;
         const idx = handler.lastIndexOf(".");
-        const modelName = handler.substring(0, idx);
-        const action = handler.substring(idx + 1);
+        const modelName = handler.substring(0, idx); // for example: "user" or "api::profile.profile"
+        const action = handler.substring(idx + 1); // for example: "me" or "findOne"
         const metadata = strapi.db.metadata;
 
         const fieldsRestricter = new FieldsRestricter(metadata, config);

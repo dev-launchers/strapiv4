@@ -1,9 +1,20 @@
+/***
+ * Main algorithm here: take the response and introspect all attributes, if any attribute is a relation, we take that object and introspect its attributes. 
+ * When relation points to a user or profile, we replace that object with shrunk version, including only allowed fields.
+ * Using private fields in Strapi Schema is not an option, as they are also not available for the user calling `/api/users/me` or `/api/users/:selfId`.
+ * The goal of this middleware is to restrict those fields for non-owner users.
+ * 
+ * Metadata is not properly documented in Strapi. 
+ * It is a Mapa Map-alike object where key is a modelName and value is MetaModel, which contains almost all the same info you can find under `content-types/schema.json`. 
+ * See https://github.com/strapi/strapi/blob/develop/packages/core/database/src/types/index.ts#L216 and https://github.com/strapi/strapi/blob/develop/packages/core/database/src/metadata/metadata.ts
+ */
+
 module.exports = (config, { strapi }) => {
   return async (ctx, next) => {
     await next();
     try {
       if (ctx.request.method === "GET" && ctx.request.url.includes("/api/")) {
-        const handler = ctx.state.route.handler;
+        const handler = ctx.state.route.handler; // for example: "user.me" or "api::profile.profile.findOne"
         const user = ctx.state.user;
         const idx = handler.lastIndexOf(".");
         const modelName = handler.substring(0, idx);

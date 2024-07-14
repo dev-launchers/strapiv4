@@ -1,13 +1,23 @@
 import { request } from '@playwright/test';
 import { bootstrapDatabase } from '../init/common';
 import config from '../init/config';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
 
 async function globalSetup() {
     process.env.NODE_ENV = 'test';
     process.env.FRONTEND_URL = 'not_used';
 
+    if (process.env.TEST_CONTAINER === 'true') {
+        const container = await new PostgreSqlContainer().start();
+        console.log(`PG container started on port ${container.getPort()}`);
+        process.env.DATABASE_PORT = container.getPort().toString();
+        global.postgresContainer = container;
+    }
+
     console.log('Bootstrapping test database...');
-    await bootstrapDatabase();
+    const strapiInstance = await bootstrapDatabase();
+    await strapiInstance.listen();
+    global.strapiInstance = strapiInstance;
 
     const context = await request.newContext({
         baseURL: 'http://localhost:1337',

@@ -26,7 +26,7 @@ test.describe('/api/notification', () => {
         const notification = notifications.data
             .find(item => (item.attributes.event.data.attributes.entityId === newIdea.id && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification.attributes.event.data.attributes.title).toBe("Idea Submitted Successfully");
-        expect(notification.attributes.event.data.attributes.content).toBe(`${config.user.username} added new idea, Testing2 - Yay! is created`);
+        expect(notification.attributes.event.data.attributes.content).toBe(`${config.user.username} added new idea, TestNotificationIdea - Yay! is created`);
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
         expect(notification.attributes.createdDateTime).not.toBeNull();
         expect(notification.attributes.readDateTime).toBeNull();
@@ -41,7 +41,7 @@ test.describe('/api/notification', () => {
         const notifications = await api(request).get("/api/notifications?populate=*");
         const notification = notifications.data.reverse()
             .find(item => (item.attributes.event.data.attributes.entityId === ideaId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
-        expect(notification.attributes.event.data.attributes.title).toBe(`${config.user.username} commented on Testing2`);
+        expect(notification.attributes.event.data.attributes.title).toBe(`${config.user.username} commented on TestNotificationIdea`);
         expect(notification.attributes.event.data.attributes.content).toBe('test comment');
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
         expect(notification.attributes.createdDateTime).not.toBeNull();

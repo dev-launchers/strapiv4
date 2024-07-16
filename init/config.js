@@ -56,7 +56,7 @@ module.exports = {
     isListed: true,
   },
   projectWithoutTeam: {
-    slug: "test-dev-recruiting",
+    slug: "dev-launchers-platform",
     title: "Dev Recruit",
     catchPhase:
       "Join a new Project or Product that aligns with your personal goals!",

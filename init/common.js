@@ -57,14 +57,14 @@ const bootstrapDatabase = async () => {
   console.log("Google auth provider setup");
   const interestId = await createInterests(userId);
   console.log("Interests created");
-  await createProject(interestId, userId);
+  await createProject(interestId, userId, config.project);
   console.log("Project created");
 
   // creating project without associating team
   const userId2 = await createUserWithAuthenticatedRole(roleId, config.user3);
   const interestId2 = await createInterests(userId2);
   console.log("Interests created");
-  await createProjectWithoutTeam(interestId2, userId2);
+  await createProject(interestId2, userId2, config.projectWithoutTeam, true);
   console.log("Project created");
   return instance;
 };
@@ -170,45 +170,36 @@ const createInterests = async (userId) => {
   return interestId;
 };
 
-const createProject = async (interestId, userId) => {
+const createProject = async (interestId, userId, project, addTeam=false) => {
   const service = strapi.service("api::project.project");
-  let existing = await service.findOne({});
+  let existing = await strapi.entityService.findOne("api::project.project", userId);
+
   if (existing) {
     return;
   }
-  config.project.interests = [interestId];
-  config.project.team = {
-    members: [
-      {
-        member: userId,
-        role: "Developer",
-      },
-    ],
-    leaders: [
-      {
-        leader: userId,
-        role: "Project Manager",
-      },
-    ],
-  };
-  existing = await service.create({ data: config.project });
+  project.interests = [interestId];
+  if(!addTeam){
+    project.team = {
+      members: [
+        {
+          member: userId,
+          role: "Developer",
+        },
+      ],
+      leaders: [
+        {
+          leader: userId,
+          role: "Project Manager",
+        },
+      ],
+    };
+  }
+  existing = await service.create({ data: project });
   await strapi.plugins["users-permissions"].services.user.edit(userId, {
     projects: [existing.id],
   });
 };
 
-const createProjectWithoutTeam = async (interestId, userId) => {
-  const service = strapi.service("api::project.project");
-  let existing = await service.findOne(interestId);
-  if (existing) {
-    return;
-  }
-  config.projectWithoutTeam.interests = [interestId];
-  existing = await service.create({ data: config.projectWithoutTeam });
-  await strapi.plugins["users-permissions"].services.user.edit(userId, {
-    projects: [existing.id],
-  });
-};
 module.exports = {
   setupEnv,
   setupStrapi,

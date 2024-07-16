@@ -35,7 +35,7 @@ test.describe('/api/project', () => {
 
     test("Get project when team is not attached to the project", async({request}) => {
         
-        const projectData = await api(request).getData("/api/projects/test-dev-recruiting");
+        const projectData = await api(request).getData("/api/projects/dev-launchers-platform");
         const project = projectData.attributes;
         expect(project.slug).toBe(config.projectWithoutTeam.slug);
         expect(project.team).toBe(null);

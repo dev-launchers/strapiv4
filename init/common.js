@@ -59,13 +59,10 @@ const bootstrapDatabase = async () => {
   console.log("Interests created");
   await createProject(interestId, userId, config.project);
   console.log("Project created");
-
+  
   // creating project without associating team
-  const userId2 = await createUserWithAuthenticatedRole(roleId, config.user3);
-  const interestId2 = await createInterests(userId2);
-  console.log("Interests created");
-  await createProject(interestId2, userId2, config.projectWithoutTeam, true);
-  console.log("Project created");
+  await createProject(interestId, userId, config.projectWithoutTeam, true);
+  console.log("Project created without associated team");
   return instance;
 };
 
@@ -153,7 +150,7 @@ const setupGoogleAuthProvider = async () => {
 
 const createInterests = async (userId) => {
   const service = strapi.service("api::interest.interest");
-  let existing = await service.findOne(userId);
+  let existing = await service.findOne({});
   if (existing) {
     return existing.id;
   }
@@ -171,9 +168,8 @@ const createInterests = async (userId) => {
 };
 
 const createProject = async (interestId, userId, project, addTeam=false) => {
-  const service = strapi.service("api::project.project");
-  let existing = await strapi.entityService.findOne("api::project.project", userId);
-
+  let existing = await strapi.entityService.findMany("api::project.project", {filters: {slug: project.slug}});
+  existing = existing[0];
   if (existing) {
     return;
   }
@@ -194,6 +190,7 @@ const createProject = async (interestId, userId, project, addTeam=false) => {
       ],
     };
   }
+  const service = strapi.service("api::project.project");
   existing = await service.create({ data: project });
   await strapi.plugins["users-permissions"].services.user.edit(userId, {
     projects: [existing.id],

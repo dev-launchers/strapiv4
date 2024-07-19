@@ -8,7 +8,7 @@ test.describe('/api/event', () => {
 
     test("Create new event on idea create", async ({ request }) => {
         const newIdea = await api(request).post("/api/idea-cards", {
-            ideaName: "Testing2",
+            ideaName: "TestEventIdea",
             tagline: "Yay!",
             description: "I am testing",
             targetAudience: "Yes",
@@ -23,7 +23,7 @@ test.describe('/api/event', () => {
         const event = events.data
         .find(item => (item.attributes.entityId === newIdea.id && item.attributes.entityType === "IdeaCard"));
         expect(event.attributes.title).toBe("Idea Submitted Successfully");
-        expect(event.attributes.content).toBe(`${config.user.username} added new idea, Testing2 - Yay! is created`);
+        expect(event.attributes.content).toBe(`${config.user.username} added new idea, TestEventIdea - Yay! is created`);
     });
 
     test("Create new event on idea update", async ({ request }) => {
@@ -33,8 +33,8 @@ test.describe('/api/event', () => {
         const events = await api(request).get("/api/events");
         const event = events.data.reverse()
         .find(item => (item.attributes.entityId === idea.id && item.attributes.entityType === "IdeaCard"));
-        expect(event.attributes.title).toBe("Idea Testing2 was updated");
-        expect(event.attributes.content).toBe(`${config.user.username} has updated idea Testing2`);
+        expect(event.attributes.title).toBe("Idea TestEventIdea was updated");
+        expect(event.attributes.content).toBe(`${config.user.username} has updated idea TestEventIdea`);
     });
 
     test("Create new event on idea stats update", async ({ request }) => {
@@ -44,8 +44,8 @@ test.describe('/api/event', () => {
         const events = await api(request).get("/api/events");
         const event = events.data.reverse()
         .find(item => (item.attributes.entityId === idea.id && item.attributes.entityType === "IdeaCard"));
-        expect(event.attributes.title).toBe("Idea Testing2 is approved");
-        expect(event.attributes.content).toBe(`${config.user.username} has updated idea Testing2 - approved`);
+        expect(event.attributes.title).toBe("Idea TestEventIdea is approved");
+        expect(event.attributes.content).toBe(`${config.user.username} has updated idea TestEventIdea - approved`);
     });
 
     test("Create new event on comment create", async ({ request }) => {
@@ -56,7 +56,7 @@ test.describe('/api/event', () => {
         const events = await api(request).get("/api/events");
         const event = events.data.reverse()
         .find(item => (item.attributes.entityId === ideaId && item.attributes.entityType === "IdeaCard"));
-        expect(event.attributes.title).toBe(`${config.user.username} commented on Testing2`);
+        expect(event.attributes.title).toBe(`${config.user.username} commented on TestEventIdea`);
         expect(event.attributes.content).toBe("test comment");
     });
 

@@ -192,8 +192,15 @@ const createProject = async (interestId, userId, project, addTeam=false) => {
   }
   const service = strapi.service("api::project.project");
   existing = await service.create({ data: project });
+  
+  let userObj = await strapi.entityService.findOne(
+    'plugin::users-permissions.user',
+    userId,
+    { populate: ['projects'] }
+  )
+
   await strapi.plugins["users-permissions"].services.user.edit(userId, {
-    projects: [existing.id],
+    projects: [...userObj.projects, existing.id],
   });
 };
 

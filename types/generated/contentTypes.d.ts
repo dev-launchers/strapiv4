@@ -630,11 +630,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::idea-card.idea-card'
     >;
-    point: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::point.point'
-    >;
     profile: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -833,7 +828,7 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'api::idea-card.idea-card'
     >;
     author: Attribute.String;
-    user: Attribute.Relation<
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1257,53 +1252,6 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
   };
 }
 
-export interface ApiPointPoint extends Schema.CollectionType {
-  collectionName: 'points';
-  info: {
-    singularName: 'point';
-    pluralName: 'points';
-    displayName: 'point';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    totalPoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    totalSeasonPoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    availablePoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    volunteerHours: Attribute.Float &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    user: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiProfileProfile extends Schema.CollectionType {
   collectionName: 'profiles';
   info: {
@@ -1599,7 +1547,6 @@ declare module '@strapi/types' {
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
-      'api::point.point': ApiPointPoint;
       'api::profile.profile': ApiProfileProfile;
       'api::project.project': ApiProjectProject;
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;

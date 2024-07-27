@@ -756,6 +756,12 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     level: Attribute.Enumeration<['beginner', 'intermediate', 'advanced']> &
       Attribute.Required;
     skills: Attribute.Component<'skills.skills', true>;
+    yearsOfExperience: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetMinMax<{
+        min: 0;
+        max: 100;
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1179,12 +1185,18 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    Title: Attribute.String;
-    Content: Attribute.Text;
-    Read: Attribute.Boolean;
-    TimeCreated: Attribute.DateTime;
-    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
-    entityId: Attribute.Integer;
+    createdDateTime: Attribute.DateTime;
+    readDateTime: Attribute.DateTime;
+    user: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    event: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'api::event.event'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

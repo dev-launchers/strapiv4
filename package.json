@@ -11,9 +11,8 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "strapi:test": "strapi develop --no-build",
     "test": "playwright test",
-    "test:postgres": "node ./init/test-postgres.js",
+    "test:postgres": "TEST_CONTAINER=true nyc playwright test",
     "test:coverage": "nyc playwright test"
   },
   "dependencies": {

@@ -26,6 +26,14 @@ module.exports = {
     confirmed: true,
     blocked: null,
   },
+  user2: {
+    username: "tester2",
+    email: "tester2@test.com",
+    provider: "local",
+    password: "k2OSo9Td",
+    confirmed: true,
+    blocked: null,
+  },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {
     slug: "dev-recruiting",

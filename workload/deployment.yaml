@@ -7,6 +7,7 @@ metadata:
     app: strapi
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: strapi
@@ -15,6 +16,13 @@ spec:
       labels:
         app: strapi
     spec:
+      # Prefer to not schedule on the virtual node. But if the cluster is running out of memory, schedule on the virtual node
+      # so at least we have a pod running
+      # https://learn.microsoft.com/en-us/azure/aks/virtual-nodes-cli#deploy-a-sample-app
+      tolerations:
+      - key: virtual-kubelet.io/provider
+        operator: Exists
+        effect: PreferNoSchedule
       volumes:
         - name: google-directory-key
           secret:

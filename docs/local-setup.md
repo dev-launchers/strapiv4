@@ -1,9 +1,15 @@
 ## Backend 
 
 #### Start App
-1. Run `npm run init` first time to install dependencies and initialize your local database
-3. Run `npm run develop`
-4. Go to http://localhost:1337/admin and login using email `local-admin@devlaunchers.org` and password is `W&x5ZzOMtBCVt1YAUiuSzt~5`.
+1. Use Node v20
+
+2. Setup NVM or alternative version manager for easy updates of versions (https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating, https://www.npmjs.com/package/n)
+
+3. Run `npm run init` first time to install dependencies and initialize your local database
+
+4. Run `npm run develop`
+
+5. Go to http://localhost:1337/admin and login using email `local-admin@devlaunchers.org` and password is `W&x5ZzOMtBCVt1YAUiuSzt~5`.
 
 #### Init command will do the following
 

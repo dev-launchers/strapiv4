@@ -10,7 +10,10 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "test": "playwright test",
+    "test:postgres": "TEST_CONTAINER=true nyc playwright test",
+    "test:coverage": "nyc playwright test"
   },
   "dependencies": {
     "@strapi/plugin-documentation": "4.15.0",
@@ -18,7 +21,6 @@
     "@strapi/plugin-sentry": "4.15.0",
     "@strapi/plugin-users-permissions": "4.15.0",
     "@strapi/strapi": "4.15.0",
-    "@strapi/utils": "4.15.5",
     "better-sqlite3": "^9.2.2",
     "discord-webhook-node": "^1.1.8",
     "node-cache": "^5.1.2",
@@ -59,6 +61,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.9"
+    "@babel/eslint-parser": "^7.22.9",
+    "@playwright/test": "^1.42.1",
+    "@testcontainers/postgresql": "^10.9.0",
+    "nyc": "^15.1.0"
   }
 }

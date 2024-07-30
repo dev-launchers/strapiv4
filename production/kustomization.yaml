@@ -7,4 +7,4 @@ bases:
 images:
 - name: devlaunchers/strapi
   newName: devlaunchers/strapi
-  newTag: 1.6.0 # {"$imagepolicy": "strapiv4:strapi:tag"}
+  newTag: 1.7.0 # {"$imagepolicy": "strapiv4:strapi:tag"}

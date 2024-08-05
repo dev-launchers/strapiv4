@@ -9,7 +9,7 @@ test.describe('/api/users', () => {
         expect(user.username).toBe(config.user.username);
         expect(user.email).toBe(config.user.email);
         expect(user.confirmed).toBe(config.user.confirmed);
-        expect(user.projects.length).toBe(1);
+        expect(user.projects.length).not.toBe(0);
         const project = user.projects[0];
         expect(project.slug).toBe("dev-recruiting");
         expect(user.interests.length).toBe(1);

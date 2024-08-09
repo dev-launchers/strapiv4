@@ -64,11 +64,6 @@ module.exports = {
         opportunity: readOnly,
       },
     },
-    "api::point": {
-      controllers: {
-        point: readWrite,
-      },
-    },
     "api::profile": {
       controllers: {
         profile: readWrite,

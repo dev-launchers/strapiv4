@@ -80,12 +80,6 @@
       "target": "api::idea-card.idea-card",
       "mappedBy": "author"
     },
-    "point": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::point.point",
-      "inversedBy": "user"
-    },
     "profile": {
       "type": "relation",
       "relation": "oneToOne",

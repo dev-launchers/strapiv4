@@ -55,6 +55,33 @@
       "relation": "manyToMany",
       "target": "api::project.project",
       "inversedBy": "opportunities"
+    },
+    "roleCategory": {
+      "type": "enumeration",
+      "enum": [
+        "Product / UX",
+        "Development",
+        "QA",
+        "Operations"
+      ],
+      "required": true
+    },
+    "roleType": {
+      "type": "enumeration",
+      "enum": [
+        "Product Lead",
+        "UX Designer",
+        "UX Researcher",
+        "Information Architect",
+        "Lead Developer",
+        "Back-End Developer",
+        "Front-End Developer",
+        "QA Lead",
+        "QA Tester",
+        "Volunteer Coordinator",
+        "Social Media Manager"
+      ],
+      "required": true
     }
   }
 }

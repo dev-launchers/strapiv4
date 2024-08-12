@@ -64,7 +64,8 @@
         "QA",
         "Operations"
       ],
-      "required": true
+      "required": true,
+      "default": "Development"
     },
     "roleType": {
       "type": "enumeration",
@@ -81,7 +82,8 @@
         "Volunteer Coordinator",
         "Social Media Manager"
       ],
-      "required": true
+      "required": true,
+      "default": "Front-End Developer"
     }
   }
 }

@@ -1254,7 +1254,8 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
     roleCategory: Attribute.Enumeration<
       ['Product / UX', 'Development', 'QA', 'Operations']
     > &
-      Attribute.Required;
+      Attribute.Required &
+      Attribute.DefaultTo<'Development'>;
     roleType: Attribute.Enumeration<
       [
         'Product Lead',
@@ -1270,7 +1271,8 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
         'Social Media Manager'
       ]
     > &
-      Attribute.Required;
+      Attribute.Required &
+      Attribute.DefaultTo<'Front-End Developer'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

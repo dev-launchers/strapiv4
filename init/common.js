@@ -56,11 +56,8 @@ const bootstrapDatabase = async () => {
   console.log("Google auth provider setup");
   const interestId = await createInterests(userId);
   console.log("Interests created");
-  await createProject(interestId, userId, config.project);
+  await createProject(interestId, userId);
   console.log("Project created");
-  // creating project without associating team
-  await createProject(interestId, userId, config.projectWithoutTeam, false);
-  console.log("Project created without associated team");
   return instance;
 };
 
@@ -165,40 +162,30 @@ const createInterests = async (userId) => {
   return interestId;
 };
 
-const createProject = async (interestId, userId, project, addTeam=true) => {
-  let existing = await strapi.entityService.findMany("api::project.project", {filters: {slug: project.slug}});
-  existing = existing[0];
+const createProject = async (interestId, userId) => {
+  const service = strapi.service("api::project.project");
+  let existing = await service.findOne({});
   if (existing) {
     return;
   }
-  project.interests = [interestId];
-
-  if(addTeam){
-    project.team = {
-      members: [
-        {
-          member: userId,
-          role: "Developer",
-        },
-      ],
-      leaders: [
-        {
-          leader: userId,
-          role: "Project Manager",
-        },
-      ],
-    };
-  }
-  const service = strapi.service("api::project.project");
-  existing = await service.create({ data: project });
-  let userObj = await strapi.entityService.findOne(
-    'plugin::users-permissions.user',
-    userId,
-    { populate: ['projects'] }
-  )
-
+  config.project.interests = [interestId];
+  config.project.team = {
+    members: [
+      {
+        member: userId,
+        role: "Developer",
+      },
+    ],
+    leaders: [
+      {
+        leader: userId,
+        role: "Project Manager",
+      },
+    ],
+  };
+  existing = await service.create({ data: config.project });
   await strapi.plugins["users-permissions"].services.user.edit(userId, {
-    projects: [...userObj.projects, existing.id],
+    projects: [existing.id],
   });
 };
 

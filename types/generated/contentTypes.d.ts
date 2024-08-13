@@ -1251,6 +1251,28 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
       'manyToMany',
       'api::project.project'
     >;
+    roleCategory: Attribute.Enumeration<
+      ['Product / UX', 'Development', 'QA', 'Operations']
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'Development'>;
+    roleType: Attribute.Enumeration<
+      [
+        'Product Lead',
+        'UX Designer',
+        'UX Researcher',
+        'Information Architect',
+        'Lead Developer',
+        'Back-End Developer',
+        'Front-End Developer',
+        'QA Lead',
+        'QA Tester',
+        'Volunteer Coordinator',
+        'Social Media Manager'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'Front-End Developer'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

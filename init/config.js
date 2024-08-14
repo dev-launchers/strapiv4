@@ -61,4 +61,19 @@ module.exports = {
     calendarId: "c_9c8sc215f8vopmjuj4ogamd7go@group.calendar.google.com",
     discordWebhookUrl: null
   },
+  opportunity: {
+    title: "test opportunity",
+    level: "Beginner",
+    commitmentHoursPerWeek: 2,
+    description: "test opportunity description",
+    expectations: [
+      {
+        "id": 0,
+        "expectation": "test expectation"
+      }
+    ],
+    isHidden: true,
+    roleCategory: "Development",
+    roleType: "Back-End Developer"
+  }
 };

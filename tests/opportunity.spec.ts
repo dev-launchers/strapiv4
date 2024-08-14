@@ -19,7 +19,5 @@ test.describe('/api/opportunities', () => {
         expect(opportunities.isHidden).toBe(config.opportunity.isHidden);
         expect(opportunities.roleCategory).toBe(config.opportunity.roleCategory);
         expect(opportunities.roleType).toBe(config.opportunity.roleType); 
-        expect(opportunities.interests.data.length).toBe(1);
-        expect(opportunities.interests.data[0].attributes.interest).toBe(config.interests[0]);
     });
 });

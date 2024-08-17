@@ -22,7 +22,7 @@ test.describe('/api/notification', () => {
         });
         ideaId = newIdea.id;
 
-        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notifications = await api(request).get("/api/notifications?populate=event");
         const notification = notifications.data
             .find(item => (item.attributes.event.data.attributes.entityId === newIdea.id && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification.attributes.event.data.attributes.title).toBe("Idea Submitted Successfully");
@@ -38,7 +38,7 @@ test.describe('/api/notification', () => {
             idea_card: { id: ideaId },
             text: "test comment"
         });
-        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notifications = await api(request).get("/api/notifications?populate=event");
         const notification = notifications.data.reverse()
             .find(item => (item.attributes.event.data.attributes.entityId === ideaId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification.attributes.event.data.attributes.title).toBe(`${config.user.username} commented on TestNotificationIdea`);
@@ -72,14 +72,14 @@ test.describe('/api/notification', () => {
                 user: myUser,
             },
         });
-        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notifications = await api(request).get("/api/notifications?populate=event");
         const notification = notifications.data
             .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
         expect(notification.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
 
-        const notificationById = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`);
+        const notificationById = await api(request).get(`/api/notifications/${newNotification.id}?populate=event`);
         expect(notificationById.data.attributes.event.data.attributes.title).toBe('Testing User Access to Notifications');
         expect(notificationById.data.attributes.event.data.attributes.content).toBe('Testing User Access to Notifications');
         expect(notificationById.data.attributes.user.data.attributes.username).toBe(config.user.username);
@@ -109,15 +109,15 @@ test.describe('/api/notification', () => {
                 user: otherUser,
             },
         });
-        const notifications = await api(request).get("/api/notifications?populate=*");
+        const notifications = await api(request).get("/api/notifications?populate=event");
         const notification = notifications.data
             .find(item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"));
         expect(notification).toBeUndefined();
 
-        const error = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`, 403);
+        const error = await api(request).get(`/api/notifications/${newNotification.id}?populate=event`, 403);
         expect(error.error.name).toBe('ForbiddenError');
 
-        const error2 = await api(request).get(`/api/notifications/9999?populate=*`, 404);
+        const error2 = await api(request).get(`/api/notifications/9999?populate=event`, 404);
         expect(error2.error.name).toBe('NotFoundError');
 
     });

@@ -762,6 +762,12 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
         min: 0;
         max: 100;
       }>;
+    isAgeOver18: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+    isTermsAgreed: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

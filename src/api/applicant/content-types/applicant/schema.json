@@ -55,7 +55,11 @@
     },
     "level": {
       "type": "enumeration",
-      "enum": ["beginner", "intermediate", "advanced"],
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
       "required": true
     },
     "skills": {
@@ -68,6 +72,16 @@
       "required": true,
       "min": 0,
       "max": 100
+    },
+    "isAgeOver18": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "isTermsAgreed": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

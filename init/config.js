@@ -62,7 +62,6 @@ module.exports = {
     discordWebhookUrl: null
   },
   opportunity: {
-    title: "test opportunity",
     level: "Beginner",
     commitmentHoursPerWeek: 2,
     description: "test opportunity description",
@@ -75,5 +74,6 @@ module.exports = {
     isHidden: true,
     roleCategory: "Development",
     roleType: "Back-End Developer"
-  }
+  },
+  opportunityTitles : ["test opportunity", "test second opportunity"]
 };

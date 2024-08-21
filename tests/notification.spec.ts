@@ -46,6 +46,12 @@ test.describe('/api/notification', () => {
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
         expect(notification.attributes.createdDateTime).not.toBeNull();
         expect(notification.attributes.readDateTime).toBeNull();
+
+        const readDateTime = new Date(Date.now()).toISOString();
+        const updatedNotification = await api(request).put(`/api/notifications/${notification.id}`, {
+            readDateTime: readDateTime,
+        });
+        expect(updatedNotification.attributes.readDateTime).toBe(readDateTime);
     });
 
     test("Ensure notifications are allowed by policy", async ({ request }) => {

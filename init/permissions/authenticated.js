@@ -9,6 +9,11 @@ const readOnly = {
   find: { enabled: true, policy: "" },
   findOne: { enabled: true, policy: "" },
 }
+const readAndUpdate = {
+  find: { enabled: true, policy: "" },
+  findOne: { enabled: true, policy: "" },
+  update: { enabled: true, policy: "" },
+}
 
 module.exports = {
   name: "Authenticated",
@@ -51,7 +56,7 @@ module.exports = {
     },
     "api::notification": {
       controllers: {
-        notification: readOnly,
+        notification: readAndUpdate,
       },
     },
     "api::subscription": {
@@ -62,11 +67,6 @@ module.exports = {
     "api::opportunity": {
       controllers: {
         opportunity: readOnly,
-      },
-    },
-    "api::point": {
-      controllers: {
-        point: readWrite,
       },
     },
     "api::profile": {

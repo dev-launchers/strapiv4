@@ -5,7 +5,7 @@ on:
     types: [created, published]
   push:
     branches:
-      - staging
+      - main
 
 jobs:
   publish:

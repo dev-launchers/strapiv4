@@ -1131,8 +1131,8 @@ export interface ApiLikeLike extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
-    objectId: Attribute.UID;
     objectType: Attribute.Enumeration<['Comment', 'IdeaCard']>;
+    objectId: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

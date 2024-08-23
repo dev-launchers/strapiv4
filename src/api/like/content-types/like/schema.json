@@ -17,15 +17,15 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "objectId": {
-      "type": "uid"
-    },
     "objectType": {
       "type": "enumeration",
       "enum": [
         "Comment",
         "IdeaCard"
       ]
+    },
+    "objectId": {
+      "type": "biginteger"
     }
   }
 }

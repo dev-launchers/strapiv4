@@ -47,4 +47,18 @@ module.exports = {
     signupFormUrl: "http://localhost:3000",
     isListed: true,
   },
+  projectWithoutTeam: {
+    slug: "dev-launchers-platform",
+    title: "Dev Recruit",
+    catchPhase:
+      "Join a new Project or Product that aligns with your personal goals!",
+    vision:
+      "Dev Recruit will allow members and non-members to browse ideas, products and projects.",
+    description: "Dev Recruit Project",
+    commitmentLevel: "Medium to High",
+    signupFormUrl: "http://localhost:3000",
+    isListed: true,
+    calendarId: "c_9c8sc215f8vopmjuj4ogamd7go@group.calendar.google.com",
+    discordWebhookUrl: null
+  },
 };

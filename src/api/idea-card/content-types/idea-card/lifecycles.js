@@ -13,7 +13,7 @@ module.exports = {
 
     const ctx = strapi.requestContext.get();
 
-    strapi.entityService.create('api::subscription.subscription', {
+    await strapi.entityService.create('api::subscription.subscription', {
       data: {
         entityType: "IdeaCard",
         entityId: id,
@@ -23,7 +23,7 @@ module.exports = {
       },
     });
 
-    strapi.entityService.create('api::event.event', {
+    await strapi.entityService.create('api::event.event', {
       data: {
         title:"Idea Submitted Successfully",
         content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
@@ -54,7 +54,7 @@ module.exports = {
     const title = statusChanged ? `Idea ${ideaName} is ${status}` : `Idea ${ideaName} was updated`;
     const content = statusChanged ? `${userName} has updated idea ${ideaName} - ${status}` : `${userName} has updated idea ${ideaName}`;
 
-    strapi.entityService.create('api::event.event', {
+    await strapi.entityService.create('api::event.event', {
       data: {
         title,
         content,

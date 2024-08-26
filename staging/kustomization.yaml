@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: strapiv4-staging
 bases:
+- ../workload
 - ./configmap.yaml
-- ./kservice.yaml
 images:
 - name: devlaunchers/strapi
   newName: devlaunchers/strapi
-  newTag: d4da8f4-202407152231 # {"$imagepolicy": "strapiv4-staging:strapi:tag"}
+  newTag: a8957fc-202408230029 # {"$imagepolicy": "strapiv4-staging:strapi:tag"}

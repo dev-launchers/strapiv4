@@ -630,11 +630,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::idea-card.idea-card'
     >;
-    point: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::point.point'
-    >;
     profile: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -1136,8 +1131,8 @@ export interface ApiLikeLike extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
-    objectId: Attribute.UID;
     objectType: Attribute.Enumeration<['Comment', 'IdeaCard']>;
+    objectId: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1251,6 +1246,28 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
       'manyToMany',
       'api::project.project'
     >;
+    roleCategory: Attribute.Enumeration<
+      ['Product / UX', 'Development', 'QA', 'Operations']
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'Development'>;
+    roleType: Attribute.Enumeration<
+      [
+        'Product Lead',
+        'UX Designer',
+        'UX Researcher',
+        'Information Architect',
+        'Lead Developer',
+        'Back-End Developer',
+        'Front-End Developer',
+        'QA Lead',
+        'QA Tester',
+        'Volunteer Coordinator',
+        'Social Media Manager'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'Front-End Developer'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1262,53 +1279,6 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::opportunity.opportunity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiPointPoint extends Schema.CollectionType {
-  collectionName: 'points';
-  info: {
-    singularName: 'point';
-    pluralName: 'points';
-    displayName: 'point';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    totalPoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    totalSeasonPoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    availablePoints: Attribute.Integer &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    volunteerHours: Attribute.Float &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    user: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::point.point',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::point.point',
       'oneToOne',
       'admin::user'
     > &
@@ -1611,7 +1581,6 @@ declare module '@strapi/types' {
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
-      'api::point.point': ApiPointPoint;
       'api::profile.profile': ApiProfileProfile;
       'api::project.project': ApiProjectProject;
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;

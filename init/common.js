@@ -61,8 +61,10 @@ const bootstrapDatabase = async () => {
   // creating project without associating team
   await createProject(interestId, userId, config.projectWithoutTeam, false);
   console.log("Project created without associated team");
-  await createOpportunities(interestId);
-  console.log("Opportunities created");
+  await createOpportunity(interestId, config.firstOpportunity);
+  console.log("First opportunity created");
+  await createOpportunity(interestId, config.secondOpportunity);
+  console.log("Second opportunity created");
   return instance;
 };
 
@@ -204,21 +206,17 @@ const createProject = async (interestId, userId, project, addTeam=true) => {
   });
 };
 
-const createOpportunities = async (interestId) => {
-  let opportunity = config.opportunity
-  for (let index = 0; index < config.opportunityTitles.length; index++) {
-    opportunity.title = config.opportunityTitles[index]
+const createOpportunity = async (interestId, opportunity) => {
     let existing = await strapi.entityService.findMany("api::opportunity.opportunity", {filters: {title: opportunity.title}});
     existing = existing[0];
     if (existing) {
       return;
     }
   
-    config.opportunity.interests = [interestId];
+    opportunity.interests = [interestId];
     
     const service = strapi.service("api::opportunity.opportunity");
-    existing = await service.create({ data: config.opportunity });
-  }
+    existing = await service.create({ data: opportunity });
 };
 
 module.exports = {
@@ -234,5 +232,5 @@ module.exports = {
   setupGoogleAuthProvider,
   createInterests,
   createProject,
-  createOpportunities,
+  createOpportunity,
 };

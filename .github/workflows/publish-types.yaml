@@ -23,6 +23,6 @@ jobs:
         run: npm install
 
       - name: Publish types
-        run: cd types/generated && npm publish
+        run: cd types && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

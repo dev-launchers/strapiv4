@@ -13,8 +13,7 @@
     "strapi": "strapi",
     "test": "playwright test",
     "test:postgres": "TEST_CONTAINER=true nyc playwright test",
-    "test:coverage": "nyc playwright test",
-     "install-all": "npm install --prefix /home/runner/work/strapiv4/strapiv4/"
+    "test:coverage": "nyc playwright test"
   },
   "dependencies": {
     "@strapi/plugin-documentation": "4.15.0",

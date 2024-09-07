@@ -61,6 +61,8 @@ const bootstrapDatabase = async () => {
   // creating project without associating team
   await createProject(interestId, userId, config.projectWithoutTeam, false);
   console.log("Project created without associated team");
+  await createProfile();
+  console.log("Profile created");
   return instance;
 };
 
@@ -202,6 +204,11 @@ const createProject = async (interestId, userId, project, addTeam=true) => {
   });
 };
 
+const createProfile = async () => {
+  const service = strapi.service("api::profile.profile");
+  const newProfile = await service.create({ data: config.profile });
+};
+
 module.exports = {
   setupEnv,
   setupStrapi,
@@ -215,4 +222,5 @@ module.exports = {
   setupGoogleAuthProvider,
   createInterests,
   createProject,
+  createProfile,
 };

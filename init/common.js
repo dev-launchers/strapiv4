@@ -89,6 +89,9 @@ const createUserWithAuthenticatedRole = async (roleId, user) => {
     );
   } else {
     result = await strapi.plugins["users-permissions"].services.user.add(user);
+    if (user.profile) {
+      await strapi.service("api::profile.profile").create({data: {user: result.id, ...user.profile}});
+    }
   }
   return result.id;
 };

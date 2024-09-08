@@ -35,6 +35,12 @@ module.exports = {
     blocked: null,
   },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
+  profile: {
+    location: 'San Francisco, CA',
+    role: 'Software Engineer',
+    headline: 'Software Engineer',
+    website: 'https://www.example.com'
+  },
   project: {
     slug: "dev-recruiting",
     title: "Dev Recruit",

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "profile",
     "pluralName": "profiles",
-    "displayName": "profile",
+    "displayName": "Profile",
     "description": ""
   },
   "options": {
@@ -44,6 +44,18 @@
       "config": {
         "provider": "azure-storage"
       }
+    },
+    "location": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "headline": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
     }
   }
 }

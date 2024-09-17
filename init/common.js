@@ -210,20 +210,21 @@ const createOpportunities = async (interestId) => {
     try{
       let existing = await strapi.entityService.findMany("api::opportunity.opportunity", {filters: {title: config.opportunity[index].title}});
       existing = existing[0];
+
+      if (existing) {
+        return;
+      }
+      
+      config.opportunity[index].interests = [interestId];
+      
+      const service = strapi.service("api::opportunity.opportunity");
+      await service.create({ data: config.opportunity[index] });
+      
     }
     catch (e){
       console.log(`Could not create opportunity due to an error ${e}`)
       continue
     }
-    
-    if (existing) {
-      return;
-    }
-    
-    config.opportunity[index].interests = [interestId];
-    
-    const service = strapi.service("api::opportunity.opportunity");
-    await service.create({ data: config.opportunity[index] });
   }
 };
 

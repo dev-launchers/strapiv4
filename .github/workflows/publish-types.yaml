@@ -7,6 +7,14 @@ on:
     branches:
       - main
 
+    paths-ignore:
+      # Ignore when changes is made by flux
+      - 'staging/**'
+      - 'production/**'
+      # Ignore markdown files
+      - "**/*.md"
+    # Allows you to run this workflow manually from the Actions tab
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -18,6 +26,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
+          registry-url : 'https://registry.npmjs.org'
+
+      - name: Configure npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Install dependencies
         run: npm install

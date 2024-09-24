@@ -762,6 +762,12 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
         min: 0;
         max: 100;
       }>;
+    isAgeOver18: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+    isTermsAgreed: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -896,6 +902,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
     singularName: 'event';
     pluralName: 'events';
     displayName: 'Event';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -906,6 +913,11 @@ export interface ApiEventEvent extends Schema.CollectionType {
     title: Attribute.String;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
+    eventUser: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

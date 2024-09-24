@@ -1,0 +1,12 @@
+{
+  "name": "devlaunchers-strapi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "publish:types": "npm publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

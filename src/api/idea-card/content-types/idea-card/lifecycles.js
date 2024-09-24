@@ -10,8 +10,8 @@ module.exports = {
   async afterCreate(event) {
     const { id: id, ideaName: ideaName, createdAt: timeCreated, tagline: tagline } = event.result;
     const author = event.params.data.author.username;
-
     const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
 
     await strapi.entityService.create('api::subscription.subscription', {
       data: {
@@ -19,7 +19,7 @@ module.exports = {
         entityId: id,
         createdDateTime: new Date(),
         active: true,
-        user: ctx.state.user,
+        user: user,
       },
     });
 
@@ -29,6 +29,7 @@ module.exports = {
         content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
         entityType: "IdeaCard",
         entityId: id,
+        eventUser: user,
         createdDateTime: timeCreated,
       },
     });
@@ -60,11 +61,10 @@ module.exports = {
         content,
         entityType: 'IdeaCard',
         entityId: id,
+        eventUser: user,
         createdDateTime: new Date(),
       },
     });
   },
 
 }
-
-

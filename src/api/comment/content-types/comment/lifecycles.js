@@ -22,6 +22,7 @@ module.exports = {
         content: commentText,
         entityType: "IdeaCard",
         entityId: idea?.id,
+        eventUser: user?.id,
         createdDateTime: new Date(),
       },
     });
@@ -29,4 +30,3 @@ module.exports = {
   }
 
 }
-

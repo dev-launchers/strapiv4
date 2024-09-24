@@ -902,6 +902,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
     singularName: 'event';
     pluralName: 'events';
     displayName: 'Event';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -912,6 +913,11 @@ export interface ApiEventEvent extends Schema.CollectionType {
     title: Attribute.String;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
+    eventUser: Attribute.Relation<
+      'api::event.event',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

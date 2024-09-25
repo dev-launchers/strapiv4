@@ -1,19 +1,17 @@
 name: Publish Types
 
 on:
-  release:
-    types: [created, published]
+
   push:
     branches:
       - main
 
     paths-ignore:
-      # Ignore when changes is made by flux
+
       - 'staging/**'
       - 'production/**'
-      # Ignore markdown files
+     
       - "**/*.md"
-    # Allows you to run this workflow manually from the Actions tab
 
 jobs:
   publish:
@@ -29,7 +27,9 @@ jobs:
           registry-url : 'https://registry.npmjs.org'
 
       - name: Configure npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "registry=https://registry.npmjs.org" >> ~/.npmrc
 
       - name: Install dependencies
         run: npm install

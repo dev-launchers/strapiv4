@@ -1,11 +1,17 @@
 name: Publish Types
 
 on:
-  release:
-    types: [created, published]
+
   push:
     branches:
       - main
+
+    paths-ignore:
+
+      - 'staging/**'
+      - 'production/**'
+     
+      - "**/*.md"
 
 jobs:
   publish:
@@ -18,6 +24,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
+          registry-url : 'https://registry.npmjs.org'
+
+      - name: Configure npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          echo "registry=https://registry.npmjs.org" >> ~/.npmrc
 
       - name: Install dependencies
         run: npm install

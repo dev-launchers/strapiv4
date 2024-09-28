@@ -275,6 +275,19 @@ export interface RepoChangesRepoChanges extends Schema.Component {
   };
 }
 
+export interface RoleRole extends Schema.Component {
+  collectionName: 'components_role_roles';
+  info: {
+    displayName: 'role';
+  };
+  attributes: {
+    category: Attribute.Enumeration<
+      ['Product / UX', 'Development', 'QA', 'Operations', 'Other']
+    >;
+    name: Attribute.String;
+  };
+}
+
 export interface SkillsSkills extends Schema.Component {
   collectionName: 'components_skills_skills';
   info: {
@@ -309,6 +322,7 @@ declare module '@strapi/types' {
       'project.project-milestones': ProjectProjectMilestones;
       'project.task': ProjectTask;
       'repo-changes.repo-changes': RepoChangesRepoChanges;
+      'role.role': RoleRole;
       'skills.skills': SkillsSkills;
     }
   }

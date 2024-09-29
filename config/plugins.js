@@ -64,5 +64,22 @@ module.exports = ({ env }) => ({
         name: "strapi-prometheus",
       },
     }
-  }
+  },
+  email: {
+    config: {
+      provider: 'nodemailer',
+      providerOptions: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        auth: {
+          user: "email@gmail.com", // edit here
+          pass: "zzzz zzzz zzzz zzzz", // edit here
+        },
+      },
+      settings: {
+        defaultFrom: 'hello@example.com',
+        defaultReplyTo: 'hello@example.com',
+      },
+    },
+  },
 });

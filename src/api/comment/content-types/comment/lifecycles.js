@@ -21,7 +21,7 @@ module.exports = {
         action: "Commented",
         entityName: commentText,
         content: `${user.username} commented on idea: ${idea?.ideaName}`,
-        entityType: "IdeaCard",
+        entityType: "Comment",
         entityId: idea?.id,
         eventUser: user?.id,
         createdDateTime: new Date(),

@@ -909,7 +909,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
   };
   attributes: {
     entityId: Attribute.Integer;
-    entityType: Attribute.Enumeration<['IdeaCard']>;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
     eventUser: Attribute.Relation<

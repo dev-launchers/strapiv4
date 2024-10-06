@@ -910,7 +910,6 @@ export interface ApiEventEvent extends Schema.CollectionType {
   attributes: {
     entityId: Attribute.Integer;
     entityType: Attribute.Enumeration<['IdeaCard']>;
-    title: Attribute.String;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
     eventUser: Attribute.Relation<
@@ -918,6 +917,10 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    action: Attribute.Enumeration<
+      ['Idea Created', 'Idea Updated', 'Commented', 'Liked']
+    >;
+    entityName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -21,9 +21,6 @@
         "IdeaCard"
       ]
     },
-    "title": {
-      "type": "string"
-    },
     "content": {
       "type": "text"
     },
@@ -34,6 +31,18 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "action": {
+      "type": "enumeration",
+      "enum": [
+        "Idea Created",
+        "Idea Updated",
+        "Commented",
+        "Liked"
+      ]
+    },
+    "entityName": {
+      "type": "string"
     }
   }
 }

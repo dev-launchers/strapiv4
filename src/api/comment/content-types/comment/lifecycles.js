@@ -18,9 +18,10 @@ module.exports = {
 
     strapi.entityService.create('api::event.event', {
       data: {
-        title: `${user.username} commented on ${idea?.ideaName}`,
-        content: commentText,
-        entityType: "IdeaCard",
+        action: "Commented",
+        entityName: commentText,
+        content: `${user.username} commented on idea: ${idea?.ideaName}`,
+        entityType: "Comment",
         entityId: idea?.id,
         eventUser: user?.id,
         createdDateTime: new Date(),

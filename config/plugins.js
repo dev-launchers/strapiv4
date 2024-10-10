@@ -72,13 +72,13 @@ module.exports = ({ env }) => ({
         host: 'smtp.gmail.com',
         port: 465,
         auth: {
-          user: "email@gmail.com", // edit here
-          pass: "zzzz zzzz zzzz zzzz", // edit here
+          user: env('NODE_MAILER_EMAIL'),
+          pass: env('NODE_MAILER_PASSWORD')
         },
       },
       settings: {
-        defaultFrom: 'hello@example.com',
-        defaultReplyTo: 'hello@example.com',
+        defaultFrom: env('NODE_MAILER_EMAIL'),
+        defaultReplyTo: env('NODE_MAILER_EMAIL'),
       },
     },
   },

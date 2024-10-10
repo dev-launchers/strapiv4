@@ -61,7 +61,7 @@ module.exports = {
     calendarId: "c_9c8sc215f8vopmjuj4ogamd7go@group.calendar.google.com",
     discordWebhookUrl: null
   },
-  opportunity : [{
+  opportunity: [{
     title: "test opportunity",
     level: "Beginner",
     commitmentHoursPerWeek: 2,
@@ -74,7 +74,12 @@ module.exports = {
     ],
     isHidden: true,
     roleCategory: "Development",
-    roleType: "Back-End Developer"
+    roleType: "Back-End Developer",
+    role: {
+      "id": 1,
+      "name": "Back-End Developer",
+      "category": "Development"
+    }
   },
   {
     title: "test second opportunity",
@@ -88,7 +93,12 @@ module.exports = {
       }
     ],
     isHidden: true,
-    roleCategory: "Development",
-    roleType: "Back-End Developer"
+    roleCategory: "Product / UX",
+    roleType: "Product Lead",
+    role: {
+      "id": 2,
+      "name": "Product Lead",
+      "category": "Product / UX"
+    }
   }]
 };

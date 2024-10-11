@@ -25,7 +25,8 @@ module.exports = {
 
     await strapi.entityService.create('api::event.event', {
       data: {
-        title:"Idea Submitted Successfully",
+        action:"Idea Created",
+        entityName: ideaName,
         content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
         entityType: "IdeaCard",
         entityId: id,
@@ -57,7 +58,8 @@ module.exports = {
 
     await strapi.entityService.create('api::event.event', {
       data: {
-        title,
+        action: "Idea Updated",
+        entityName: ideaName,
         content,
         entityType: 'IdeaCard',
         entityId: id,

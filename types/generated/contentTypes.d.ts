@@ -918,7 +918,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     action: Attribute.Enumeration<
-      ['Idea Created', 'Idea Updated', 'Commented', 'Liked']
+      ['Idea Created', 'Idea Updated', 'Commented', 'Liked', 'Test']
     >;
     entityName: Attribute.String;
     createdAt: Attribute.DateTime;
@@ -1505,7 +1505,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    entityType: Attribute.Enumeration<['IdeaCard']>;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
     entityId: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

@@ -49,7 +49,8 @@ test.describe('/api/comments', () => {
             text: "test comment"
         });
         commentId = newComment.id;
-        expect(newComment.attributes.text).toBe("test comment");
+        const comment = await api(request).getData(`/api/comments/${commentId}`);
+        expect(comment.attributes.text).toBe("test comment");
     });
 
     test("should list comments", async ({ request }) => {

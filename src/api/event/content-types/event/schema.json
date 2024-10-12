@@ -39,7 +39,8 @@
         "Idea Created",
         "Idea Updated",
         "Commented",
-        "Liked"
+        "Liked",
+        "Test"
       ]
     },
     "entityName": {

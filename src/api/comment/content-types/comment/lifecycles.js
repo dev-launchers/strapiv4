@@ -16,13 +16,24 @@ module.exports = {
     const idea = comment.idea_card;
     const user = comment.user;
 
+    await strapi.entityService.create('api::subscription.subscription', {
+      data: {
+        entityType: "Comment",
+        entityId: commentId,
+        createdDateTime: new Date(),
+        active: true,
+        user: user,
+      },
+    });
+
+
     strapi.entityService.create('api::event.event', {
       data: {
         action: "Commented",
         entityName: commentText,
         content: `${user.username} commented on idea: ${idea?.ideaName}`,
         entityType: "Comment",
-        entityId: idea?.id,
+        entityId: commentId,
         eventUser: user?.id,
         createdDateTime: new Date(),
       },

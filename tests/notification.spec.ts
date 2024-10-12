@@ -63,9 +63,6 @@ test.describe('/api/notification', () => {
                 item.attributes.event?.data?.attributes?.entityType === "Comment"
         );
 
-        console.log("Testing 0003")
-        console.log(config.user)
-
         // Schema Checks
         expect(notification).toBeDefined();
         expect(notification.attributes.event.data.attributes.action).toBe("Commented");

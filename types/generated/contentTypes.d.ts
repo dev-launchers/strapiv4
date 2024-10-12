@@ -909,8 +909,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
   };
   attributes: {
     entityId: Attribute.Integer;
-    entityType: Attribute.Enumeration<['IdeaCard']>;
-    title: Attribute.String;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
     content: Attribute.Text;
     createdDateTime: Attribute.DateTime;
     eventUser: Attribute.Relation<
@@ -918,6 +917,10 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    action: Attribute.Enumeration<
+      ['Idea Created', 'Idea Updated', 'Commented', 'Liked', 'Test']
+    >;
+    entityName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1502,7 +1505,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    entityType: Attribute.Enumeration<['IdeaCard']>;
+    entityType: Attribute.Enumeration<['IdeaCard', 'Comment']>;
     entityId: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

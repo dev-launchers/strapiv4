@@ -89,6 +89,15 @@ module.exports = createCoreController(modelUid, ({ strapi }) => ({
       }
     };
     //return
-    uploadSingleFile(files["name"], files["type"], files.path);
+    try {
+      const uploadResponse = await uploadSingleFile(
+        files["name"],
+        files["type"],
+        files.path
+      );
+      console.log(uploadResponse);
+    } catch (err) {
+      console.log(`error in upload ${err}`);
+    }
   },
 }));

@@ -12,7 +12,8 @@ module.exports = createCoreController(modelUid, ({ strapi }) => ({
       "service_account.json"
     );
     //console.log(SERVICE_ACCOUNT_PATH);
-    const SCOPES = ["https://www.googleapis.com/auth/drive.file"];
+    const SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"];
+    //https://www.googleapis.com/auth/drive.metadata.readonly
     const GOOGLEACCOUNT = "meenashi.s@devlaunchers.com";
     const auth = new google.auth.GoogleAuth({
       keyFile: SERVICE_ACCOUNT_PATH,

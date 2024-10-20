@@ -30,7 +30,8 @@
     "entityType": {
       "type": "enumeration",
       "enum": [
-        "IdeaCard"
+        "IdeaCard",
+        "Comment"
       ]
     },
     "entityId": {

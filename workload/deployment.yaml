@@ -145,6 +145,16 @@ spec:
           value: info
         - name: AUDIT_FREQ_MINUTES
           value: "60"
+        - name: NODE_MAILER_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: nodemailer
+              key: user
+        - name: NODE_MAILER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nodemailer
+              key: password
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:

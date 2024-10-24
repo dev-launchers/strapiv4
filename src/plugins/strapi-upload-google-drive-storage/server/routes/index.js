@@ -17,4 +17,13 @@ module.exports = [
       auth: false,
     },
   },
+  {
+    method: "GET",
+    path: "/find",
+    handler: "mySecondController.find",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
 ];

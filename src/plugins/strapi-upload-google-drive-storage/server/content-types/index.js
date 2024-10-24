@@ -1,3 +1,3 @@
-'use strict';
-
-module.exports = {};
+"use strict";
+const elif = require("./elif/");
+module.exports = { elif };

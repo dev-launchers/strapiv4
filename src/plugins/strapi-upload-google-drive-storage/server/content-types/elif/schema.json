@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "elifs",
+  "info": {
+    "singularName": "elif",
+    "pluralName": "elifs",
+    "displayName": "elif"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  }
+}

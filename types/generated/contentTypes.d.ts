@@ -683,6 +683,38 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface PluginStrapiUploadGoogleDriveStorageElif
+  extends Schema.CollectionType {
+  collectionName: 'elifs';
+  info: {
+    singularName: 'elif';
+    pluralName: 'elifs';
+    displayName: 'elif';
+  };
+  options: {
+    draftAndPublish: false;
+    comment: '';
+  };
+  attributes: {
+    name: Attribute.String;
+    type: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::strapi-upload-google-drive-storage.elif',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::strapi-upload-google-drive-storage.elif',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginI18NLocale extends Schema.CollectionType {
   collectionName: 'i18n_locale';
   info: {
@@ -1579,6 +1611,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::strapi-upload-google-drive-storage.elif': PluginStrapiUploadGoogleDriveStorageElif;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::applicant.applicant': ApiApplicantApplicant;
       'api::category.category': ApiCategoryCategory;

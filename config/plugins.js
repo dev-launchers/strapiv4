@@ -63,6 +63,10 @@ module.exports = ({ env }) => ({
       customLabels: {
         name: "strapi-prometheus",
       },
-    }
-  }
+    },
+  },
+  "strapi-upload-google-drive-storage": {
+    enabled: true,
+    resolve: "./src/plugins/strapi-upload-google-drive-storage",
+  },
 });

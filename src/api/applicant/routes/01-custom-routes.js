@@ -10,5 +10,14 @@ module.exports = {
         //controllers: ["api::applicant.controller"],
       },
     },
+    {
+      method: "POST",
+      path: "/uploadf",
+      handler: "controller.uploadf",
+      config: {
+        auth: false,
+        //controllers: ["api::applicant.controller"],
+      },
+    },
   ],
 };

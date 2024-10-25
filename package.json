@@ -31,6 +31,7 @@
     "strapi-plugin-populate-deep": "^3.0.0",
     "strapi-prometheus": "^1.8.1",
     "strapi-provider-upload-azure-storage": "^3.1.3",
+    "strapiv4-provider-to-google-drive": "file:../../strapiv4uploadgoogledrive",
     "typescript": "^4.7.4"
   },
   "author": {

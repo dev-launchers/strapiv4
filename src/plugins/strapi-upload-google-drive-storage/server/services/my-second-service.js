@@ -10,4 +10,18 @@ module.exports = ({ strapi }) => ({
       query
     );
   },
+
+  async delete(id) {
+    return await strapi.entityService.delete(
+      "plugin::strapi-upload-google-drive-storage.elif",
+      id
+    );
+  },
+
+  async create(data) {
+    return await strapi.entityService.create(
+      "plugin::strapi-upload-google-drive-storage.elif",
+      data
+    );
+  },
 });

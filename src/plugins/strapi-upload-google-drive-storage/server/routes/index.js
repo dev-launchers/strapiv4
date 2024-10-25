@@ -26,4 +26,22 @@ module.exports = [
       auth: false,
     },
   },
+  {
+    method: "POST",
+    path: "/create",
+    handler: "mySecondController.create",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
+  {
+    method: "DELETE",
+    path: "/delete/:id",
+    handler: "mySecondController.delete",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
 ];

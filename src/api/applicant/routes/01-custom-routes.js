@@ -12,8 +12,17 @@ module.exports = {
     },
     {
       method: "POST",
-      path: "/uploadf",
-      handler: "controller.uploadf",
+      path: "/upload",
+      handler: "controller.upload",
+      config: {
+        auth: false,
+        //controllers: ["api::applicant.controller"],
+      },
+    },
+    {
+      method: "DELETE",
+      path: "/delete",
+      handler: "controller.delete",
       config: {
         auth: false,
         //controllers: ["api::applicant.controller"],

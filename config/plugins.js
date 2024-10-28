@@ -1,5 +1,5 @@
 module.exports = ({ env }) => ({
-  upload: {
+  /*  upload: {
     config: {
       provider: "strapi-provider-upload-azure-storage",
       providerOptions: {
@@ -11,7 +11,7 @@ module.exports = ({ env }) => ({
         maxConcurrent: 10
       },
     },
-  },
+  },*/
   sentry: {
     enabled: true,
     config: {
@@ -63,6 +63,23 @@ module.exports = ({ env }) => ({
       customLabels: {
         name: "strapi-prometheus",
       },
-    }
-  }
+    },
+  },
+  "strapi-provider-upload-google-storage": {
+    enabled: true,
+    resolve: "./src/plugins/strapi-provider-upload-google-storage",
+  },
+  upload: {
+    config: {
+      provider: "strapi-provider-upload-google-storage",
+      providerOptions: {
+        publicFiles: true,
+        uniform: false,
+
+        serviceAccount: env.json("SERVICE_ACCOUNT"), // replace `{}` with your serviceAccount JSON object
+        //baseUrl: 'https://storage.googleapis.com/{bucket-name}',
+        //basePath: '',
+      },
+    },
+  },
 });

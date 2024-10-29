@@ -78,11 +78,22 @@ module.exports = [
       sameSite: process.env.NODE_ENV === "development" ? 'Lax' : 'None',
     },
   },
-  'strapi::poweredBy',
-  'strapi::logger',
-  'strapi::query',
-  'strapi::body',
-  'strapi::favicon',
-  'strapi::public',
-  'plugin::users-permissions.jwt',
+
+  "strapi::poweredBy",
+  "strapi::logger",
+  "strapi::query",
+  //"strapi::body",
+  "strapi::favicon",
+  "strapi::public",
+  "plugin::users-permissions.jwt",
+  {
+    name: "strapi::body",
+    config: {
+      enabled: true,
+      multipart: true, // Enable multipart parsing for file uploads
+      formidable: {
+        maxFileSize: 200 * 1024 * 1024, // Optional: Increase file size limit (e.g., 200MB)
+      },
+    },
+  },
 ];

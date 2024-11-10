@@ -25,6 +25,10 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    professionalRole: {
+      "category": "Development",
+      "name": "Fullstack Developer"
+    }
   },
   user2: {
     username: "tester2",
@@ -33,6 +37,10 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    professionalRole: {
+      "category": "Product / UX",
+      "name": "UX Researcher"
+    }
   },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {

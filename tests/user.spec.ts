@@ -15,6 +15,8 @@ test.describe('/api/users', () => {
         expect(user.interests.length).toBe(1);
         const interest = user.interests[0];
         expect(interest.interest).toBe(config.interests[0]);
+        expect(user.professionalRole.category).toBe(config.user.professionalRole.category);
+        expect(user.professionalRole.name).toBe(config.user.professionalRole.name);
     });
 
     test("should show user by id if allowed", async ({ request }) => {

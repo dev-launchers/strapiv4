@@ -758,6 +758,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::subscription.subscription'
     >;
+    professionalRole: Attribute.Component<'role.role'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -933,6 +934,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
     >;
     author: Attribute.String;
     user: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'

@@ -165,6 +165,11 @@
       "relation": "oneToMany",
       "target": "api::subscription.subscription",
       "mappedBy": "user"
+    },
+    "professionalRole": {
+      "type": "component",
+      "repeatable": false,
+      "component": "role.role"
     }
   }
 }

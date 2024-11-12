@@ -26,7 +26,13 @@ test.describe('/api/users', () => {
         expect(user.confirmed).toBe(config.user.confirmed);
     });
 
-    test.fixme("should not show user by id if other", async ({ request }) => {
-        await api(request).get("/api/users/2", 403);
+    test("should not show user details id if other", async ({ request }) => {
+        const user = await api(request).get("/api/users/2?populate=profile");
+        expect(user.username).toBe(config.user2.username);
+        expect(user.email).toBeUndefined();
+        expect(user.confirmed).toBeUndefined();
+        expect(user.profile.profilePictureUrl).toBe(config.user2.profile.profilePictureUrl);
+        expect(user.profile.displayName).toBe(config.user2.profile.displayName);
+        expect(user.profile.bio).toBeUndefined();
     });
 });

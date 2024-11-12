@@ -21,7 +21,7 @@ test.describe('/api/notification', () => {
             involveLevel: "minimum",
             status: "workshopping",
         });
-        
+
         // Capture the idea ID for this notification test 
         notificationIdeaId = newIdea.id;
 
@@ -30,8 +30,8 @@ test.describe('/api/notification', () => {
 
         // Filter the notification related to the new idea
         const notification = notifications.data.find(
-            (item) => 
-                item.attributes.event.data.attributes.entityId === newIdea.id && 
+            (item) =>
+                item.attributes.event.data.attributes.entityId === newIdea.id &&
                 item.attributes.event.data.attributes.entityType === "IdeaCard"
         );
 
@@ -58,8 +58,8 @@ test.describe('/api/notification', () => {
 
         // Filter the notification related to the comment using the comment ID
         const notification = notifications.data.reverse().find(
-            (item) => 
-                item.attributes.event?.data?.attributes?.entityId === newCommentId && 
+            (item) =>
+                item.attributes.event?.data?.attributes?.entityId === newCommentId &&
                 item.attributes.event?.data?.attributes?.entityType === "Comment"
         );
 
@@ -103,11 +103,11 @@ test.describe('/api/notification', () => {
                 user: myUser,
             },
         });
-        
+
         const notifications = await api(request).get("/api/notifications?populate=event,user");
         const notification = notifications.data.find(
             item => item.attributes.event.data.attributes.entityId === testId &&
-                    item.attributes.event.data.attributes.entityType === "IdeaCard"
+                item.attributes.event.data.attributes.entityType === "IdeaCard"
         );
 
         // Check that the notification exists and has correct attributes
@@ -155,7 +155,7 @@ test.describe('/api/notification', () => {
         const notification = notifications.data.find(
             item => (item.attributes.event.data.attributes.entityId === testId && item.attributes.event.data.attributes.entityType === "IdeaCard"
             ));
-            
+
         expect(notification).toBeUndefined();
 
         const error = await api(request).get(`/api/notifications/${newNotification.id}?populate=*`, 403);

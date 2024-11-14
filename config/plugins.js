@@ -65,13 +65,13 @@ module.exports = ({ env }) => ({
       },
     },
   },
-  "strapi-provider-upload-google-storage": {
+  googledriveupload: {
     enabled: true,
-    resolve: "./src/plugins/strapi-provider-upload-google-storage",
+    resolve: "./src/plugins/googledriveupload",
   },
   upload: {
     config: {
-      provider: "strapi-provider-upload-google-storage",
+      provider: "googledriveupload",
       providerOptions: {
         publicFiles: true,
         uniform: false,

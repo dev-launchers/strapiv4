@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
 module.exports = ({ strapi }) => ({
   index(ctx) {
     ctx.body = strapi
-      .plugin('strapi-provider-upload-google-storage')
-      .service('myService')
+      .plugin("googledriveupload")
+      .service("myService")
       .getWelcomeMessage();
   },
 });

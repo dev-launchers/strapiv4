@@ -65,18 +65,18 @@ module.exports = ({ env }) => ({
       },
     },
   },
-  googledriveupload: {
+  googledrive: {
     enabled: true,
-    resolve: "./src/plugins/googledriveupload",
+    resolve: './src/plugins/googledrive',
   },
   upload: {
     config: {
-      provider: "googledriveupload",
+      provider: 'googledrive',
       providerOptions: {
         publicFiles: true,
         uniform: false,
 
-        serviceAccount: env.json("SERVICE_ACCOUNT"), // replace `{}` with your serviceAccount JSON object
+        serviceAccount: env.json('SERVICE_ACCOUNT'), // replace `{}` with your serviceAccount JSON object
         //baseUrl: 'https://storage.googleapis.com/{bucket-name}',
         //basePath: '',
       },

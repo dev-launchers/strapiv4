@@ -1,5 +1,5 @@
 {
-  "name": "googledriveuploade",
+  "name": "googledrive",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "license": "MIT",
@@ -34,9 +34,9 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "name": "googledriveupload",
-    "description": "Description of Strapi Provider Upload Google Storage plugin",
+    "name": "googledrive",
+    "description": "Description of googledrive plugin",
     "kind": "plugin",
-    "displayName": "Strapi Provider Upload Google Storage"
+    "displayName": "googledrive plugin"
   }
 }

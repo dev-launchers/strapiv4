@@ -2,6 +2,6 @@
 
 module.exports = ({ strapi }) => ({
   getWelcomeMessage() {
-    return 'Welcome to Strapi 🚀';
+    return 'Welcome to googledrive upload 🚀';
   },
 });

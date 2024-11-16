@@ -4,12 +4,8 @@ const process = require("process");
 const { google } = require("googleapis");
 //const validateUploadBody = require("../validation/upload");
 module.exports = ({ strapi }) => ({
-  getSecondWelcomeMessage() {
-    return "Welcome to Second Strapi 🚀";
-  },
   // async function getAll() {
   getall: async () => {
-    console.log("inside getall");
     const SERVICE_ACCOUNT_PATH = path.join(
       process.cwd(),
       "config",
@@ -41,8 +37,6 @@ module.exports = ({ strapi }) => ({
       .catch((err) => console.log(err));
 
     //const files = res.data.files;
-    console.log(res?.files);
-    console.log("above");
     if (res?.files?.length === 0) {
       console.log("No files found.");
       return "No files found";
@@ -52,13 +46,24 @@ module.exports = ({ strapi }) => ({
     //return files;
   },
   upload: async (ctx) => {
-    console.log("upload at line 55");
-    console.log(ctx.request.files);
-    if (Array.isArray(ctx.request.files.files)) {
-      console.log("Number of files:", ctx.request.files.files.length);
-    } else {
-      console.log("ctx.request.files is not an array or is undefined.");
+    console.log('upload at line 55');
+
+    //
+    console.log(typeof ctx.request.files);
+    //
+    console.log('Body:', ctx.request.body);
+    //console.log(ctx.request.files);
+    //console.log(ctx.request.files[0]);
+    if (!ctx.request.files) {
+      return ctx.badRequest('No files were uploaded');
     }
+
+    //if (Array.isArray(ctx.request.files.files)) {
+    //if (Array.isArray(ctx.request.files)) {
+    //console.log('Number of files:', ctx.request.files.files.length);
+    //} else {
+    //  console.log('ctx.request.files.files is not an array or is undefined.');
+    //}
 
     ctx.request.files.files.forEach((file, index) => {
       console.log(`File at index ${index}:`, file);
@@ -71,8 +76,8 @@ module.exports = ({ strapi }) => ({
     console.log(ctx.request.files[0]["File"]);
     console.log(ctx.request.files);
  */
-    console.log("control here");
-    console.log(ctx.request.files.files[0]);
+    //console.log('control here');
+    //console.log(ctx.request.files.files[0]);
     const SERVICE_ACCOUNT_PATH = path.join(
       process.cwd(),
       "config",
@@ -98,7 +103,7 @@ module.exports = ({ strapi }) => ({
     const {
       request: { body, files: { files } = {} },
     } = ctx;
-
+    //console.log(files);
     //const data = await validateUploadBody(ctx.request.body);
 
     //console.log(data);
@@ -119,9 +124,9 @@ module.exports = ({ strapi }) => ({
         mimeType: fileType,
         body: fsnp.createReadStream(filePath),
       };
-      console.log(media);
+      console.log(`media is ${media}`);
       try {
-        const response = await service.files.create({
+        const createResponse = await service.files.create({
           resource: {
             name: fileName,
             parents: [FOLDERID],
@@ -129,12 +134,17 @@ module.exports = ({ strapi }) => ({
           requestBody: fileMetadata,
           media: media,
         });
-        console.log(response.data.id);
+
+        console.log(`response.data.id is ${createResponse.data.id}`);
+        console.log(createResponse);
+
+        return createResponse;
+
         //ctx.response.status = 200;
         //ctx.response.message =
         //  response.data.id + " I Google Upload Response Success";
 
-        const permissionFiles = async () =>
+        /*const permissionFiles = async () =>
           await service.permissions.create({
             fileId: response.data.id,
             resource: {
@@ -148,14 +158,14 @@ module.exports = ({ strapi }) => ({
         //ctx.response.status = 200;
         //ctx.response.message =
         //  response.data.id + " Per Google Upload Response Success";
-
-        return response;
       } catch (error) {
         console.log(error.message);
         return error;
       }
     };
+    //console.log(ctx.request.files);
     //return
+    /*
     try {
       ctx.request.files.files.forEach(async (file, index) => {
         console.log(`File at index ${index}:`, file);
@@ -166,24 +176,27 @@ module.exports = ({ strapi }) => ({
         );
         return uploadResponse;
       });
-      return "Files loaded successfully";
-    } catch (err) {
-      ctx.throw(533, err);
-      console.log(`error during upload ${err}`);
-    }
-
-    /*      const uploadResponse = await uploadSingleFile(
-        files["name"],
-        files["type"],
-        files.path
-      ); 
-      //console.log(uploadResponse);
       return uploadResponse;
+      return 'Files loaded successfully';
     } catch (err) {
       ctx.throw(533, err);
       console.log(`error during upload ${err}`);
     }
 */
+    try {
+      const uploadResponse = await uploadSingleFile(
+        files['name'],
+        files['type'],
+        files.path
+      ); 
+      console.log('uploadResponse');
+      console.log(uploadResponse);
+      return uploadResponse;
+    } catch (err) {
+      ctx.throw(533, err);
+      console.log(`error during upload ${err}`);
+    }
+
     // return new Promise(async (resolve, reject) => {
     //console.log("inside upload(file) below");
     //console.log(file);

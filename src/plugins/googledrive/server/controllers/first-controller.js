@@ -1,12 +1,6 @@
 'use strict';
 
 module.exports = ({ strapi }) => ({
-  getSecondWelcomeMessage(ctx) {
-    ctx.body = strapi
-      .plugin('googledrive')
-      .service('firstService')
-      .getSecondWelcomeMessage();
-  },
   getall: async (ctx) => {
     try {
       ctx.body = await strapi

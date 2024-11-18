@@ -1,3 +1,5 @@
+const { profile } = require("console");
+
 module.exports = {
   google: {
     enabled: true,
@@ -25,6 +27,15 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    profile: {
+      displayName: "Tester One",
+      bio: "I am a tester 1",
+      profilePictureUrl: "https://i.imgur.com/123.jpg",
+    },
+    professionalRole: {
+      "category": "Development",
+      "name": "Fullstack Developer"
+    }
   },
   user2: {
     username: "tester2",
@@ -33,6 +44,15 @@ module.exports = {
     password: "k2OSo9Td",
     confirmed: true,
     blocked: null,
+    profile: {
+      displayName: "Tester Two",
+      bio: "I am a tester 2",
+      profilePictureUrl: "https://i.imgur.com/124.jpg",
+    },
+    professionalRole: {
+      "category": "Product / UX",
+      "name": "UX Researcher"
+    },
   },
   interests: ["CSS", "HTML", "JavaScript", "Python"],
   project: {
@@ -61,7 +81,7 @@ module.exports = {
     calendarId: "c_9c8sc215f8vopmjuj4ogamd7go@group.calendar.google.com",
     discordWebhookUrl: null
   },
-  opportunity : [{
+  opportunity: [{
     title: "test opportunity",
     level: "Beginner",
     commitmentHoursPerWeek: 2,
@@ -74,7 +94,12 @@ module.exports = {
     ],
     isHidden: true,
     roleCategory: "Development",
-    roleType: "Back-End Developer"
+    roleType: "Back-End Developer",
+    role: {
+      "id": 1,
+      "name": "Back-End Developer",
+      "category": "Development"
+    }
   },
   {
     title: "test second opportunity",
@@ -88,7 +113,12 @@ module.exports = {
       }
     ],
     isHidden: true,
-    roleCategory: "Development",
-    roleType: "Back-End Developer"
+    roleCategory: "Product / UX",
+    roleType: "Product Lead",
+    role: {
+      "id": 2,
+      "name": "Product Lead",
+      "category": "Product / UX"
+    }
   }]
 };

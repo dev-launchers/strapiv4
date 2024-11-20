@@ -11,3 +11,4 @@ playwright-report/
 coverage/
 public/uploads/*
 .vscode/*
+node_modules

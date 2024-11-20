@@ -12,16 +12,16 @@
     }
   ],
   "dependencies": {
-    "@strapi/design-system": "^1.6.3",
+    "@strapi/design-system": "^1.19.0",
     "@strapi/helper-plugin": "^4.6.0",
-    "@strapi/icons": "^1.6.3",
+    "@strapi/icons": "^1.19.0",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^5.3.4",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.11"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",

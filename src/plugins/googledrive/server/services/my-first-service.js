@@ -291,7 +291,6 @@ module.exports = ({ strapi }) => ({
       'service_account.json'
     );
 
-    console.log(SERVICE_ACCOUNT_PATH);
     const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 
     const auth = new google.auth.GoogleAuth({
@@ -301,7 +300,8 @@ module.exports = ({ strapi }) => ({
     //const service = google.drive({ version: 'v3', auth });
 
     const drive = google.drive({ version: 'v3', auth });
-    console.log(ctx.request.query);
+    console.log('ctx.request');
+    console.log(ctx.request);
     const response = await drive.files.delete({
       fileId: ctx.request.query.fileId,
     });

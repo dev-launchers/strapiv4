@@ -8,7 +8,7 @@ module.exports = ({ strapi }) => ({
         .service('firstService')
         .getall();
     } catch (err) {
-      ctx.throw(523, 'getall Error');
+      ctx.throw(523, err);
     }
   },
   //
@@ -20,7 +20,7 @@ module.exports = ({ strapi }) => ({
         .service('firstService')
         .upload(ctx);
     } catch (err) {
-      ctx.throw(523, '"error during upload');
+      ctx.throw(523, err);
     }
   },
   delete: async (ctx) => {
@@ -30,7 +30,7 @@ module.exports = ({ strapi }) => ({
         .service('firstService')
         .deleteFile(ctx);
     } catch (err) {
-      ctx.throw(528, '"error during delete');
+      ctx.throw(528, err);
     }
   },
 });

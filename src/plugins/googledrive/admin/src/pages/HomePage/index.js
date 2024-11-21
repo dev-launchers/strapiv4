@@ -79,7 +79,7 @@ const HomePage = () => {
 
         // setUploadedFile(await postResonse.data);
         console.log(uploadedFile);
-        return postResonse.data;
+        return uploadedFile; //updated lastly
       });
       /* working code
       const postMessage = await axiosInstance.post(
@@ -123,6 +123,9 @@ const HomePage = () => {
       ) : (
         <p>No files selected</p>
       )}
+      <div>
+        <button onClick={postupd}>Upload</button>
+      </div>
 
       {uploadedFile.length > 0 ? (
         <ul>
@@ -132,10 +135,6 @@ const HomePage = () => {
       ) : (
         <p>No files uploaded</p>
       )}
-
-      <div>
-        <button onClick={postupd}>Submit</button>
-      </div>
     </div>
   );
 };

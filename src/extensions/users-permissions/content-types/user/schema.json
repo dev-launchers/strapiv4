@@ -170,6 +170,11 @@
       "type": "component",
       "repeatable": false,
       "component": "role.role"
+    },
+    "skills": {
+      "type": "component",
+      "repeatable": true,
+      "component": "skills.skills"
     }
   }
 }

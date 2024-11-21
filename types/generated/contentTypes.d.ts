@@ -759,6 +759,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::subscription.subscription'
     >;
     professionalRole: Attribute.Component<'role.role'>;
+    skills: Attribute.Component<'skills.skills', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

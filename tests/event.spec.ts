@@ -51,7 +51,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined(); // Check that the event exists
         expect(event.action).toBe('Idea Updated'); // Check the action
         expect(event.entityName).toBe('TestEventIdea'); // Check the entity name
-        expect(event.content).toBe("I am testing"); // Check the content
+        expect(event.content).toBe("Keep testing"); // Check the content
 
     });
 
@@ -71,7 +71,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined(); // Ensure the event exists
         expect(event.action).toBe('Idea Updated'); // Check the action
         expect(event.entityName).toBe('TestEventIdea'); // Check the entity name
-        expect(event.content).toBe("I am testing"); // Check the content format
+        expect(event.content).toBe("Keep testing"); // Check the content format
     });
 
     test("Create new event on comment create", async ({ request }) => {

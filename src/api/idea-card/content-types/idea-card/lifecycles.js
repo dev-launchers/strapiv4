@@ -14,6 +14,7 @@ module.exports = {
       tagline: tagline,
       description: ideaDescription,
     } = event.result;
+    console.log(event.result);
     const author = event.params.data.author.username;
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;
@@ -54,7 +55,7 @@ module.exports = {
 
   async afterUpdate(event) {
     const { previousStatus } = event.params.data;
-    const { id, ideaName, status } = event.result;
+    const { id, ideaName, status,description } = event.result;
 
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;
@@ -72,7 +73,7 @@ module.exports = {
       data: {
         action: "Idea Updated",
         entityName: ideaName,
-        content: ideaDescription,
+        content: description,
         entityType: "IdeaCard",
         entityId: id,
         eventUser: user,

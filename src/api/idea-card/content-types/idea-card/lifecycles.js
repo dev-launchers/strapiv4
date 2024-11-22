@@ -14,7 +14,7 @@ module.exports = {
       tagline: tagline,
       description: ideaDescription,
     } = event.result;
-    console.log(event.result);
+
     const author = event.params.data.author.username;
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;

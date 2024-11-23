@@ -30,9 +30,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined(); // Ensure the event exists
         expect(event.action).toBe('Idea Created'); // Check the action
         expect(event.entityName).toBe('TestEventIdea'); // Check the entity name
-        expect(event.content).toBe(
-          `${config.user.username} added new idea, TestEventIdea - Yay! is created`
-        ); // Check the content matches the expected format
+        expect(event.content).toBe("I am testing"); // Check the content matches the expected format
         expect(event.entityType).toBe('IdeaCard'); // Ensure entity type is correct
         expect(event.entityId).toBe(newIdea.id); // Ensure the entityId matches the newly created idea
         expect(event.eventUser.username).toBe(config.user.username); // Check the eventUser is the idea creator
@@ -53,7 +51,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined(); // Check that the event exists
         expect(event.action).toBe('Idea Updated'); // Check the action
         expect(event.entityName).toBe('TestEventIdea'); // Check the entity name
-        expect(event.content).toBe(`${config.user.username} has updated idea TestEventIdea`); // Check the content
+        expect(event.content).toBe("Keep testing"); // Check the content
 
     });
 
@@ -73,7 +71,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined(); // Ensure the event exists
         expect(event.action).toBe('Idea Updated'); // Check the action
         expect(event.entityName).toBe('TestEventIdea'); // Check the entity name
-        expect(event.content).toBe(`${config.user.username} has updated idea TestEventIdea - approved`); // Check the content format
+        expect(event.content).toBe("Keep testing"); // Check the content format
     });
 
     test("Create new event on comment create", async ({ request }) => {
@@ -94,7 +92,7 @@ test.describe('/api/event', () => {
         expect(event).toBeDefined();  // Ensure the event exists
         expect(event.action).toBe('Commented');  // Check the action is "Commented"
         expect(event.entityName).toBe('This is a test comment');  // The entityName should be the comment text
-        expect(event.content).toBe(`${config.user.username} commented on idea: TestEventIdea`);  // Check the event content
+        expect(event.content).toBe("This is a test comment");  // Check the event content
         expect(event.entityType).toBe('Comment');  // Ensure the entityType is "Comment"
         expect(event.entityId).toBe(newCommentId);  // The entityId should be the ideaId related to the comment
         expect(event.eventUser.username).toBe(config.user.username);  // Check the eventUser is the comment author

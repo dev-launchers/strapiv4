@@ -10,7 +10,7 @@ import { useNotification } from '@strapi/helper-plugin';
 import pluginId from '../../pluginId';
 import { getWel } from '../../api/getWel';
 import { delDelete, postUpdate } from '../../api/delDelete';
-import { Button } from '@strapi/design-system';
+import { Button, Box, BaseHeaderLayout } from '@strapi/design-system';
 import axiosInstance from '../../utils/axiosInst';
 
 const HomePage = () => {
@@ -109,32 +109,43 @@ const HomePage = () => {
   return (
     <div>
       <h1>{pluginId}&apos;s HomePage</h1>
-      <p>Happy coding</p>
+      {/*<p>Happy coding</p>
       {welcome ? <p>{welcome}</p> : <p>Loading...</p>}
-      <label for="selFile"> Select a file </label>
-      <input
-        type="file"
-        id="selFile"
-        name="selFile"
-        onChange={handleFileSelect}
-      />
-      {selectedFile.length > 0 ? (
-        <p>{selectedFile[0].name}</p>
-      ) : (
-        <p>No files selected</p>
-      )}
-      <div>
-        <button onClick={postupd}>Upload</button>
-      </div>
-
-      {uploadedFile.length > 0 ? (
-        <ul>
-          <li>{uploadedFile[0].id}</li>
-          <Button onClick={DelDele(uploadedFile[0].id)}>Delete</Button>
-        </ul>
-      ) : (
-        <p>No files uploaded</p>
-      )}
+*/}
+      <Box background="neutral100">
+        <BaseHeaderLayout
+          title="GoogleDrive Plugin"
+          subtitle="Plugin Actions"
+          as="h2"
+        />
+      </Box>
+      <Box background="neutral90">
+        <label for="selFile"> Select a file </label>
+        <input
+          type="file"
+          id="selFile"
+          name="selFile"
+          onChange={handleFileSelect}
+        />
+        {selectedFile.length > 0 ? (
+          <p>{selectedFile[0].name}</p>
+        ) : (
+          <p>No files selected</p>
+        )}
+        <div>
+          <button onClick={postupd}>Upload</button>
+        </div>
+      </Box>
+      <Box background="neutral100">
+        {uploadedFile.length > 0 ? (
+          <ul>
+            <li>{uploadedFile[0].id}</li>
+            <Button onClick={DelDele(uploadedFile[0].id)}>Delete</Button>
+          </ul>
+        ) : (
+          <p>No files uploaded</p>
+        )}
+      </Box>
     </div>
   );
 };

@@ -1,24 +1,25 @@
-"use strict";
-const path = require("path");
-const process = require("process");
-const { google } = require("googleapis");
+'use strict';
+const path = require('path');
+const process = require('process');
+const { google } = require('googleapis');
 //const validateUploadBody = require("../validation/upload");
 module.exports = ({ strapi }) => ({
   // async function getAll() {
   getall: async () => {
     const SERVICE_ACCOUNT_PATH = path.join(
       process.cwd(),
-      "config",
-      "env",
-      "service_account.json"
+      'config',
+      'env',
+      'service_account.json'
     );
-    const SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"];
+    const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
     //const GOOGLEACCOUNT = "meenashi.s@devlaunchers.com";
     const auth = new google.auth.GoogleAuth({
       keyFile: SERVICE_ACCOUNT_PATH,
       scopes: SCOPES,
     });
-    const service = google.drive({ version: "v3", auth });
+    //const service = google.drive({ version: 'v3', auth });
+    const drive = google.drive({ version: 'v3', auth });
 
     const FOLDERID = '1jN1_Crat6nkpakD0BZsE3xKAIkJ26NE2';
 
@@ -61,6 +62,7 @@ module.exports = ({ strapi }) => ({
         // fileId: '1aqhRsJpO22oriAVYlRX-YdtqsQx7ZGBq',
         pageSize: 1000,
         //fields: 'nextPageToken, files(id, name)',
+        //fields: '*', //: 'trashed, explicitlyTrashed,trashedTime,trashingUser',
         //q: '"1jN1_Crat6nkpakD0BZsE3xKAIkJ26NE2" in parents',
         includeItemsFromAllDrives: true,
         //driveId: FOLDERID,
@@ -97,13 +99,49 @@ module.exports = ({ strapi }) => ({
 */
     //return files;
   },
+  get: async (ctx) => {
+    const SERVICE_ACCOUNT_PATH = path.join(
+      process.cwd(),
+      'config',
+      'env',
+      'service_account.json'
+    );
+    const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+    const auth = new google.auth.GoogleAuth({
+      keyFile: SERVICE_ACCOUNT_PATH,
+      scopes: SCOPES,
+    });
+    const drive = google.drive({ version: 'v3', auth });
+
+    console.log(`fileid is ${ctx.request.query.fileId}`);
+    const driveResponse = await drive.files
+      .get({
+        fileId: ctx.request.query.fileId,
+        fields: '*',
+        supportsAllDrives: true,
+      })
+      .then((driveResponseList) => driveResponseList.data)
+      .catch((err) => console.log(err));
+    console.log(
+      driveResponse.id,
+      driveResponse.name,
+      driveResponse.trashed,
+      driveResponse.modifiedTime,
+      driveResponse.webViewLink
+    );
+    return {
+      id: driveResponse.id,
+      name: driveResponse.name,
+      trashed: driveResponse.trashed,
+      modifiedTime: driveResponse.modifiedTime,
+      webViewLink: driveResponse.webViewLink,
+    };
+  },
   upload: async (ctx) => {
     console.log('upload at line 55');
 
-    //
-    console.log(typeof ctx.request.files);
-    //
-    console.log('Body:', ctx.request.body);
+    //    console.log(typeof ctx.request.files);
+    //    console.log('Body:', ctx.request.body);
     //console.log(ctx.request.files);
     //console.log(ctx.request.files[0]);
     if (!ctx.request.files) {
@@ -133,17 +171,15 @@ module.exports = ({ strapi }) => ({
     //console.log(ctx.request.files.files[0]);
     const SERVICE_ACCOUNT_PATH = path.join(
       process.cwd(),
-      "config",
-      "env",
-      "service_account.json"
+      'config',
+      'env',
+      'service_account.json'
     );
 
-    console.log(SERVICE_ACCOUNT_PATH);
+    //console.log(SERVICE_ACCOUNT_PATH);
     //working correct scopes
     //const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
     const SCOPES = ['https://www.googleapis.com/auth/drive'];
-
-    const GOOGLEACCOUNT = 'meenashi.s@devlaunchers.com';
 
     const auth = new google.auth.GoogleAuth({
       keyFile: SERVICE_ACCOUNT_PATH,
@@ -156,8 +192,6 @@ module.exports = ({ strapi }) => ({
     //console.log(drive);
 
     const FOLDERID = '1jN1_Crat6nkpakD0BZsE3xKAIkJ26NE2';
-    const SUBFOLDERID = '17xq2z47CtyuV0WVAgnOlwj69euh5DRsM';
-    const DRIVEID = '0AIDj3zF5rdwgUk9PVA';
     const {
       request: { body, files: { files } = {} },
     } = ctx;
@@ -177,7 +211,7 @@ module.exports = ({ strapi }) => ({
         mimeType: fileType, //mime-types to get the file types
       };
 
-      console.log(fileMetadata);
+      //console.log(fileMetadata);
       const media = {
         mimeType: fileType,
         body: fsnp.createReadStream(filePath),
@@ -193,13 +227,17 @@ module.exports = ({ strapi }) => ({
           media: media,
           supportsAllDrives: true,
           enforceSingleParent: true,
-          fields: 'id, name,parents,shared',
+          fields: 'id, name,parents,shared,webViewLink',
           //ignoreDefaultVisibility: true,
           //  drive: DRIVEID, //newly added line
         });
         console.log('after create');
         console.log(`response.data.id is ${createResponse.data.id}`);
-        console.log(createResponse);
+        console.log(
+          `response.webViewLink is ${createResponse.data.webViewLink}`
+        );
+
+        //console.log(createResponse);
 
         if (!createResponse.data.parents.includes(FOLDERID)) {
           throw new Error('File was not created in the expected folder.');
@@ -210,30 +248,26 @@ module.exports = ({ strapi }) => ({
         //ctx.response.status = 200;
         //ctx.response.message =
         //  response.data.id + " I Google Upload Response Success";
-        /* try {
-          const permissionFiles = await drive.permissions.create({
-            fileId: createResponse.data.id,
-            //resource: {
-            requestBody: {
-              type: 'anyone',
-              role: 'reader',
-              allowFileDiscovery: true,
-              //enforceSingleParent: true,
-            },
-            supportsAllDrives: true,
-            //emailAddress: GOOGLEACCOUNT,
-          });
-          console.log(permissionFiles);
-        } catch (err) {
-          console.log(err);
-        } */
-        //finally {
-        //  return permissionFiles;
-        //}
-        //ctx.response.status = 200;
-        //ctx.response.message =
-        //  response.data.id + " Per Google Upload Response Success";
-        console.log(createResponse);
+        console.log('before permissions');
+        console.log(!createResponse.data.id);
+        console.log(!!createResponse.data.id);
+
+        if (!!createResponse.data.id)
+          try {
+            const permissionFiles = await drive.permissions.create({
+              fileId: createResponse.data.id,
+              requestBody: {
+                type: 'anyone',
+                role: 'reader',
+              },
+              supportsAllDrives: true,
+            });
+            console.log(permissionFiles);
+            console.log('Permissions updated successfully');
+          } catch (err) {
+            console.log(err);
+          }
+        //console.log(createResponse);
         return createResponse;
       } catch (error) {
         console.log('Resulted in error');
@@ -242,36 +276,14 @@ module.exports = ({ strapi }) => ({
       }
     };
 
-    //console.log(ctx.request.files);
-    //return
-    /*
-    try {
-      ctx.request.files.files.forEach(async (file, index) => {
-        console.log(`File at index ${index}:`, file);
-        const uploadResponse = await uploadSingleFile(
-          file["name"],
-          file["type"],
-          file.path
-        );
-        console.log('uploadResponse');
-        console.log(uploadResponse);
-        return uploadResponse;
-      });
-      return uploadResponse;
-      return 'Files loaded successfully';
-    } catch (err) {
-      ctx.throw(533, err);
-      console.log(`error during upload ${err}`);
-    }
-*/
     try {
       const uploadResponse = await uploadSingleFile(
         files['name'],
         files['type'],
         files.path
-      ); 
+      );
       console.log('uploadResponse');
-      console.log(uploadResponse);
+      //console.log(uploadResponse);
       return uploadResponse;
     } catch (err) {
       ctx.throw(533, err);
@@ -300,14 +312,46 @@ module.exports = ({ strapi }) => ({
     //const service = google.drive({ version: 'v3', auth });
 
     const drive = google.drive({ version: 'v3', auth });
-    console.log('ctx.request');
-    console.log(ctx.request);
-    const response = await drive.files.delete({
-      fileId: ctx.request.query.fileId,
-    });
-    console.log('response in deleteFile');
-    console.log(response.status);
-    console.log(response.statusText);
-    return response;
+    console.log('ctx.request.query.fileId');
+    console.log(ctx.request.query.fileId);
+    console.log(ctx.request.query);
+    // To send the file to trash
+    const body_value = {
+      trashed: true,
+    };
+    try {
+      const response = await drive.files.update({
+        fileId: ctx.request.query.fileId,
+        requestBody: body_value,
+        supportsAllDrives: true,
+      });
+      return response;
+    } catch (error) {
+      {
+        console.log('Resulted in File Thrash error');
+        console.log(error.message);
+        return error.message;
+      }
+    }
+    //To Trash the file   */
+    /*
+    // To permanently delete the file
+    // but it didnt work for the content manager permission
+    try {
+      const response = await drive.files.delete({
+        fileId: ctx.request.query.fileId,
+        supportsAllDrives: true,
+      });
+      console.log('response in deleteFile');
+      console.log(response.status);
+      console.log(response.statusText);
+      return response;
+    } catch (error) {
+      {
+        console.log('Resulted in error');
+        console.log(error.message);
+        return error.message;
+      }
+    } */
   },
 });

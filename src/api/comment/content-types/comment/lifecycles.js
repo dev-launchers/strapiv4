@@ -19,15 +19,25 @@ module.exports = {
     const idea = comment.idea_card;
     const user = comment.user;
 
-    await strapi.entityService.create("api::subscription.subscription", {
-      data: {
-        entityType: "Comment",
-        entityId: commentId,
-        createdDateTime: new Date(),
-        active: true,
-        user: user,
-      },
-    });
+    /** verify that user isn't already subscribed to ideaCard */
+    const existingSubscriptions = await strapi.entityService.findMany(
+      "api::subscription.subscription",
+      {
+        filters: { user: user, entityId: idea.id },
+        limit: 1,
+      }
+    );
+
+    if (!existingSubscriptions.length)
+      await strapi.entityService.create("api::subscription.subscription", {
+        data: {
+          entityType: "Comment",
+          entityId: idea.id,
+          createdDateTime: new Date(),
+          active: true,
+          user: user,
+        },
+      });
 
     strapi.entityService.create("api::event.event", {
       data: {
@@ -35,7 +45,7 @@ module.exports = {
         entityName: idea.ideaName,
         content: commentText,
         entityType: "Comment",
-        entityId: commentId,
+        entityId: idea.id,
         eventUser: user?.id,
         createdDateTime: new Date(),
       },

@@ -13,20 +13,20 @@ module.exports = {
     },
     {
       method: 'GET',
-      path: '/getall',
-      handler: 'firstController.getall',
-      config: {
-        policies: ['admin::isAuthenticatedAdmin'],
-      },
-    },
-    {
-      method: 'GET',
       path: '/get',
       handler: 'firstController.get',
       config: {
         policies: ['admin::isAuthenticatedAdmin'],
       },
     },
+    /*{
+      method: 'GET',
+      path: '/get',
+      handler: 'firstController.get',
+      config: {
+        policies: ['admin::isAuthenticatedAdmin'],
+      },
+    },*/
     {
       method: 'POST',
       path: '/upload',

@@ -1,17 +1,17 @@
 'use strict';
 
 module.exports = ({ strapi }) => ({
-  getall: async (ctx) => {
+  get: async (ctx) => {
     try {
       ctx.body = await strapi
         .plugin('googledrive')
         .service('firstService')
-        .getall();
+        .get(ctx);
     } catch (err) {
       ctx.throw(523, err);
     }
   },
-  get: async (ctx) => {
+  /*get: async (ctx) => {
     try {
       ctx.body = await strapi
         .plugin('googledrive')
@@ -20,7 +20,7 @@ module.exports = ({ strapi }) => ({
     } catch (err) {
       ctx.throw(524, err);
     }
-  },
+  },*/
 
   //
   upload: async (ctx) => {

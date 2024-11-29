@@ -12,6 +12,9 @@ export const delDelete = async (infileId) => {
     const delMessage = await axiosInstance.request(
       '/googledrive/delete?fileId=' + infileId,
       {
+        headers: { Authorization: `Bearer ${process.env.ADMIN_JWT_SECRET}` },
+      },
+      {
         method: 'delete',
         // params: fileDetails,
       }
@@ -43,6 +46,7 @@ export const postUpdate = async (inUploadData) => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${process.env.ADMIN_JWT_SECRET}`,
         },
       }
     );

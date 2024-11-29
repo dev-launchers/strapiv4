@@ -67,7 +67,7 @@ const HomePage = () => {
       //selectedFile.forEach((file) => uploadFormData.append('files', file));
       uploadFormData.append('files', selectedFile[0]);
       console.log(uploadFormData.length);
-      console.log(uploadFormData);
+      //console.log(uploadFormData);
       //const myPost =
       await postUpdate(uploadFormData).then(async (postResonse) => {
         console.log(postResonse.data);
@@ -78,7 +78,7 @@ const HomePage = () => {
         ]);
 
         // setUploadedFile(await postResonse.data);
-        console.log(uploadedFile);
+        //console.log(uploadedFile);
         return uploadedFile; //updated lastly
       });
       /* working code
@@ -119,6 +119,7 @@ const HomePage = () => {
           as="h2"
         />
       </Box>
+
       <Box background="neutral90">
         <label for="selFile"> Select a file </label>
         <input

@@ -14,15 +14,6 @@ module.exports = {
     },
     {
       method: 'GET',
-      path: '/getall',
-      handler: 'firstController.getall',
-      //config: {
-      //  policies: [],
-      //  auth: false,
-      //},
-    },
-    {
-      method: 'GET',
       path: '/get',
       handler: 'firstController.get',
       //config: {
@@ -30,6 +21,15 @@ module.exports = {
       //  auth: false,
       //},
     },
+    /*{
+      method: 'GET',
+      path: '/get',
+      handler: 'firstController.get',
+      //config: {
+      //  policies: [],
+      //  auth: false,
+      //},
+    },*/
     {
       method: 'POST',
       path: '/upload',

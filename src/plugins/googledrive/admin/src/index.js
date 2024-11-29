@@ -8,7 +8,7 @@ const name = pluginPkg.strapi.name;
 
 export default {
   register(app) {
-    /*app.addMenuLink({
+    app.addMenuLink({
       to: `/plugins/${pluginId}`,
       icon: PluginIcon,
       intlLabel: {
@@ -16,7 +16,9 @@ export default {
         defaultMessage: name,
       },
       Component: async () => {
-        const component = await import(/* webpackChunkName: "[request]" */ /* './pages/App');
+        const component = await import(
+          /* webpackChunkName: "[request]" */ './pages/App'
+        );
 
         return component;
       },
@@ -27,7 +29,7 @@ export default {
         //   subject: null,
         // },
       ],
-    }); */
+    });
     app.registerPlugin({
       id: pluginId,
       initializer: Initializer,

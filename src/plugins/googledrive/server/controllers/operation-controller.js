@@ -5,30 +5,17 @@ module.exports = ({ strapi }) => ({
     try {
       ctx.body = await strapi
         .plugin('googledrive')
-        .service('firstService')
+        .service('operationService')
         .get(ctx);
     } catch (err) {
       ctx.throw(523, err);
     }
   },
-  /*get: async (ctx) => {
-    try {
-      ctx.body = await strapi
-        .plugin('googledrive')
-        .service('firstService')
-        .get(ctx);
-    } catch (err) {
-      ctx.throw(524, err);
-    }
-  },*/
-
-  //
   upload: async (ctx) => {
     try {
-      console.log('upload at line 23');
       ctx.body = await strapi
         .plugin('googledrive')
-        .service('firstService')
+        .service('operationService')
         .upload(ctx);
     } catch (err) {
       ctx.throw(525, err);
@@ -38,7 +25,7 @@ module.exports = ({ strapi }) => ({
     try {
       ctx.body = await strapi
         .plugin('googledrive')
-        .service('firstService')
+        .service('operationService')
         .deleteFile(ctx);
     } catch (err) {
       ctx.throw(526, err);

@@ -6,7 +6,7 @@ module.exports = {
     {
       method: 'GET',
       path: '/',
-      handler: 'myController.index',
+      handler: 'welcomeController.index',
       config: {
         policies: ['admin::isAuthenticatedAdmin'],
       },
@@ -14,23 +14,15 @@ module.exports = {
     {
       method: 'GET',
       path: '/get',
-      handler: 'firstController.get',
+      handler: 'operationController.get',
       config: {
         policies: ['admin::isAuthenticatedAdmin'],
       },
     },
-    /*{
-      method: 'GET',
-      path: '/get',
-      handler: 'firstController.get',
-      config: {
-        policies: ['admin::isAuthenticatedAdmin'],
-      },
-    },*/
     {
       method: 'POST',
       path: '/upload',
-      handler: 'firstController.upload',
+      handler: 'operationController.upload',
       config: {
         policies: ['admin::isAuthenticatedAdmin'],
       },
@@ -38,7 +30,7 @@ module.exports = {
     {
       method: 'DELETE',
       path: '/delete',
-      handler: 'firstController.delete',
+      handler: 'operationController.delete',
       config: {
         policies: ['admin::isAuthenticatedAdmin'],
       },

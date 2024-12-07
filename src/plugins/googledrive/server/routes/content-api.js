@@ -6,47 +6,22 @@ module.exports = {
     {
       method: 'GET',
       path: '/',
-      handler: 'myController.index',
-      //config: {
-      //  policies: [],
-      //  auth: false,
-      //},
+      handler: 'welcomeController.index',
     },
     {
       method: 'GET',
       path: '/get',
-      handler: 'firstController.get',
-      //config: {
-      //  policies: [],
-      //  auth: false,
-      //},
+      handler: 'operationController.get',
     },
-    /*{
-      method: 'GET',
-      path: '/get',
-      handler: 'firstController.get',
-      //config: {
-      //  policies: [],
-      //  auth: false,
-      //},
-    },*/
     {
       method: 'POST',
       path: '/upload',
-      handler: 'firstController.upload',
-      //config: {
-      //  policies: [],
-      //auth: false,
-      //},
+      handler: 'operationController.upload',
     },
     {
       method: 'DELETE',
       path: '/delete',
-      handler: 'firstController.delete',
-      //config: {
-      //  policies: [],
-      //auth: false,
-      //},
+      handler: 'operationController.delete',
     },
   ],
 };

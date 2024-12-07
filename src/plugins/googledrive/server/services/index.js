@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-const myService = require("./my-service");
-const firstService = require("./my-first-service");
+const welcomeService = require('./welcome-service');
+const operationService = require('./operation-service');
 
 module.exports = {
-  myService,
-  firstService,
+  welcomeService,
+  operationService,
 };

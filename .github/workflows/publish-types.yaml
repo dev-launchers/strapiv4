@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Update version
+        run: |
+          VERSION=$(echo "${GITHUB_REF#refs/tags/}" | sed 's/^v//')
+          echo "Updating package.json version to $VERSION"
+          jq ".version = \"$VERSION\"" types/package.json > temp.json && mv temp.json types/package.json
+
       - name: Publish types
         run: cd types && npm publish
         env:

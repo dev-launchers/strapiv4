@@ -8,7 +8,9 @@ const name = pluginPkg.strapi.name;
 
 export default {
   register(app) {
-    /*app.addMenuLink({
+    //We dont need to see the googledrive plugin
+    //in the dashboard. So it is commented out
+    /* app.addMenuLink({
       to: `/plugins/${pluginId}`,
       icon: PluginIcon,
       intlLabel: {
@@ -17,8 +19,8 @@ export default {
       },
       Component: async () => {
         const component = await import(
-          /* webpackChunkName: "[request]" */ './pages/App';
-    /*  );
+          /* webpackChunkName: "[request]" */ /* './pages/App'
+        );
 
         return component;
       },
@@ -29,7 +31,7 @@ export default {
         //   subject: null,
         // },
       ],
-    }); */
+    });*/
     app.registerPlugin({
       id: pluginId,
       initializer: Initializer,

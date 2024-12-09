@@ -92,10 +92,7 @@ provider: 'googledrive',
 providerOptions: {
 publicFiles: true,
 uniform: false,
-serviceAccount: env.json('SERVICE_ACCOUNT'),
-// replace `{}` with your serviceAccount JSON object
-//baseUrl: 'https://storage.googleapis.com/{bucket-name}',
-//basePath: '',
+serviceAccount: env.json('GOOGLE_DRIVE_SERVICE_ACCOUNT'),
 },
 },
 

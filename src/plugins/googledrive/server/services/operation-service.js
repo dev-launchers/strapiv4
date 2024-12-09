@@ -8,7 +8,7 @@ module.exports = ({ strapi }) => ({
       process.cwd(),
       'config',
       'env',
-      'service_account.json'
+      'google_drive_service_account.json'
     );
     const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
     const auth = new google.auth.GoogleAuth({
@@ -58,7 +58,7 @@ module.exports = ({ strapi }) => ({
       process.cwd(),
       'config',
       'env',
-      'service_account.json'
+      'google_drive_service_account.json'
     );
 
     const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
@@ -119,7 +119,7 @@ module.exports = ({ strapi }) => ({
       process.cwd(),
       'config',
       'env',
-      'service_account.json'
+      'google_drive_service_account.json'
     );
 
     const SCOPES = ['https://www.googleapis.com/auth/drive.file'];

@@ -9,6 +9,7 @@ module.exports = ({ strapi }) => ({
         .get(ctx);
     } catch (err) {
       ctx.throw(523, err);
+      return err;
     }
   },
   upload: async (ctx) => {
@@ -19,6 +20,7 @@ module.exports = ({ strapi }) => ({
         .upload(ctx);
     } catch (err) {
       ctx.throw(525, err);
+      return err;
     }
   },
   delete: async (ctx) => {
@@ -29,6 +31,7 @@ module.exports = ({ strapi }) => ({
         .deleteFile(ctx);
     } catch (err) {
       ctx.throw(526, err);
+      return err;
     }
   },
 });

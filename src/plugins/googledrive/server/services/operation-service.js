@@ -2,18 +2,22 @@
 const path = require('path');
 const process = require('process');
 const { google } = require('googleapis');
+const get_service_account_path = () => {
+  const service_account_path = path.join(
+    process.cwd(),
+    'config',
+    'env',
+    'google_drive_service_account.json'
+  );
+  return service_account_path;
+};
 module.exports = ({ strapi }) => ({
   get: async (ctx) => {
-    const SERVICE_ACCOUNT_PATH = path.join(
-      process.cwd(),
-      'config',
-      'env',
-      'google_drive_service_account.json'
-    );
-    const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+    const google_drive_service_account_path = get_service_account_path();
+    const scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
     const auth = new google.auth.GoogleAuth({
-      keyFile: SERVICE_ACCOUNT_PATH,
-      scopes: SCOPES,
+      keyFile: google_drive_service_account_path,
+      scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
 
@@ -54,18 +58,13 @@ module.exports = ({ strapi }) => ({
       return ctx.badRequest('No files were uploaded');
     }
 
-    const SERVICE_ACCOUNT_PATH = path.join(
-      process.cwd(),
-      'config',
-      'env',
-      'google_drive_service_account.json'
-    );
+    const google_drive_service_account_path = get_service_account_path();
 
-    const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+    const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
     const auth = new google.auth.GoogleAuth({
-      keyFile: SERVICE_ACCOUNT_PATH,
-      scopes: SCOPES,
+      keyFile: google_drive_service_account_path,
+      scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
 
@@ -77,7 +76,7 @@ module.exports = ({ strapi }) => ({
 
       const fileMetadata = {
         name: fileName,
-        parents: [process.env.FOLDERID], //WORKING
+        parents: [process.env.FOLDERID],
         mimeType: fileType, //mime-types to get the file types
       };
       const media = {
@@ -98,6 +97,7 @@ module.exports = ({ strapi }) => ({
         }
         return createResponse.data;
       } catch (error) {
+        ctx.throw(517, error);
         return error;
       }
     };
@@ -115,18 +115,13 @@ module.exports = ({ strapi }) => ({
     }
   },
   deleteFile: async (ctx) => {
-    const SERVICE_ACCOUNT_PATH = path.join(
-      process.cwd(),
-      'config',
-      'env',
-      'google_drive_service_account.json'
-    );
+    const google_drive_service_account_path = get_service_account_path();
 
-    const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
+    const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
     const auth = new google.auth.GoogleAuth({
-      keyFile: SERVICE_ACCOUNT_PATH,
-      scopes: SCOPES,
+      keyFile: google_drive_service_account_path,
+      scopes: scopes,
     });
 
     const drive = google.drive({ version: 'v3', auth });
@@ -142,6 +137,7 @@ module.exports = ({ strapi }) => ({
       });
       return response;
     } catch (error) {
+      ctx.throw(518, error);
       return error;
     }
   },

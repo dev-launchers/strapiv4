@@ -146,6 +146,7 @@ Click CREATE AND CONTINUE.
 Assign Permissions:
 
 Add roles to specify the permissions the service account needs.
+Currently the service account has the role 'Owner'
 For example, select Storage Admin for managing Cloud Storage.
 Click CONTINUE.
 Optional: Grant Users Access to the Service Account:
@@ -160,6 +161,18 @@ Select JSON and click CREATE.
 A JSON file will be downloaded; keep this file secure—it contains the credentials for the service account.
 
 ---
+
+Enable an API
+To enable an API for your project:
+
+Go to the API Console.
+From the projects list, select a project or create a new one.
+If the APIs & services page isn't already open, open the console left side menu and select APIs & services, and then select Library.
+Click the API "Google Drive API".
+
+Click ENABLE.
+
+##
 
 Shared google drive should have access to the generated Service Account's Email address.
 
@@ -179,4 +192,6 @@ maxFileSize: 200 _ 1024 _ 1024, // Optional: Increase file size limit (e.g., 200
 },
 \*/
 
+Update .env to include the shared FOLDERID
+FOLDERID='1jN1_Crat6nkpakD0BZsE3xKAIkJ26NE2'
 =======

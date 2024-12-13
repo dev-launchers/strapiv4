@@ -75,8 +75,8 @@ module.exports = ({ env }) => ({
       providerOptions: {
         publicFiles: true,
         uniform: false,
-        serviceAccount: env.json('GOOGLE_DRIVE_SERVICE_ACCOUNT'), // replace `{}` with your serviceAccount JSON object
-       },
+        serviceAccount: env.json('GOOGLE_DRIVE_SERVICE_ACCOUNT'),
+      },
     },
   },
 });

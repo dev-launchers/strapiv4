@@ -27,7 +27,7 @@ Endpoints
 This plugin exposes the following API endpoints:
 
 1. Upload a File
-   URL: /googledrive/upload
+   URL: /api/googledrive/
    Method: POST
    Headers: Content-Type: multipart/form-data
    Body: A file to upload.
@@ -42,15 +42,24 @@ This plugin exposes the following API endpoints:
    "webViewLink": "https://drive.google.com/file/d/1AjOxIxnpI9-33u72CXxwItufdpcMohAf/view?usp=drivesdk"
    }
 2. Delete a File
-   URL: http://localhost:1337/api/googledrive/delete?fileId=13VzC62JBdE4Hklvdy_bSLE7ozRIeJ9xe
+   URL: /api/googledrive/13VzC62JBdE4Hklvdy_bSLE7ozRIeJ9xe
 
    Method: DELETE
-   Query Params: fileId - The ID of the file to delete.
+   Params: fileId - The ID of the file to delete.
    Response:
-   200
+   200 if the fileid is present
+   If the fileId is not present then the following
+   {
+   "data": null,
+   "error": {
+   "status": 500,
+   "name": "InternalServerError",
+   "message": "Failed to delete the file"
+   }
+   }
 
 3. Get Files List
-   URL: http://localhost:1337/api/googledrive/get
+   URL: /api/googledrive/
    Method: GET
    Response:
 
@@ -66,10 +75,11 @@ This plugin exposes the following API endpoints:
    ]
 
 4. Get a File by ID
-   URL: http://localhost:1337/api/googledrive/get?fileId=1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi
+   URL: /api/googledrive/1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi
    Method: GET
    Params: id - The ID of the file to fetch.
    Response:
+   If the fileId is present
    {
    "id": "1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi",
    "name": "BigCushion_2.jpg",
@@ -77,6 +87,17 @@ This plugin exposes the following API endpoints:
    "modifiedTime": "2024-11-29T16:37:49.174Z",
    "webViewLink": "https://drive.google.com/file/d/1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi/view?usp=drivesdk"
    }
+   if the fileId is not present
+   [
+   {
+   "message": "File not found: 1jI1CvETZeGPIUALnJLvwTE_6bwVkgwtg*.",
+   "domain": "global",
+   "reason": "notFound",
+   "location": "fileId",
+   "locationType": "parameter"
+   }
+   ]
+
    Configuration
    This plugin uses Strapi's default file upload provider. To customize the file storage (e.g., AWS S3, Cloudinary, etc.), configure the Upload Plugin settings in your config/plugins.js file.
 

@@ -20,13 +20,13 @@ module.exports = ({ strapi }) => ({
       scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
-
-    if (ctx.request.query.fileId === undefined) {
+    if (ctx.request.params.fileId === undefined) {
       const res = await drive.files
         .list({
           pageSize: 1000,
           includeItemsFromAllDrives: true,
           supportsAllDrives: true,
+          q: 'trashed = false',
         })
         .then((filesList) => filesList.data)
         .catch((err) => err);
@@ -38,19 +38,25 @@ module.exports = ({ strapi }) => ({
     } else {
       const driveResponse = await drive.files
         .get({
-          fileId: ctx.request.query.fileId,
+          fileId: ctx.request.params.fileId,
           fields: '*',
           supportsAllDrives: true,
         })
         .then((driveResponseList) => driveResponseList.data)
-        .catch((err) => err);
-      return {
-        id: driveResponse.id,
-        name: driveResponse.name,
-        trashed: driveResponse.trashed,
-        modifiedTime: driveResponse.modifiedTime,
-        webViewLink: driveResponse.webViewLink,
-      };
+        .catch((err) => {
+          return err.errors;
+        });
+      if (driveResponse.data === undefined) {
+        return driveResponse;
+      } else {
+        return {
+          id: driveResponse.id,
+          name: driveResponse.name,
+          trashed: driveResponse.trashed,
+          modifiedTime: driveResponse.modifiedTime,
+          webViewLink: driveResponse.webViewLink,
+        };
+      }
     }
   },
   upload: async (ctx) => {
@@ -97,8 +103,9 @@ module.exports = ({ strapi }) => ({
         }
         return createResponse.data;
       } catch (error) {
-        ctx.throw(517, error);
-        return error;
+        console.log(error);
+        ctx.throw(500, 'UploadSingleFile failed');
+        return 'UploadSingleFile failed';
       }
     };
 
@@ -110,8 +117,9 @@ module.exports = ({ strapi }) => ({
       );
       return uploadResponse;
     } catch (err) {
-      ctx.throw(533, err);
-      return err;
+      console.log(err);
+      ctx.throw(500, 'Upload Failed');
+      return 'Upload Failed';
     }
   },
   deleteFile: async (ctx) => {
@@ -131,14 +139,15 @@ module.exports = ({ strapi }) => ({
     };
     try {
       const response = await drive.files.update({
-        fileId: ctx.request.query.fileId,
+        fileId: ctx.request.params.fileId,
         requestBody: body_value,
         supportsAllDrives: true,
       });
       return response;
     } catch (error) {
-      ctx.throw(518, error);
-      return error;
+      console.log(error);
+      ctx.throw(500, 'Delete File Failed');
+      return 'Delete File Failed';
     }
   },
 });

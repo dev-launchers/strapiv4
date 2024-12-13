@@ -1,9 +1,3 @@
-/**
- *
- * PluginIcon
- *
- */
-
 import React from 'react';
 import { Brush } from '@strapi/icons';
 

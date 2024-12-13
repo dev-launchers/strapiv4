@@ -1,9 +1,3 @@
-/*
- *
- * HomePage
- *
- */
-
 import React, { useState, useEffect } from 'react';
 import pluginId from '../../pluginId';
 

@@ -5,22 +5,27 @@ module.exports = {
   routes: [
     {
       method: 'GET',
-      path: '/',
+      path: '/welcome',
       handler: 'welcomeController.index',
     },
     {
       method: 'GET',
-      path: '/get',
+      path: '/:fileId',
+      handler: 'operationController.get',
+    },
+    {
+      method: 'GET',
+      path: '/',
       handler: 'operationController.get',
     },
     {
       method: 'POST',
-      path: '/upload',
+      path: '/',
       handler: 'operationController.upload',
     },
     {
       method: 'DELETE',
-      path: '/delete',
+      path: '/:fileId',
       handler: 'operationController.delete',
     },
   ],

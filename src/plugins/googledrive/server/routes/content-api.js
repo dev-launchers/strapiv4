@@ -10,12 +10,7 @@ module.exports = {
     },
     {
       method: 'GET',
-      path: '/:fileId',
-      handler: 'operationController.get',
-    },
-    {
-      method: 'GET',
-      path: '/',
+      path: '/:fileId?',
       handler: 'operationController.get',
     },
     {

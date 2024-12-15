@@ -47,8 +47,8 @@ This plugin exposes the following API endpoints:
    Method: DELETE
    Params: fileId - The ID of the file to delete.
    Response:
-   200 if the fileid is present
-   If the fileId is not present then the following
+   200 if the fileid is present and deleted successfully
+   If the fileId is not present then the following error message:
    {
    "data": null,
    "error": {
@@ -79,7 +79,7 @@ This plugin exposes the following API endpoints:
    Method: GET
    Params: id - The ID of the file to fetch.
    Response:
-   If the fileId is present
+   If the fileId is present:
    {
    "id": "1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi",
    "name": "BigCushion_2.jpg",
@@ -87,7 +87,7 @@ This plugin exposes the following API endpoints:
    "modifiedTime": "2024-11-29T16:37:49.174Z",
    "webViewLink": "https://drive.google.com/file/d/1Vje2gb7z4tt_24RYBvJElmi6HQ45Rqyi/view?usp=drivesdk"
    }
-   if the fileId is not present
+   if the fileId is not present:
    [
    {
    "message": "File not found: 1jI1CvETZeGPIUALnJLvwTE_6bwVkgwtg*.",

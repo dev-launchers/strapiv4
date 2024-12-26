@@ -36,6 +36,7 @@ module.exports = {
         content: ideaDescription,
         entityType: "IdeaCard",
         entityId: id,
+        originatedEntityId: id,
         eventUser: user,
         createdDateTime: timeCreated,
       },
@@ -55,7 +56,7 @@ module.exports = {
 
   async afterUpdate(event) {
     const { previousStatus } = event.params.data;
-    const { id, ideaName, status,description } = event.result;
+    const { id, ideaName, status, description } = event.result;
 
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;
@@ -76,6 +77,7 @@ module.exports = {
         content: description,
         entityType: "IdeaCard",
         entityId: id,
+        originatedEntityId: id,
         eventUser: user,
         createdDateTime: new Date(),
       },

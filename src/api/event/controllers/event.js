@@ -3,12 +3,13 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::event.event', ({ strapi }) => ({
   async find(ctx) {
     // filter with the query
-    const { entityId, entityType } = ctx.query;
+    const { entityId, entityType, originatedEntityId } = ctx.query;
 
     // Fetch only the events that match the filters
     const filters = {};
     if (entityId) filters.entityId = entityId;
     if (entityType) filters.entityType = entityType;
+    if (originatedEntityId) filters.originatedEntityId = originatedEntityId;
 
     const events = await strapi.entityService.findMany('api::event.event', {
       filters,  // Apply filters to fetch specific events
@@ -20,10 +21,10 @@ module.exports = createCoreController('api::event.event', ({ strapi }) => ({
       let entityName = '';
 
       if (event.entityType === 'IdeaCard') {
-        const ideaCard = await strapi.entityService.findOne('api::idea-card.idea-card', event.entityId);
+        const ideaCard = await strapi.entityService.findOne('api::idea-card.idea-card', event.originatedEntityId);
         entityName = ideaCard ? ideaCard.ideaName : 'Unknown Idea';
       } else if (event.entityType === 'Comment') {
-        const comment = await strapi.entityService.findOne('api::comment.comment', event.entityId);
+        const comment = await strapi.entityService.findOne('api::comment.comment', event.originatedEntityId);
         entityName = comment ? comment.text : 'Unknown Comment';
       }
 

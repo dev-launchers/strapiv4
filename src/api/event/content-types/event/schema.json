@@ -45,6 +45,9 @@
     },
     "entityName": {
       "type": "string"
+    },
+    "originatedEntityId": {
+      "type": "integer"
     }
   }
 }

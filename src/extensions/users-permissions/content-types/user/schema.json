@@ -170,6 +170,11 @@
       "type": "component",
       "repeatable": false,
       "component": "role.role"
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::interest.interest"
     }
   }
 }

@@ -37,6 +37,16 @@ module.exports = {
       "name": "Fullstack Developer"
     }
   },
+  userInterestAndSkills: {
+    interests: [
+      "Python",
+      "JavaScript",
+    ],
+    skills: [
+      "JavaScript",
+      "React",
+    ]
+  },
   user2: {
     username: "tester2",
     email: "tester2@test.com",
@@ -52,9 +62,19 @@ module.exports = {
     professionalRole: {
       "category": "Product / UX",
       "name": "UX Researcher"
-    },
+    }
   },
-  interests: ["CSS", "HTML", "JavaScript", "Python"],
+  user2InterestAndSkills: {
+    interests: [
+      "Python",
+      "AI",
+    ],
+    skills: [
+      "CSS",
+      "HTML"
+    ]
+  },
+  interests: ["CSS", "HTML", "JavaScript", "Python", "React", "AI"],
   project: {
     slug: "dev-recruiting",
     title: "Dev Recruit",

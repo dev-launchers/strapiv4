@@ -39,13 +39,14 @@ module.exports = {
         },
       });
 
-    strapi.entityService.create("api::event.event", {
+    await strapi.entityService.create("api::event.event", {
       data: {
         action: "Commented",
         entityName: idea.ideaName,
         content: commentText,
         entityType: "Comment",
         entityId: idea.id,
+        originatedEntityId: commentId,
         eventUser: user?.id,
         createdDateTime: new Date(),
       },

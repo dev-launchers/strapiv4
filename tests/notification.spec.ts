@@ -59,7 +59,8 @@ test.describe('/api/notification', () => {
         // Filter the notification related to the comment using the comment ID
         const notification = notifications.data.reverse().find(
             (item) =>
-                item.attributes.event?.data?.attributes?.entityId === newCommentId &&
+                item.attributes.event?.data?.attributes?.entityId == notificationIdeaId &&
+                item.attributes.event?.data?.attributes?.originatedEntityId === newCommentId &&
                 item.attributes.event?.data?.attributes?.entityType === "Comment"
         );
 

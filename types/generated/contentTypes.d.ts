@@ -759,11 +759,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::subscription.subscription'
     >;
     professionalRole: Attribute.Component<'role.role'>;
-    skills: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::interest.interest'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

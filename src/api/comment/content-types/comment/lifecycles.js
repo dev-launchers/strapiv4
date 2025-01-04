@@ -33,7 +33,6 @@ module.exports = {
         data: {
           entityType: "Comment",
           entityId: idea.id,
-          originatedEntityId: commentId,
           createdDateTime: new Date(),
           active: true,
           user: user,

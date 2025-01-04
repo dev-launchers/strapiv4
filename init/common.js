@@ -50,16 +50,12 @@ const bootstrapDatabase = async () => {
   await grantPrivileges("Public", publicRolePermissions);
   console.log("Public role privileges granted");
   const userId = await createUserWithAuthenticatedRole(roleId, config.user);
-  const user2Id = await createUserWithAuthenticatedRole(roleId, config.user2);
+  await createUserWithAuthenticatedRole(roleId, config.user2);
   console.log("User with authenticated role created");
   await setupGoogleAuthProvider();
   console.log("Google auth provider setup");
-  const interestId = await createInterests();
+  const interestId = await createInterests(userId);
   console.log("Interests created");
-  await assignUserInterstAndSkills(userId, config.userInterestAndSkills);
-  console.log("Assigned interests and skills to user");
-  await assignUserInterstAndSkills(user2Id, config.user2InterestAndSkills);
-  console.log("Assigned interests and skills to user2");
   await createProject(interestId, userId, config.project);
   console.log("Project created");
   // creating project without associating team
@@ -77,7 +73,7 @@ const cleanUpDatabase = async (strapi) => {
   if (dbSettings?.connection?.filename) {
     const tmpDbFile = dbSettings.connection.filename;
     // Remove the test database file
-    fs.rmSync(tmpDbFile, { maxRetries: 5, retryDelay: 1000, force: true });
+    fs.rmSync(tmpDbFile, { maxRetries: 5, retryDelay: 1000, force: true});
     console.log("Database file removed: ", tmpDbFile);
   }
 };
@@ -96,7 +92,7 @@ const createUserWithAuthenticatedRole = async (roleId, user) => {
   } else {
     result = await strapi.plugins["users-permissions"].services.user.add(user);
     if (user.profile) {
-      await strapi.service("api::profile.profile").create({ data: { user: result.id, ...user.profile } });
+      await strapi.service("api::profile.profile").create({data: {user: result.id, ...user.profile}});
     }
   }
   return result.id;
@@ -155,7 +151,7 @@ const setupGoogleAuthProvider = async () => {
   await pluginStore.set({ key: "grant", value: currentGrantConfig });
 };
 
-const createInterests = async () => {
+const createInterests = async (userId) => {
   const service = strapi.service("api::interest.interest");
   let existing = await service.findOne({});
   if (existing) {
@@ -168,41 +164,21 @@ const createInterests = async () => {
       interestId = existing.id;
     }
   }
-
+  await strapi.plugins["users-permissions"].services.user.edit(userId, {
+    interests: [interestId],
+  });
   return interestId;
 };
 
-const assignUserInterstAndSkills = async (userId, interestAndSkills) => {
-  // List all the interests
-  const interestIDs = await strapi.entityService.findMany("api::interest.interest", {
-    fields: ["id"],
-    filters: {
-      interest: interestAndSkills.interests,
-    }
-  });
-
-  const skillIDs = await strapi.entityService.findMany("api::interest.interest", {
-    fields: ["id"],
-    filters: {
-      interest: interestAndSkills.skills,
-    }
-  });
-
-  await strapi.plugins["users-permissions"].services.user.edit(userId, {
-    interests: interestIDs,
-    skills: skillIDs,
-  });
-}
-
-const createProject = async (interestId, userId, project, addTeam = true) => {
-  let existing = await strapi.entityService.findMany("api::project.project", { filters: { slug: project.slug } });
+const createProject = async (interestId, userId, project, addTeam=true) => {
+  let existing = await strapi.entityService.findMany("api::project.project", {filters: {slug: project.slug}});
   existing = existing[0];
   if (existing) {
     return;
   }
   project.interests = [interestId];
 
-  if (addTeam) {
+  if(addTeam){
     project.team = {
       members: [
         {
@@ -234,21 +210,21 @@ const createProject = async (interestId, userId, project, addTeam = true) => {
 const createOpportunities = async (interestId) => {
 
   for (let index = 0; index < config.opportunity.length; index++) {
-    try {
-      let existing = await strapi.entityService.findMany("api::opportunity.opportunity", { filters: { title: config.opportunity[index].title } });
+    try{
+      let existing = await strapi.entityService.findMany("api::opportunity.opportunity", {filters: {title: config.opportunity[index].title}});
       existing = existing[0];
 
       if (existing) {
         return;
       }
-
+      
       config.opportunity[index].interests = [interestId];
-
+      
       const service = strapi.service("api::opportunity.opportunity");
       await service.create({ data: config.opportunity[index] });
-
+      
     }
-    catch (e) {
+    catch (e){
       console.log(`Could not create opportunity due to an error ${e}`)
       continue
     }
@@ -267,7 +243,6 @@ module.exports = {
   grantPrivileges,
   setupGoogleAuthProvider,
   createInterests,
-  assignUserInterstAndSkills,
   createProject,
   createOpportunities,
 };

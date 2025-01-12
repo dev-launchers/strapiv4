@@ -87,13 +87,20 @@ const getInitialProviders = ({ purest }) => ({
         email: body.email,
       }));
   },
-  async google({ accessToken }) {
+  async google({ accessToken, ctx }) {
     const google = purest({ provider: 'google' });
 
     const { body } = await google
       .get("https://www.googleapis.com/oauth2/v3/userinfo")
       .auth(accessToken)
       .request();
+
+    const authenticatedUserId = ctx.state.user?.id;
+
+    // TODO: Validation check if the profile is already created
+    // hasProfileAssociated ?
+    //    yes: Update with profilePiscture and displayedName (if it does't have it yet)
+    //    no: Create a profileAssociated to this user. Important: Must be published
 
     const createdProfile = await strapi.query('api::profile.profile').create({
       data: {

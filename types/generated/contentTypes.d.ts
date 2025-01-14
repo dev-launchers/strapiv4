@@ -759,6 +759,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::subscription.subscription'
     >;
     professionalRole: Attribute.Component<'role.role'>;
+    skills: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::interest.interest'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -938,11 +943,6 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    authorId: Attribute.Relation<
-      'api::comment.comment',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1019,6 +1019,7 @@ export interface ApiEventEvent extends Schema.CollectionType {
       ['Idea Created', 'Idea Updated', 'Commented', 'Liked', 'Test']
     >;
     entityName: Attribute.String;
+    originatedEntityId: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -38,7 +38,7 @@ test.describe('/api/notification', () => {
         // Ensure the notification exists and has correct attributes
         expect(notification).toBeDefined();
         expect(notification.attributes.event.data.attributes.action).toBe("Idea Created");
-        expect(notification.attributes.event.data.attributes.content).toBe(`${config.user.username} added new idea, TestNotificationIdea - Yay! is created`);
+        expect(notification.attributes.event.data.attributes.content).toBe("I am testing");
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
         expect(notification.attributes.readDateTime).toBeNull();
 
@@ -59,14 +59,15 @@ test.describe('/api/notification', () => {
         // Filter the notification related to the comment using the comment ID
         const notification = notifications.data.reverse().find(
             (item) =>
-                item.attributes.event?.data?.attributes?.entityId === newCommentId &&
+                item.attributes.event?.data?.attributes?.entityId == notificationIdeaId &&
+                item.attributes.event?.data?.attributes?.originatedEntityId === newCommentId &&
                 item.attributes.event?.data?.attributes?.entityType === "Comment"
         );
 
         // Schema Checks
         expect(notification).toBeDefined();
         expect(notification.attributes.event.data.attributes.action).toBe("Commented");
-        expect(notification.attributes.event.data.attributes.content).toBe(`${config.user.username} commented on idea: TestNotificationIdea`);
+        expect(notification.attributes.event.data.attributes.content).toBe("This is a test comment");
         //expect(notification.attributes.user.data.attributes.user).toBe(config.user.username);
         expect(notification.attributes.readDateTime).toBeNull();
 

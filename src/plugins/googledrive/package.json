@@ -1,5 +1,5 @@
 {
-  "name": "googledrive",
+  "name": "strapi-plugin-googledrive",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "license": "MIT",

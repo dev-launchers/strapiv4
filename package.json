@@ -29,6 +29,7 @@
     "pg": "^8.11.3",
     "sharp": "^0.33.0",
     "strapi-plugin-entity-relationship-chart": "^4.14.6",
+    "strapi-plugin-googledrive": "file:./src/plugins/googledrive",
     "strapi-plugin-populate-deep": "^3.0.0",
     "strapi-prometheus": "^1.8.1",
     "strapi-provider-upload-azure-storage": "^3.1.3",

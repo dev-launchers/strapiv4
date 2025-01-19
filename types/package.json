@@ -1,9 +1,9 @@
 {
-  "name": "devlaunchers-strapi",
+  "name": "@devlaunchers/strapi-test",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "publish:types": "npm publish"
+    "publish:types": "npm publish --access=public"
   },
   "keywords": [],
   "author": "",

@@ -17,20 +17,20 @@ module.exports = ({ env }) => ({
     config: {
       dsn: env('SENTRY_DSN'),
       sendMetadata: true,
-    }
+    },
   },
   'users-permissions': {
     config: {
       jwt: {
         expiresIn: '7d',
       },
-      jwtSecret: env('JWT_SECRET', 'NlpLY6zZ7JON8CHyNORWKw==')
+      jwtSecret: env('JWT_SECRET', 'NlpLY6zZ7JON8CHyNORWKw=='),
     },
   },
   'strapi-plugin-populate-deep': {
     config: {
       defaultDepth: 3, // Default is 5
-    }
+    },
   },
   'strapi-prometheus': {
     enabled: true,
@@ -61,8 +61,37 @@ module.exports = ({ env }) => ({
 
       // set custom/default labels to all the prometheus metrics
       customLabels: {
-        name: "strapi-prometheus",
+        name: 'strapi-prometheus',
       },
-    }
-  }
+    },
+  },
+  email: {
+    config: {
+      provider: 'nodemailer',
+      providerOptions: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        auth: {
+          user: env('NODE_MAILER_EMAIL'),
+          pass: env('NODE_MAILER_PASSWORD'),
+        },
+      },
+      settings: {
+        defaultFrom: env('NODE_MAILER_EMAIL'),
+        defaultReplyTo: env('NODE_MAILER_EMAIL'),
+      },
+    },
+  },
+  googledrive: {
+    enabled: true,
+    resolve: './src/plugins/googledrive',
+    config: {
+      provider: 'googledrive',
+      providerOptions: {
+        publicFiles: true,
+        uniform: false,
+        serviceAccount: env.json('GOOGLE_DRIVE_SERVICE_ACCOUNT'),
+      },
+    },
+  },
 });

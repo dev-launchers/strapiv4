@@ -1,5 +1,4 @@
 module.exports = {
-
   beforeCreate(event) {
     // Set author and ideaOwner to the user sending the request
     const ctx = strapi.requestContext.get();
@@ -8,12 +7,19 @@ module.exports = {
   },
 
   async afterCreate(event) {
-    const { id: id, ideaName: ideaName, createdAt: timeCreated, tagline: tagline } = event.result;
+    const {
+      id: id,
+      ideaName: ideaName,
+      createdAt: timeCreated,
+      tagline: tagline,
+      description: ideaDescription,
+    } = event.result;
+
     const author = event.params.data.author.username;
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;
 
-    await strapi.entityService.create('api::subscription.subscription', {
+    await strapi.entityService.create("api::subscription.subscription", {
       data: {
         entityType: "IdeaCard",
         entityId: id,
@@ -23,12 +29,14 @@ module.exports = {
       },
     });
 
-    await strapi.entityService.create('api::event.event', {
+    await strapi.entityService.create("api::event.event", {
       data: {
-        title:"Idea Submitted Successfully",
-        content: `${author} added new idea, ${ideaName} - ${tagline} is created`,
+        action: "Idea Created",
+        entityName: ideaName,
+        content: ideaDescription,
         entityType: "IdeaCard",
         entityId: id,
+        originatedEntityId: id,
         eventUser: user,
         createdDateTime: timeCreated,
       },
@@ -37,7 +45,10 @@ module.exports = {
 
   async beforeUpdate(event) {
     const { where } = event.params;
-    const previousData = await strapi.entityService.findOne('api::idea-card.idea-card', where.id);
+    const previousData = await strapi.entityService.findOne(
+      "api::idea-card.idea-card",
+      where.id
+    );
 
     // Store the previous status in the context
     event.params.data.previousStatus = previousData.status;
@@ -45,26 +56,31 @@ module.exports = {
 
   async afterUpdate(event) {
     const { previousStatus } = event.params.data;
-    const { id, ideaName, status } = event.result;
+    const { id, ideaName, status, description } = event.result;
 
     const ctx = strapi.requestContext.get();
     const user = ctx.state.user;
 
     const userName = user.username;
     const statusChanged = status !== previousStatus;
-    const title = statusChanged ? `Idea ${ideaName} is ${status}` : `Idea ${ideaName} was updated`;
-    const content = statusChanged ? `${userName} has updated idea ${ideaName} - ${status}` : `${userName} has updated idea ${ideaName}`;
+    const title = statusChanged
+      ? `Idea ${ideaName} is ${status}`
+      : `Idea ${ideaName} was updated`;
+    const content = statusChanged
+      ? `${userName} has updated idea ${ideaName} - ${status}`
+      : `${userName} has updated idea ${ideaName}`;
 
-    await strapi.entityService.create('api::event.event', {
+    await strapi.entityService.create("api::event.event", {
       data: {
-        title,
-        content,
-        entityType: 'IdeaCard',
+        action: "Idea Updated",
+        entityName: ideaName,
+        content: description,
+        entityType: "IdeaCard",
         entityId: id,
+        originatedEntityId: id,
         eventUser: user,
         createdDateTime: new Date(),
       },
     });
   },
-
-}
+};

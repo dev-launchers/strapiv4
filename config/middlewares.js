@@ -24,35 +24,34 @@ module.exports = [
   'strapi::errors',
 
   {
-    name: "strapi::security",
+    name: 'strapi::security',
     config: {
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          "connect-src": ["'self'", "https:"],
-          "img-src": [
+          'connect-src': ["'self'", 'https:'],
+          'img-src': [
             "'self'",
-            "data:",
-            "blob:",
-            "dl.airtable.com",
-            "https://market-assets.strapi.io",
+            'data:',
+            'blob:',
+            'dl.airtable.com',
+            'https://market-assets.strapi.io',
             /**
              * Note: If using a STORAGE_URL replace `https://${process.env.STORAGE_ACCOUNT}.blob.core.windows.net` w/ process.env.STORAGE_URL
              * If using a CDN URL make sure to include that url in the CSP headers process.env.STORAGE_CDN_URL
              */
             process.env.STORAGE_URL,
           ],
-          "media-src": [
+          'media-src': [
             "'self'",
-            "data:",
-            "blob:",
-            "dl.airtable.com",
+            'data:',
+            'blob:',
+            'dl.airtable.com',
             /**
              * Note: If using a STORAGE_URL replace `https://${process.env.STORAGE_ACCOUNT}.blob.core.windows.net` w/ process.env.STORAGE_URL
              * If using a CDN URL make sure to include that url in the CSP headers process.env.STORAGE_CDN_URL
              */
             process.env.STORAGE_URL,
-
           ],
           upgradeInsecureRequests: null,
         },
@@ -63,7 +62,12 @@ module.exports = [
   {
     name: 'strapi::cors',
     config: {
-      origin: ['https://devlaunchers.org', 'http://localhost:1337', 'http://localhost:3000', ...DevLaunchersSubdomains],
+      origin: [
+        'https://devlaunchers.org',
+        'http://localhost:1337',
+        'http://localhost:3000',
+        ...DevLaunchersSubdomains,
+      ],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
       keepHeaderOnError: true,
@@ -74,15 +78,32 @@ module.exports = [
     config: {
       key: 'strapi::session',
       httpOnly: true,
-      secure: process.env.NODE_ENV === "development" ? false : true,
-      sameSite: process.env.NODE_ENV === "development" ? 'Lax' : 'None',
+      secure: process.env.NODE_ENV === 'development' ? false : true,
+      sameSite: process.env.NODE_ENV === 'development' ? 'Lax' : 'None',
     },
   },
+
   'strapi::poweredBy',
   'strapi::logger',
   'strapi::query',
-  'strapi::body',
   'strapi::favicon',
   'strapi::public',
   'plugin::users-permissions.jwt',
+  {
+    name: 'strapi::body',
+    config: {
+      enabled: true,
+      multipart: true, // Enable multipart parsing for file uploads
+      formidable: {
+        maxFileSize: 200 * 1024 * 1024, // Optional: Increase file size limit (e.g., 200MB)
+      },
+    },
+  },
+  {
+    name: 'global::restrict-user-details',
+    config: {
+      allowedUserFields: ['id', 'username', 'profile'],
+      allowedProfileFields: ['id', 'profilePictureUrl', 'displayName'],
+    },
+  },
 ];

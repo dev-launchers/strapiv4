@@ -84,6 +84,11 @@
       ],
       "required": true,
       "default": "Front-End Developer"
+    },
+    "role": {
+      "type": "component",
+      "repeatable": false,
+      "component": "role.role"
     }
   }
 }

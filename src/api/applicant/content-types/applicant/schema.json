@@ -82,6 +82,15 @@
       "type": "boolean",
       "default": true,
       "required": true
+    },
+    "portfolioLink": {
+      "type": "string"
+    },
+    "portfolioFileId": {
+      "type": "string"
+    },
+    "extraInfo": {
+      "type": "string"
     }
   }
 }

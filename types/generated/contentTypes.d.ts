@@ -866,6 +866,9 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     isTermsAgreed: Attribute.Boolean &
       Attribute.Required &
       Attribute.DefaultTo<true>;
+    portfolioLink: Attribute.String;
+    portfolioFileId: Attribute.String;
+    extraInfo: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

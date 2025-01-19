@@ -95,19 +95,32 @@ const getInitialProviders = ({ purest }) => ({
       .auth(accessToken)
       .request();
 
-    const authenticatedUserId = ctx.state.user?.id;
-
-    // TODO: Validation check if the profile is already created
-    // hasProfileAssociated ?
-    //    yes: Update with profilePiscture and displayedName (if it does't have it yet)
-    //    no: Create a profileAssociated to this user. Important: Must be published
-
-    const createdProfile = await strapi.query('api::profile.profile').create({
-      data: {
-        displayName: body.name,
-        profilePictureUrl: body.picture
-      }
+    const currentUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+      where: { email: body.email }
     });
+
+    const hasProfileAssociated = await strapi.db.query('api::profile.profile').findMany({
+      where: { user: currentUser }
+    });
+
+    if (hasProfileAssociated?.length > 0) {
+      const profileAssociated = hasProfileAssociated[0]
+      if (profileAssociated?.profilePictureUrl || profileAssociated?.displayName) {
+        await strapi.query('api::profile.profile').update({
+          data: {
+            displayName: profileAssociated?.profilePictureUrl || body.name,
+            profilePictureUrl: profileAssociated?.displayName || body.picture
+          }
+        });
+      }
+    } else {
+      await strapi.query('api::profile.profile').create({
+        data: {
+          displayName: body.name,
+          profilePictureUrl: body.picture
+        }
+      });
+    }
 
     return {
       username: body.email.split("@")[0],

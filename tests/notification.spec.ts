@@ -42,6 +42,19 @@ test.describe('/api/notification', () => {
         expect(notification.attributes.user.data.attributes.username).toBe(config.user.username);
         expect(notification.attributes.readDateTime).toBeNull();
 
+        // Update read time of the notification
+        const notificationID = notification.id;
+        const readDateTime = new Date().toISOString();
+        await api(request).put(`/api/notifications/${notificationID}`, {
+            readDateTime
+        });
+
+        const notificationRead = await api(request).get(`/api/notifications/${notificationID}?populate=*`);
+        expect(notificationRead).toBeDefined();
+        expect(notificationRead.data.attributes.event.data.attributes.action).toBe("Idea Created");
+        expect(notificationRead.data.attributes.event.data.attributes.content).toBe("I am testing");
+        expect(notificationRead.data.attributes.user.data.attributes.username).toBe(config.user.username);
+        expect(notificationRead.data.attributes.readDateTime).toBe(readDateTime);
     });
 
     test("Create new notification on comment create", async ({ request }) => {

@@ -51,3 +51,7 @@ jobs:
         # Get cache from latest build on main branch
         cache-from: type=gha
         # Don't set cache-to which will export the cache
+    - name: Lint commit messages
+      uses: wagoid/commitlint-github-action@v4
+      with:
+          configFile: commitlint.config.js

@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+          fetch-depth: 0
     - uses: actions/setup-node@v4
       with:
         node-version: 20
@@ -51,3 +53,7 @@ jobs:
         # Get cache from latest build on main branch
         cache-from: type=gha
         # Don't set cache-to which will export the cache
+    - name: Lint commit messages
+      uses: wagoid/commitlint-github-action@v4
+      with:
+        configFile: commitlint.config.cjs

@@ -95,19 +95,44 @@ const getInitialProviders = ({ purest }) => ({
       .auth(accessToken)
       .request();
 
-    const createdProfile = await strapi.query('api::profile.profile').create({
-      data: {
-        displayName: body.name,
-        profilePictureUrl: body.picture
-      }
+    const currentUser = await strapi.db.query('plugin::users-permissions.user').findOne({
+      where: { email: body.email }
     });
+
+    const associatedProfiles = await strapi.db.query('api::profile.profile').findMany({
+      where: { user: currentUser }
+    });
+
+    let currentProfile = ''
+    if (associatedProfiles.length) {
+      const profileAssociated = associatedProfiles[0]
+      if (!profileAssociated?.profilePictureUrl || !profileAssociated?.displayName) {
+        currentProfile = await strapi.db.query('api::profile.profile').update({
+          where: {user: currentUser.id},
+          data: {
+            displayName: profileAssociated?.displayName || body.name,
+            profilePictureUrl: profileAssociated?.profilePictureUrl || body.picture
+          }
+        });
+      }
+    } else {
+      currentProfile = await strapi.db.query('api::profile.profile').create({
+        data: {
+          displayName: body.name,
+          profilePictureUrl: body.picture,
+          user: currentUser.id,
+          publishedAt: new Date(),
+        }
+      });
+    }
+
 
     return {
       username: body.email.split("@")[0],
       email: body.email,
       googleId: body.sub,
       userId: uuidv4(),
-      profile: createdProfile.id,
+      profile: currentProfile.id,
     }
   },
   async github({ accessToken }) {

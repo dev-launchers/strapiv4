@@ -121,6 +121,7 @@ const getInitialProviders = ({ purest }) => ({
           displayName: body.name,
           profilePictureUrl: body.picture,
           user: currentUser.id,
+          publishedAt: new Date(),
         }
       });
     }

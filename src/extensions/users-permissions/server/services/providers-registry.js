@@ -99,13 +99,13 @@ const getInitialProviders = ({ purest }) => ({
       where: { email: body.email }
     });
 
-    const hasProfileAssociated = await strapi.db.query('api::profile.profile').findMany({
+    const associatedProfiles = await strapi.db.query('api::profile.profile').findMany({
       where: { user: currentUser }
     });
 
     let currentProfile = ''
-    if (hasProfileAssociated.length) {
-      const profileAssociated = hasProfileAssociated[0]
+    if (associatedProfiles.length) {
+      const profileAssociated = associatedProfiles[0]
       if (!profileAssociated?.profilePictureUrl || !profileAssociated?.displayName) {
         currentProfile = await strapi.db.query('api::profile.profile').update({
           where: {user: currentUser.id},

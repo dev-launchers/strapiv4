@@ -1,0 +1,136 @@
+{
+  "kind": "collectionType",
+  "collectionName": "members",
+  "info": {
+    "singularName": "member",
+    "pluralName": "members",
+    "displayName": "Members",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "preferredName": {
+      "type": "string"
+    },
+    "personalEmail": {
+      "type": "email"
+    },
+    "devLaunchersEmail": {
+      "type": "email"
+    },
+    "role": {
+      "type": "string"
+    },
+    "team": {
+      "type": "enumeration",
+      "enum": [
+        "devrecruit",
+        "gpt",
+        "ideaspace",
+        "universaldesign",
+        "landingpage",
+        "userprofile",
+        "communitydevelopment",
+        "platformteam",
+        "programmanagement",
+        "all"
+      ]
+    },
+    "Types": {
+      "type": "enumeration",
+      "enum": [
+        "member",
+        "leader",
+        "officer"
+      ]
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "docuSign": {
+      "type": "enumeration",
+      "enum": [
+        "signed",
+        "unsigned "
+      ]
+    },
+    "discordJoinDate": {
+      "type": "date"
+    },
+    "onboardingPackageSent": {
+      "type": "boolean"
+    },
+    "OPSentDate": {
+      "type": "date"
+    },
+    "addedOnDiscord": {
+      "type": "boolean"
+    },
+    "discord": {
+      "type": "string"
+    },
+    "discordAccess": {
+      "type": "json"
+    },
+    "addedOnGithub": {
+      "type": "boolean"
+    },
+    "github": {
+      "type": "string"
+    },
+    "githubAccess": {
+      "type": "enumeration",
+      "enum": [
+        "member",
+        "maintainer",
+        "none"
+      ]
+    },
+    "addedToGoogleGroups": {
+      "type": "boolean"
+    },
+    "GoogleSuiteAccess": {
+      "type": "string"
+    },
+    "TwoWeekFup": {
+      "type": "boolean"
+    },
+    "FullyOnboardedDate": {
+      "type": "date"
+    },
+    "FullyOnboarded": {
+      "type": "boolean"
+    },
+    "EndDate": {
+      "type": "date"
+    },
+    "DurationActiveMonths": {
+      "type": "string"
+    },
+    "DurationActiveYears": {
+      "type": "string"
+    },
+    "ReasonForLeaving": {
+      "type": "string"
+    },
+    "FullyOffboardedDate": {
+      "type": "date"
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

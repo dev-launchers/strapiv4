@@ -64,6 +64,8 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.9",
+    "@commitlint/cli": "^17.8.1",
+    "@commitlint/config-conventional": "^17.8.1",
     "@playwright/test": "^1.42.1",
     "@testcontainers/postgresql": "^10.9.0",
     "nyc": "^15.1.0"

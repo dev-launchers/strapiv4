@@ -95,6 +95,13 @@ const getInitialProviders = ({ purest }) => ({
       .auth(accessToken)
       .request();
 
+    return {
+      username: body.email.split("@")[0],
+      email: body.email,
+      googleId: body.sub,
+      userId: uuidv4()
+    };
+
     const currentUser = await strapi.db.query('plugin::users-permissions.user').findOne({
       where: { email: body.email }
     });

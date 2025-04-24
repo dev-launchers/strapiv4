@@ -50,12 +50,6 @@
       "default": false,
       "required": true
     },
-    "projects": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::project.project",
-      "inversedBy": "opportunities"
-    },
     "roleCategory": {
       "type": "enumeration",
       "enum": [
@@ -89,6 +83,12 @@
       "type": "component",
       "repeatable": false,
       "component": "role.role"
+    },
+    "projects": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::project.project",
+      "mappedBy": "opportunities"
     }
   }
 }

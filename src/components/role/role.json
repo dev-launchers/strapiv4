@@ -1,17 +1,18 @@
 {
   "collectionName": "components_role_roles",
   "info": {
-    "displayName": "role"
+    "displayName": "role",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "category": {
       "type": "enumeration",
       "enum": [
-        "Product / UX",
+        "Product",
+        "Design",
+        "Research",
         "Development",
-        "QA",
-        "Operations",
         "Other"
       ]
     },

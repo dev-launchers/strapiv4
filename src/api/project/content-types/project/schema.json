@@ -109,12 +109,6 @@
       "repeatable": true,
       "component": "dates.new-meeting-times"
     },
-    "opportunities": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::opportunity.opportunity",
-      "mappedBy": "projects"
-    },
     "images": {
       "type": "component",
       "repeatable": true,
@@ -122,6 +116,12 @@
     },
     "discordWebhookUrl": {
       "type": "string"
+    },
+    "opportunities": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::opportunity.opportunity",
+      "inversedBy": "projects"
     }
   }
 }

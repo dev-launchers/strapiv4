@@ -9,10 +9,12 @@
     "category": {
       "type": "enumeration",
       "enum": [
-        "Product",
+        "Product / UX",
         "Design",
         "Research",
         "Development",
+        "QA",
+        "Operations",
         "Other"
       ]
     },

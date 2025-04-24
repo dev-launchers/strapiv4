@@ -289,7 +289,15 @@ export interface RoleRole extends Schema.Component {
   };
   attributes: {
     category: Attribute.Enumeration<
-      ['Product', 'Design', 'Research', 'Development', 'Other']
+      [
+        'Product / UX',
+        'Design',
+        'Research',
+        'Development',
+        'QA',
+        'Operations',
+        'Other'
+      ]
     >;
     name: Attribute.String;
   };

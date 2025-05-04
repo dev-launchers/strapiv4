@@ -120,6 +120,47 @@ class GithubManager {
     hasExpired(cacheEntry) {
         return cacheEntry.addedTime + CACHE_TTL < Date.now();
     }
+
+    async sendOrgInviteByUsername(username) {
+        const org = 'dev-launchers';
+        const token = process.env.GITHUB_TOKEN;
+      
+        if (!username || !token) {
+          throw new Error('Missing GitHub username or token');
+        }
+      
+        try {
+          // Get the GitHub user ID
+          const userResp = await axios.get(`https://api.github.com/users/${username}`, {
+            headers: {
+              Authorization: `token ${token}`,
+              Accept: 'application/vnd.github+json',
+              'User-Agent': 'Strapi-App',
+            },
+          });
+      
+          const userId = userResp.data.id;
+      
+          // Send invite using invitee_id
+          const inviteResp = await axios.post(
+            `https://api.github.com/orgs/${org}/invitations`,
+            { invitee_id: userId },
+            {
+              headers: {
+                Authorization: `token ${token}`,
+                Accept: 'application/vnd.github+json',
+                'User-Agent': 'Strapi-App',
+              },
+            }
+          );
+      
+          return inviteResp.data;
+        } catch (error) {
+          console.error(`GitHub Invite Error:`, error.response?.data || error.message);
+          throw error;
+        }
+    }
+
 }
 
 module.exports = new GithubManager();

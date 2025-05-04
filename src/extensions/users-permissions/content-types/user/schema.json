@@ -175,6 +175,26 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::interest.interest"
+    },
+    "applicants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::applicant.applicant",
+      "mappedBy": "users_permissions_user"
+    },
+    "timeZone": {
+      "type": "string"
+    },
+    "github": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "enumeration",
+      "enum": [
+        "Immediately available",
+        "One to two weeks",
+        "One month plus"
+      ]
     }
   }
 }

@@ -89,6 +89,15 @@
       "relation": "manyToMany",
       "target": "api::project.project",
       "mappedBy": "opportunities"
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "responsibilities": {
+      "type": "text"
+    },
+    "whyJoin": {
+      "type": "text"
     }
   }
 }

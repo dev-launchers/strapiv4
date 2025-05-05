@@ -672,6 +672,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::interest.interest'
     >;
+    applicants: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::applicant.applicant'
+    >;
+    timeZone: Attribute.String;
+    github: Attribute.String;
+    availability: Attribute.Enumeration<
+      ['Immediately available', 'One to two weeks', 'One month plus']
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -777,6 +787,15 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     portfolioLink: Attribute.String;
     portfolioFileId: Attribute.String;
     extraInfo: Attribute.String;
+    users_permissions_user: Attribute.Relation<
+      'api::applicant.applicant',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    talentCommunity: Attribute.Boolean;
+    notes: Attribute.Text;
+    comments: Attribute.Text;
+    resumeUrl: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -850,6 +869,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
     >;
     author: Attribute.String;
     user: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1367,6 +1391,9 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
       'manyToMany',
       'api::project.project'
     >;
+    startDate: Attribute.Date;
+    responsibilities: Attribute.Text;
+    whyJoin: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

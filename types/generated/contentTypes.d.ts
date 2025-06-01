@@ -362,98 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface AdminWorkflow extends Schema.CollectionType {
-  collectionName: 'strapi_workflows';
-  info: {
-    name: 'Workflow';
-    description: '';
-    singularName: 'workflow';
-    pluralName: 'workflows';
-    displayName: 'Workflow';
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    stages: Attribute.Relation<
-      'admin::workflow',
-      'oneToMany',
-      'admin::workflow-stage'
-    >;
-    contentTypes: Attribute.JSON & Attribute.Required & Attribute.DefaultTo<[]>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'admin::workflow',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'admin::workflow',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface AdminWorkflowStage extends Schema.CollectionType {
-  collectionName: 'strapi_workflows_stages';
-  info: {
-    name: 'Workflow Stage';
-    description: '';
-    singularName: 'workflow-stage';
-    pluralName: 'workflow-stages';
-    displayName: 'Stages';
-  };
-  options: {
-    version: '1.1.0';
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: Attribute.String;
-    color: Attribute.String & Attribute.DefaultTo<'#4945FF'>;
-    workflow: Attribute.Relation<
-      'admin::workflow-stage',
-      'manyToOne',
-      'admin::workflow'
-    >;
-    permissions: Attribute.Relation<
-      'admin::workflow-stage',
-      'manyToMany',
-      'admin::permission'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'admin::workflow-stage',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'admin::workflow-stage',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -764,6 +672,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::interest.interest'
     >;
+    applicants: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::applicant.applicant'
+    >;
+    timeZone: Attribute.String;
+    github: Attribute.String;
+    availability: Attribute.Enumeration<
+      ['Immediately available', 'One to two weeks', 'One month plus']
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -869,6 +787,15 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     portfolioLink: Attribute.String;
     portfolioFileId: Attribute.String;
     extraInfo: Attribute.String;
+    users_permissions_user: Attribute.Relation<
+      'api::applicant.applicant',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    talentCommunity: Attribute.Boolean;
+    notes: Attribute.Text;
+    comments: Attribute.Text;
+    resumeUrl: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -942,6 +869,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
     >;
     author: Attribute.String;
     user: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    authorId: Attribute.Relation<
       'api::comment.comment',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1260,6 +1192,79 @@ export interface ApiLikeLike extends Schema.CollectionType {
   };
 }
 
+export interface ApiMemberMember extends Schema.CollectionType {
+  collectionName: 'members';
+  info: {
+    singularName: 'member';
+    pluralName: 'members';
+    displayName: 'Members';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    firstName: Attribute.String;
+    lastName: Attribute.String;
+    preferredName: Attribute.String;
+    personalEmail: Attribute.Email;
+    devLaunchersEmail: Attribute.Email;
+    role: Attribute.String;
+    team: Attribute.Enumeration<
+      [
+        'devrecruit',
+        'gpt',
+        'ideaspace',
+        'universaldesign',
+        'landingpage',
+        'userprofile',
+        'communitydevelopment',
+        'platformteam',
+        'programmanagement',
+        'all'
+      ]
+    >;
+    Types: Attribute.Enumeration<['member', 'leader', 'officer']>;
+    status: Attribute.Enumeration<['active', 'inactive']>;
+    docuSign: Attribute.Enumeration<['signed', 'unsigned ']>;
+    discordJoinDate: Attribute.Date;
+    onboardingPackageSent: Attribute.Boolean;
+    OPSentDate: Attribute.Date;
+    addedOnDiscord: Attribute.Boolean;
+    discord: Attribute.String;
+    discordAccess: Attribute.JSON;
+    addedOnGithub: Attribute.Boolean;
+    github: Attribute.String;
+    githubAccess: Attribute.Enumeration<['member', 'maintainer', 'none']>;
+    addedToGoogleGroups: Attribute.Boolean;
+    GoogleSuiteAccess: Attribute.String;
+    TwoWeekFup: Attribute.Boolean;
+    FullyOnboardedDate: Attribute.Date;
+    FullyOnboarded: Attribute.Boolean;
+    EndDate: Attribute.Date;
+    DurationActiveMonths: Attribute.String;
+    DurationActiveYears: Attribute.String;
+    ReasonForLeaving: Attribute.String;
+    FullyOffboardedDate: Attribute.Date;
+    note: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::member.member',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::member.member',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiNewsletterNewsletter extends Schema.CollectionType {
   collectionName: 'newsletters';
   info: {
@@ -1358,11 +1363,6 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
     isHidden: Attribute.Boolean &
       Attribute.Required &
       Attribute.DefaultTo<false>;
-    projects: Attribute.Relation<
-      'api::opportunity.opportunity',
-      'manyToMany',
-      'api::project.project'
-    >;
     roleCategory: Attribute.Enumeration<
       ['Product / UX', 'Development', 'QA', 'Operations']
     > &
@@ -1386,6 +1386,14 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
       Attribute.Required &
       Attribute.DefaultTo<'Front-End Developer'>;
     role: Attribute.Component<'role.role'>;
+    projects: Attribute.Relation<
+      'api::opportunity.opportunity',
+      'manyToMany',
+      'api::project.project'
+    >;
+    startDate: Attribute.Date;
+    responsibilities: Attribute.Text;
+    whyJoin: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1496,13 +1504,13 @@ export interface ApiProjectProject extends Schema.CollectionType {
       'api::google-meet.google-meet'
     >;
     newMeetingTimes: Attribute.Component<'dates.new-meeting-times', true>;
+    images: Attribute.Component<'links.images', true>;
+    discordWebhookUrl: Attribute.String;
     opportunities: Attribute.Relation<
       'api::project.project',
       'manyToMany',
       'api::opportunity.opportunity'
     >;
-    images: Attribute.Component<'links.images', true>;
-    discordWebhookUrl: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1670,47 +1678,6 @@ export interface ApiTeamMembershipTeamMembership extends Schema.CollectionType {
   };
 }
 
-export interface AdminAuditLog extends Schema.CollectionType {
-  collectionName: 'strapi_audit_logs';
-  info: {
-    singularName: 'audit-log';
-    pluralName: 'audit-logs';
-    displayName: 'Audit Log';
-  };
-  options: {
-    draftAndPublish: false;
-    timestamps: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    action: Attribute.String & Attribute.Required;
-    date: Attribute.DateTime & Attribute.Required;
-    user: Attribute.Relation<'admin::audit-log', 'oneToOne', 'admin::user'>;
-    payload: Attribute.JSON;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'admin::audit-log',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'admin::audit-log',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1721,8 +1688,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'admin::workflow': AdminWorkflow;
-      'admin::workflow-stage': AdminWorkflowStage;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
@@ -1739,6 +1704,7 @@ declare module '@strapi/types' {
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
+      'api::member.member': ApiMemberMember;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::notification.notification': ApiNotificationNotification;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
@@ -1748,7 +1714,6 @@ declare module '@strapi/types' {
       'api::sendmail.sendmail': ApiSendmailSendmail;
       'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
-      'admin::audit-log': AdminAuditLog;
     }
   }
 }

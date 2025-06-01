@@ -209,11 +209,17 @@ export interface PositionsOpenPositions extends Schema.Component {
     displayName: 'OpenPositions';
   };
   attributes: {
-    title: Attribute.String & Attribute.Required;
-    description: Attribute.Text & Attribute.Required;
-    isHidden: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<false>;
+    opportunity: Attribute.Relation<
+      'positions.open-positions',
+      'oneToOne',
+      'api::opportunity.opportunity'
+    >;
+    active: Attribute.Boolean;
+    applicants: Attribute.Relation<
+      'positions.open-positions',
+      'oneToMany',
+      'api::applicant.applicant'
+    >;
   };
 }
 
@@ -279,10 +285,19 @@ export interface RoleRole extends Schema.Component {
   collectionName: 'components_role_roles';
   info: {
     displayName: 'role';
+    description: '';
   };
   attributes: {
     category: Attribute.Enumeration<
-      ['Product / UX', 'Development', 'QA', 'Operations', 'Other']
+      [
+        'Product / UX',
+        'Design',
+        'Research',
+        'Development',
+        'QA',
+        'Operations',
+        'Other'
+      ]
     >;
     name: Attribute.String;
   };

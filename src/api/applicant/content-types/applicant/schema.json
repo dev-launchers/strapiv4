@@ -91,6 +91,24 @@
     },
     "extraInfo": {
       "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "applicants"
+    },
+    "talentCommunity": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "text"
+    },
+    "comments": {
+      "type": "text"
+    },
+    "resumeUrl": {
+      "type": "string"
     }
   }
 }

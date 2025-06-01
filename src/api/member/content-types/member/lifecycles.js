@@ -53,11 +53,11 @@ module.exports = {
             .sendInvite();
 
           // Send email with invite link
-          await strapi.plugins['email'].services.email.send({
-            to: member.personalEmail,
-            subject: 'Your Invite to Our Discord Server',
-            text: `Hi ${member.firstName || 'there'},\n\nYou're invited to join our Discord community!\n\nJoin here: ${invite.inviteUrl}\n\nThis invite is valid for one use and will expire in 7 days.\n\nSee you inside!`,
-          });
+          // await strapi.plugins['email'].services.email.send({
+          //   to: member.personalEmail,
+          //   subject: 'Your Invite to Our Discord Server',
+          //   text: `Hi ${member.firstName || 'there'},\n\nYou're invited to join our Discord community!\n\nJoin here: ${invite.inviteUrl}\n\nThis invite is valid for one use and will expire in 7 days.\n\nSee you inside!`,
+          // });
 
           // Update member record with metadata
           await strapi.entityService.update('api::member.member', where.id, {

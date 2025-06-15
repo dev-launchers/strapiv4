@@ -133,13 +133,12 @@ class GithubManager {
           // Get the GitHub user ID
           const userResp = await axios.get(`https://api.github.com/users/${username}`, {
             headers: {
-              Authorization: `token ${token}`,
               Accept: 'application/vnd.github+json',
               'User-Agent': 'Strapi-App',
             },
           });
       
-          const userId = userResp.data.id;
+          const userId = userResp?.data?.id;
       
           // Send invite using invitee_id
           const inviteResp = await axios.post(
@@ -153,10 +152,12 @@ class GithubManager {
               },
             }
           );
+
+          // TODO: verify this is 200 response
       
           return inviteResp.data;
         } catch (error) {
-          console.error(`GitHub Invite Error:`, error.response?.data || error.message);
+          strapi.log.error(`GitHub Invite Error: (${username}) `, error.response?.data || error.message);
           throw error;
         }
     }

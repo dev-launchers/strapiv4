@@ -47,6 +47,11 @@ spec:
             secretKeyRef:
               name: auth
               key: discord-client-id
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-token
         - name: CLIENT_SECRET
           valueFrom:
             secretKeyRef:

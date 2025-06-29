@@ -7,6 +7,15 @@ const axios = require('axios');
 const CACHE_TTL = 10 * 60 * 1000;
 const { createCoreService } = require('@strapi/strapi').factories;
 
+
+
+const jwt = require('jsonwebtoken');
+const appId = process.env.GITHUB_APP_ID;
+const installationId = process.env.GITHUB_APP_INSTALLATION_ID;
+let privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
+
+
+
 class GithubManager {
     
     constructor() {
@@ -121,41 +130,77 @@ class GithubManager {
         return cacheEntry.addedTime + CACHE_TTL < Date.now();
     }
 
+    async getInstallationToken() {
+        const now = Math.floor(Date.now() / 1000);
+
+        if (privateKey.startsWith('LS0t') || !privateKey.startsWith('-----BEGIN')) {
+            // Looks base64-encoded
+            privateKey = Buffer.from(privateKey, 'base64').toString('utf8');
+        }
+
+        const token = jwt.sign(
+            {
+            iat: now - 60,
+            exp: now + 600,
+            iss: appId,
+            },
+            privateKey,
+            { algorithm: 'RS256' }
+        );
+
+        const response = await axios.post(
+            `https://api.github.com/app/installations/${installationId}/access_tokens`,
+            {},
+            {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/vnd.github+json',
+                'User-Agent': 'Strapi-App',
+            },
+            }
+        );
+
+        return response.data.token;
+    }
+
     async sendOrgInviteByUsername(username) {
         const org = 'dev-launchers';
-        const token = process.env.GITHUB_TOKEN;
       
-        if (!username || !token) {
-          throw new Error('Missing GitHub username or token');
+        if (!username) {
+            throw new Error('Missing GitHub username');
         }
       
         try {
-          // Get the GitHub user ID
-          const userResp = await axios.get(`https://api.github.com/users/${username}`, {
-            headers: {
-              Accept: 'application/vnd.github+json',
-              'User-Agent': 'Strapi-App',
-            },
-          });
+            const installationToken = await this.getInstallationToken();
+            // Get the GitHub user ID
+            const userResp = await axios.get(`https://api.github.com/users/${username}`, {
+                headers: {
+                    Accept: 'application/vnd.github+json',
+                    Authorization: `token ${installationToken}`,
+                    'User-Agent': 'Strapi-App',
+                },
+            });
       
-          const userId = userResp?.data?.id;
-      
-          // Send invite using invitee_id
-          const inviteResp = await axios.post(
-            `https://api.github.com/orgs/${org}/invitations`,
-            { invitee_id: userId },
-            {
-              headers: {
-                Authorization: `token ${token}`,
-                Accept: 'application/vnd.github+json',
-                'User-Agent': 'Strapi-App',
-              },
-            }
-          );
+            const userId = userResp?.data?.id;
 
-          // TODO: verify this is 200 response
+            if (!userId) {
+                throw new Error(`Could not fetch GitHub user ID for username: ${username}`);
+            }
       
-          return inviteResp.data;
+            // Send invite using invitee_id
+            const inviteResp = await axios.post(
+                `https://api.github.com/orgs/${org}/invitations`,
+                { invitee_id: userId },
+                {
+                    headers: {
+                    Authorization: `token ${installationToken}`,
+                    Accept: 'application/vnd.github+json',
+                    'User-Agent': 'Strapi-App',
+                    },
+                }
+          );
+      
+            return inviteResp.data;
         } catch (error) {
           strapi.log.error(`GitHub Invite Error: (${username}) `, error.response?.data || error.message);
           throw error;

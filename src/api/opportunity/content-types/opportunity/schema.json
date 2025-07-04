@@ -98,6 +98,17 @@
     },
     "whyJoin": {
       "type": "text"
+    },
+    "postedDate": {
+      "type": "date"
+    },
+    "updateDate": {
+      "type": "date"
+    },
+    "department": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::department.department"
     }
   }
 }

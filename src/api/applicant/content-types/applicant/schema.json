@@ -109,6 +109,17 @@
     },
     "resumeUrl": {
       "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "opportunity": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::opportunity.opportunity"
     }
   }
 }

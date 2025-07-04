@@ -796,6 +796,13 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     notes: Attribute.Text;
     comments: Attribute.Text;
     resumeUrl: Attribute.String;
+    website: Attribute.String;
+    status: Attribute.String;
+    opportunity: Attribute.Relation<
+      'api::applicant.applicant',
+      'oneToOne',
+      'api::opportunity.opportunity'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -889,6 +896,37 @@ export interface ApiCommentComment extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDepartmentDepartment extends Schema.CollectionType {
+  collectionName: 'departments';
+  info: {
+    singularName: 'department';
+    pluralName: 'departments';
+    displayName: 'Department ';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Title: Attribute.String;
+    Description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::department.department',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::department.department',
       'oneToOne',
       'admin::user'
     > &
@@ -1394,6 +1432,13 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
     startDate: Attribute.Date;
     responsibilities: Attribute.Text;
     whyJoin: Attribute.Text;
+    postedDate: Attribute.Date;
+    updateDate: Attribute.Date;
+    department: Attribute.Relation<
+      'api::opportunity.opportunity',
+      'oneToOne',
+      'api::department.department'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1697,6 +1742,7 @@ declare module '@strapi/types' {
       'api::applicant.applicant': ApiApplicantApplicant;
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
+      'api::department.department': ApiDepartmentDepartment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
       'api::event.event': ApiEventEvent;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;

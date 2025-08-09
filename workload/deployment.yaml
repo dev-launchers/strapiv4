@@ -175,6 +175,16 @@ spec:
             secretKeyRef:
               name: v-match
               key: preferences
+        - name: PEXELS_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: pexels
+              key: api-url
+        - name: PEXELS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pexels
+              key: api-key
         volumeMounts:
         - name: google-directory-key
           mountPath: "/etc/google-directory"

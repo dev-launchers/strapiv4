@@ -220,7 +220,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       }
     );
   },
-  
+
   /**
    * Fetch and save images for all interests
    * @param {number} perPage - Number of images per page
@@ -246,6 +246,47 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       };
     } catch (error) {
       strapi.log.error("Error in fetchAndSaveImages:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get images by keyword from image table through mapping
+   * Re-usable function
+   * @param {Object} ctx
+   * @returns {Object} Mapping Images object
+   */
+  async getImageMappings(keyword, start, limit) {
+    try {
+      strapi.log.info(`Searching images for keyword ${keyword}`);
+      return await strapi.entityService.findMany(
+        "api::image-keyword-mapping.image-keyword-mapping",
+        {
+          start: (start - 1) * limit,
+          limit: limit,
+          filters: {
+            keyword: {
+              $contains: keyword.toLowerCase(),
+            },
+          },
+          populate: {
+            image: {
+              fields: [
+                "id",
+                "photographer",
+                "photographer_url",
+                "original_url",
+                "large_url",
+                "medium_url",
+                "small_url",
+                "publishedAt",
+              ],
+            },
+          },
+        }
+      );
+    } catch (error) {
+      strapi.log.error("Error in getImageMappings:", error);
       throw error;
     }
   },

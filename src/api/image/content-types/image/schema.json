@@ -23,10 +23,16 @@
     "small_url": {
       "type": "string"
     },
+    "alt_text": {
+      "type": "string"
+    },
     "photographer": {
       "type": "string"
     },
     "photographer_url": {
+      "type": "text"
+    },
+    "provider": {
       "type": "text"
     },
     "image_keyword_mappings": {

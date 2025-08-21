@@ -1133,8 +1133,10 @@ export interface ApiImageImage extends Schema.CollectionType {
     large_url: Attribute.String;
     medium_url: Attribute.String;
     small_url: Attribute.String;
+    alt_text: Attribute.String;
     photographer: Attribute.String;
     photographer_url: Attribute.Text;
+    provider: Attribute.Text;
     image_keyword_mappings: Attribute.Relation<
       'api::image.image',
       'oneToMany',

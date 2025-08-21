@@ -5,6 +5,9 @@
  */
 
 const { createCoreService } = require("@strapi/strapi").factories;
+const IMAGE_PROVIDER = {
+  PEXELS: "pexels",
+};
 
 module.exports = createCoreService("api::image.image", ({ strapi }) => ({
   /**
@@ -78,6 +81,8 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
               large_url: photo.src.large,
               medium_url: photo.src.medium,
               small_url: photo.src.small,
+              alt_text: photo.alt,
+              provider: IMAGE_PROVIDER.PEXELS,
               keyword: keyword.toLowerCase(), // Store keyword for mapping creation
             }));
 
@@ -279,6 +284,8 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
                 "large_url",
                 "medium_url",
                 "small_url",
+                "alt_text",
+                "provider",
                 "publishedAt",
               ],
             },

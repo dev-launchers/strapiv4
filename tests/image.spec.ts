@@ -16,7 +16,7 @@ test.describe("/api/image", () => {
       expect(response.count).toBeGreaterThanOrEqual(0);
     });
 
-    test("should return 400 for missing keyword parameter", async ({
+    test("should return 404 for missing keyword parameter", async ({
       request,
     }) => {
       const response = await request.get("/api/images/keyword/");

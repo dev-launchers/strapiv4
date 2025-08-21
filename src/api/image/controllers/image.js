@@ -14,7 +14,7 @@ module.exports = createCoreController("api::image.image", ({ strapi }) => ({
    */
   async fetchFromPexels(ctx) {
     try {
-      const { perPage = 12, page = 1 } = ctx.request.body;
+      const { perPage = 24, page = 1 } = ctx.request.body;
 
       // Validate parameters
       const validatedPerPage = Math.min(Math.max(parseInt(perPage), 1), 80);

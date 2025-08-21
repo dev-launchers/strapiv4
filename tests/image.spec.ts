@@ -19,8 +19,11 @@ test.describe("/api/image", () => {
     test("should return 404 for missing keyword parameter", async ({
       request,
     }) => {
-      const response = await request.get("/api/images/keyword/");
-      expect(response.status()).toBe(404); // Route not found without keyword
+      const response = await api(request).get("/api/images/keyword/", 404);
+      expect(response).toBeDefined();
+      expect(response.data).toBeNull();
+      expect(response.error).toBeDefined();
+      expect(response.error.status).toEqual(404);
     });
 
     test("should handle empty keyword gracefully", async ({ request }) => {

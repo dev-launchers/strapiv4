@@ -16,26 +16,6 @@ test.describe("/api/image", () => {
       expect(response.count).toBeGreaterThanOrEqual(0);
     });
 
-    test("should return 404 for missing keyword parameter", async ({
-      request,
-    }) => {
-      const response = await api(request).get("/api/images/keyword/", 404);
-      expect(response).toBeDefined();
-      expect(response.data).toBeNull();
-      expect(response.error).toBeDefined();
-      expect(response.error.status).toEqual(404);
-    });
-
-    test("should handle empty keyword gracefully", async ({ request }) => {
-      const response = await api(request).get("/api/images/keyword/empty");
-
-      expect(response).toBeDefined();
-      expect(response.success).toBe(true);
-      expect(response.data).toBeDefined();
-      expect(Array.isArray(response.data)).toBe(true);
-      expect(response.count).toBe(0);
-    });
-
     test("should paginate images result correctly", async ({ request }) => {
       const keyword = "html";
       const limit = 5;

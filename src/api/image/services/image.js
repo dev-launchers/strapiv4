@@ -18,21 +18,45 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
    */
   async fetchImagesFromPexels(perPage = 12, page = 1) {
     try {
-      // Get all interests from the database
+      // Get existing mapped keywords first
+      const existingMappings = await strapi.entityService.findMany(
+        "api::image-keyword-mapping.image-keyword-mapping",
+        {
+          fields: ["keyword"],
+        }
+      );
+
+      const existingKeywords = [
+        ...new Set(existingMappings.map((mapping) => mapping.keyword)),
+      ];
+
+      // Get interests that don't already have image keyword mappings
       const interests = await strapi.entityService.findMany(
         "api::interest.interest",
         {
           fields: ["interest"],
           filters: {
             publishedAt: { $notNull: true },
+            // Filter out interests that already have mappings
+            ...(existingKeywords.length > 0 && {
+              interest: {
+                $notIn: existingKeywords,
+              },
+            }),
           },
         }
       );
 
       if (!interests || interests.length === 0) {
-        strapi.log.info("No interests found in database");
+        throw new Error(
+          "No new interests found to process (all interests already have image keyword mappings)"
+        );
         return [];
       }
+
+      strapi.log.info(
+        `Found ${interests.length} new interests to process (${existingKeywords.length} already have mappings)`
+      );
 
       const pexelsApiKey = process.env.PEXELS_API_KEY;
       const pexelsApiUrl = process.env.PEXELS_API_URL;
@@ -46,7 +70,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
 
       const allImages = [];
 
-      // Fetch images for each interest
+      // Fetch images for each new interest
       for (const interest of interests) {
         try {
           const keyword = interest.interest.toLowerCase();

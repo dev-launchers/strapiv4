@@ -51,7 +51,6 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
         throw new Error(
           "No new interests found to process (all interests already have image keyword mappings)"
         );
-        return [];
       }
 
       strapi.log.info(

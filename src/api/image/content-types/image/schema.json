@@ -30,10 +30,10 @@
       "type": "string"
     },
     "photographer_url": {
-      "type": "text"
+      "type": "string"
     },
     "provider": {
-      "type": "text"
+      "type": "string"
     },
     "image_keyword_mappings": {
       "type": "relation",

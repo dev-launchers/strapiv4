@@ -49,7 +49,7 @@ module.exports = createCoreController("api::image.image", ({ strapi }) => ({
       const { keyword } = ctx.params;
       const { start = 1, limit = 12 } = ctx.request.query;
       if (!keyword) {
-        ctx.status = 404;
+        ctx.status = 400;
         ctx.body = {
           success: false,
           message: "Keyword parameter is required",

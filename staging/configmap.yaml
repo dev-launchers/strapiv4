@@ -9,3 +9,4 @@ data:
   node_env: "staging"
   redirect_url: "https://apiv4-staging.devlaunchers.org/auth/discord/redirect"
   domain: "devlaunchers.org"
+  pexels_api_url: "https://api.pexels.com/v1"

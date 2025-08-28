@@ -18,32 +18,43 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
    */
   async fetchImagesFromPexels(perPage = 12, page = 1) {
     try {
-      // Get existing mapped keywords first
-      const existingMappings = await strapi.entityService.findMany(
-        "api::image-keyword-mapping.image-keyword-mapping",
-        {
-          fields: ["keyword"],
+      // Determine cursor from the latest keyword mapping (by createdAt)
+      const latestMapping = await strapi.db
+        .query("api::image-keyword-mapping.image-keyword-mapping")
+        .findOne({
+          select: ["keyword", "createdAt"],
+          orderBy: { createdAt: "desc" },
+        });
+        
+      const cursorKeyword = latestMapping
+        ? String(latestMapping.keyword || "").toLowerCase()
+        : null;
+
+      // Resolve the interest id for the cursor keyword
+      let cursorInterestId = null;
+      if (cursorKeyword) {
+        const cursorInterest = await strapi.db
+          .query("api::interest.interest")
+          .findOne({
+            where: { interest: { $eqi: cursorKeyword } },
+            select: ["id", "interest"],
+          });
+        if (cursorInterest) {
+          cursorInterestId = cursorInterest.id;
         }
-      );
-
-      const existingKeywords = [
-        ...new Set(existingMappings.map((mapping) => mapping.keyword)),
-      ];
-
-      // Get interests that don't already have image keyword mappings
+      }
+      // Get interests with id greater than the cursor interest id (created after that row)
       const interests = await strapi.entityService.findMany(
         "api::interest.interest",
         {
           fields: ["interest"],
           filters: {
             publishedAt: { $notNull: true },
-            // Filter out interests that already have mappings
-            ...(existingKeywords.length > 0 && {
-              interest: {
-                $notIn: existingKeywords,
-              },
+            ...(cursorInterestId && {
+              id: { $gt: cursorInterestId },
             }),
           },
+          sort: { id: "asc" },
         }
       );
 
@@ -54,7 +65,9 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       }
 
       strapi.log.info(
-        `Found ${interests.length} new interests to process (${existingKeywords.length} already have mappings)`
+        `Found ${interests.length} interests to process using cursor keyword ${
+          cursorKeyword ?? "<none>"
+        } (cursor interest id: ${cursorInterestId ?? "<none>"})`
       );
 
       const pexelsApiKey = process.env.PEXELS_API_KEY;

@@ -11,13 +11,17 @@ module.exports = createCoreController("api::image.image", ({ strapi }) => ({
    * Fetch images from Pexels API and save to database
    * Triggered on-demand for seeding images
    * @param {Object} ctx
+   * perPage: Number of images per page (default: 24, max: 84)
+   * Generally 12 is a great choice for showing an image grid with pagination because it is a LCM of 2, 3 and 4.
+   * But to give a user more choices to select from, bumped the number to second LCM i.e. 24 and maxed it at 84.
+   * It's easier to generate a image grid as e.g. small devices 2x12 grid, medium 3x8 and large 4x6.
    */
   async fetchFromPexels(ctx) {
     try {
       const { perPage = 24, page = 1 } = ctx.request.body;
 
       // Validate parameters
-      const validatedPerPage = Math.min(Math.max(parseInt(perPage), 1), 80);
+      const validatedPerPage = Math.min(Math.max(parseInt(perPage), 1), 84);
       const validatedPage = Math.max(parseInt(page), 1);
 
       const result = await strapi

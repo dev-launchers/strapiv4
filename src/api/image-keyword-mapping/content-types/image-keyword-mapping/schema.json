@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "image_keyword_mappings",
+  "info": {
+    "singularName": "image-keyword-mapping",
+    "pluralName": "image-keyword-mappings",
+    "displayName": "ImageKeywordMappings"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "keyword": {
+      "type": "string"
+    },
+    "image": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::image.image",
+      "inversedBy": "image_keyword_mappings"
+    }
+  }
+}

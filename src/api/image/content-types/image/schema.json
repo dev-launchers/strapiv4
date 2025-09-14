@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "images",
+  "info": {
+    "singularName": "image",
+    "pluralName": "images",
+    "displayName": "Image"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "original_url": {
+      "type": "string"
+    },
+    "large_url": {
+      "type": "string"
+    },
+    "medium_url": {
+      "type": "string"
+    },
+    "small_url": {
+      "type": "string"
+    },
+    "alt_text": {
+      "type": "string"
+    },
+    "photographer": {
+      "type": "string"
+    },
+    "photographer_url": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "image_keyword_mappings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::image-keyword-mapping.image-keyword-mapping",
+      "mappedBy": "image"
+    }
+  }
+}

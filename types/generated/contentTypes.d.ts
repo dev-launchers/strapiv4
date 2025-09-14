@@ -1156,6 +1156,83 @@ export interface ApiIdeaCardIdeaCard extends Schema.CollectionType {
   };
 }
 
+export interface ApiImageImage extends Schema.CollectionType {
+  collectionName: 'images';
+  info: {
+    singularName: 'image';
+    pluralName: 'images';
+    displayName: 'Image';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    original_url: Attribute.String;
+    large_url: Attribute.String;
+    medium_url: Attribute.String;
+    small_url: Attribute.String;
+    alt_text: Attribute.String;
+    photographer: Attribute.String;
+    photographer_url: Attribute.String;
+    provider: Attribute.String;
+    image_keyword_mappings: Attribute.Relation<
+      'api::image.image',
+      'oneToMany',
+      'api::image-keyword-mapping.image-keyword-mapping'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::image.image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::image.image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiImageKeywordMappingImageKeywordMapping
+  extends Schema.CollectionType {
+  collectionName: 'image_keyword_mappings';
+  info: {
+    singularName: 'image-keyword-mapping';
+    pluralName: 'image-keyword-mappings';
+    displayName: 'ImageKeywordMappings';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    keyword: Attribute.String;
+    image: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
+      'manyToOne',
+      'api::image.image'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiInterestInterest extends Schema.CollectionType {
   collectionName: 'interests';
   info: {
@@ -1748,6 +1825,8 @@ declare module '@strapi/types' {
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
+      'api::image.image': ApiImageImage;
+      'api::image-keyword-mapping.image-keyword-mapping': ApiImageKeywordMappingImageKeywordMapping;
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
       'api::member.member': ApiMemberMember;

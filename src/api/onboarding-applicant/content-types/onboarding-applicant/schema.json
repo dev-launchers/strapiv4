@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "onboarding_applicants",
+  "info": {
+    "singularName": "onboarding-applicant",
+    "pluralName": "onboarding-applicants",
+    "displayName": "onboardingApplicant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "githubUsername": {
+      "type": "string"
+    },
+    "discordUsername": {
+      "type": "string"
+    },
+    "personalEmail": {
+      "type": "email"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "form_submitted",
+        "docSent",
+        "signed",
+        "completed"
+      ]
+    },
+    "consent": {
+      "type": "boolean"
+    },
+    "githubInviteSent": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

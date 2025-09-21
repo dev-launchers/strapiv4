@@ -1451,6 +1451,46 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
   };
 }
 
+export interface ApiOnboardingApplicantOnboardingApplicant
+  extends Schema.CollectionType {
+  collectionName: 'onboarding_applicants';
+  info: {
+    singularName: 'onboarding-applicant';
+    pluralName: 'onboarding-applicants';
+    displayName: 'onboardingApplicant';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    fullName: Attribute.String;
+    githubUsername: Attribute.String;
+    discordUsername: Attribute.String;
+    personalEmail: Attribute.Email;
+    status: Attribute.Enumeration<
+      ['form_submitted', 'docSent', 'signed', 'completed']
+    >;
+    consent: Attribute.Boolean;
+    githubInviteSent: Attribute.Boolean & Attribute.DefaultTo<false>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::onboarding-applicant.onboarding-applicant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::onboarding-applicant.onboarding-applicant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiOpportunityOpportunity extends Schema.CollectionType {
   collectionName: 'opportunities';
   info: {
@@ -1832,6 +1872,7 @@ declare module '@strapi/types' {
       'api::member.member': ApiMemberMember;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::notification.notification': ApiNotificationNotification;
+      'api::onboarding-applicant.onboarding-applicant': ApiOnboardingApplicantOnboardingApplicant;
       'api::opportunity.opportunity': ApiOpportunityOpportunity;
       'api::profile.profile': ApiProfileProfile;
       'api::project.project': ApiProjectProject;

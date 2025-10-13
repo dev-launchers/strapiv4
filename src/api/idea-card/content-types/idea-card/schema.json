@@ -17,6 +17,11 @@
       "required": true,
       "unique": true
     },
+    "ideaImage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::image.image"
+    },
     "tagline": {
       "type": "string",
       "required": false
@@ -67,12 +72,7 @@
     },
     "involveLevel": {
       "type": "enumeration",
-      "enum": [
-        "none",
-        "minimum",
-        "medium",
-        "highly"
-      ],
+      "enum": ["none", "minimum", "medium", "highly"],
       "default": "highly",
       "required": true
     },

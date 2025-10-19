@@ -669,8 +669,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     professionalRole: Attribute.Component<'role.role'>;
     skills: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToMany',
-      'api::interest.interest'
+      'manyToMany',
+      'api::skill.skill'
     >;
     applicants: Attribute.Relation<
       'plugin::users-permissions.user',
@@ -967,6 +967,38 @@ export interface ApiDlTalCommunityDlTalCommunity extends Schema.CollectionType {
   };
 }
 
+export interface ApiDomainDomain extends Schema.CollectionType {
+  collectionName: 'domains';
+  info: {
+    singularName: 'domain';
+    pluralName: 'domains';
+    displayName: 'Domain';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    description: Attribute.String;
+    active: Attribute.Boolean;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::domain.domain',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::domain.domain',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiEventEvent extends Schema.CollectionType {
   collectionName: 'events';
   info: {
@@ -1239,6 +1271,7 @@ export interface ApiInterestInterest extends Schema.CollectionType {
     singularName: 'interest';
     pluralName: 'interests';
     displayName: 'Interest';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1259,6 +1292,11 @@ export interface ApiInterestInterest extends Schema.CollectionType {
       'api::interest.interest',
       'manyToMany',
       'api::category.category'
+    >;
+    domains: Attribute.Relation<
+      'api::interest.interest',
+      'oneToMany',
+      'api::domain.domain'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1718,6 +1756,46 @@ export interface ApiSendmailSendmail extends Schema.CollectionType {
   };
 }
 
+export interface ApiSkillSkill extends Schema.CollectionType {
+  collectionName: 'skills';
+  info: {
+    singularName: 'skill';
+    pluralName: 'skills';
+    displayName: 'Skill';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    users_permissions_users: Attribute.Relation<
+      'api::skill.skill',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    domains: Attribute.Relation<
+      'api::skill.skill',
+      'oneToMany',
+      'api::domain.domain'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::skill.skill',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::skill.skill',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiSubscriptionSubscription extends Schema.CollectionType {
   collectionName: 'subscriptions';
   info: {
@@ -1821,6 +1899,7 @@ declare module '@strapi/types' {
       'api::comment.comment': ApiCommentComment;
       'api::department.department': ApiDepartmentDepartment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
+      'api::domain.domain': ApiDomainDomain;
       'api::event.event': ApiEventEvent;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
@@ -1837,6 +1916,7 @@ declare module '@strapi/types' {
       'api::project.project': ApiProjectProject;
       'api::save-idea.save-idea': ApiSaveIdeaSaveIdea;
       'api::sendmail.sendmail': ApiSendmailSendmail;
+      'api::skill.skill': ApiSkillSkill;
       'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::team-membership.team-membership': ApiTeamMembershipTeamMembership;
     }

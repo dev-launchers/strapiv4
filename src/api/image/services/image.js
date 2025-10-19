@@ -46,7 +46,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
 
     const data = await response.json();
 
-    if (data.photos && data.photos.length > 0) {
+    if (data.photos && data.photos?.length > 0) {
       // Transform response data to match schema
       const transformedImages = data.photos.map((photo) => ({
         photographer: photo.photographer,
@@ -61,8 +61,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       }));
       return transformedImages;
     } else {
-      strapi.log.info(`No images found for keyword: ${keyword}`);
-      return [];
+      throw new Error(`No images found for keyword: ${keyword}`);
     }
   },
   /**
@@ -163,6 +162,11 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
     }
   },
 
+  /**
+   * Fetch and save images for an interest (for interest afterUpdate lifecycle)
+   * @param {number} interestId - Interest ID
+   * @returns {Promise<void>} Void
+   */
   async fetchAndSaveImagesForInterest(interestId) {
     try {
       const interest = await strapi.entityService.findOne(

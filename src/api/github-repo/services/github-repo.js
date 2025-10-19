@@ -8,12 +8,10 @@ const CACHE_TTL = 10 * 60 * 1000;
 const { createCoreService } = require('@strapi/strapi').factories;
 
 
-
 const jwt = require('jsonwebtoken');
 const appId = process.env.GITHUB_APP_ID;
 const installationId = process.env.GITHUB_APP_INSTALLATION_ID;
 let privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
-
 
 
 class GithubManager {

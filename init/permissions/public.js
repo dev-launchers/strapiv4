@@ -26,6 +26,20 @@ module.exports = {
         "idea-card": readOnly,
       },
     },
+    "api::image": {
+      controllers: {
+        image: {
+          ...readOnly,
+          fetchFromPexels: { enabled: true, policy: "" },
+          getByKeyword: { enabled: true, policy: "" },
+        },
+      },
+    },
+    "api::image-keyword-mapping": {
+      controllers: {
+        "image-keyword-mapping": readOnly,
+      },
+    },
     "api::interest": {
       controllers: {
         interest: readOnly,

@@ -9,3 +9,4 @@ data:
   node_env: "production"
   redirect_url: "https://apiv4.devlaunchers.org/auth/discord/redirect"
   domain: "devlaunchers.org"
+  pexels_api_url: "https://api.pexels.com/v1"

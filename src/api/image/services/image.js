@@ -11,6 +11,61 @@ const IMAGE_PROVIDER = {
 
 module.exports = createCoreService("api::image.image", ({ strapi }) => ({
   /**
+   * Invoke Pexels API
+   * @param {string} keyword - Keyword
+   * @param {number} perPage - Number of images per page
+   * @param {number} page - Page number
+   * @returns {Promise<Array>} Array of image objects
+   */
+  async invokePexelsApi(keyword, perPage = 24, page = 1) {
+    const pexelsApiKey = process.env.PEXELS_API_KEY;
+    const pexelsApiUrl = process.env.PEXELS_API_URL;
+    if (!pexelsApiKey || !pexelsApiUrl) {
+      throw new Error("Pexels API key or Pexels API URL is required");
+    }
+
+    const response = await fetch(
+      `${process.env.PEXELS_API_URL}/search?query=${encodeURIComponent(
+        keyword
+      )}&per_page=${perPage}&page=${page}&orientation=landscape`,
+      {
+        headers: {
+          Authorization: process.env.PEXELS_API_KEY,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      strapi.log.error(
+        `Pexels API error for keyword "${keyword}": ${response.status} ${response.statusText}`
+      );
+      throw new Error(
+        `Pexels API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (data.photos?.length > 0) {
+      // Transform response data to match schema
+      const transformedImages = data.photos.map((photo) => ({
+        photographer: photo.photographer,
+        photographer_url: photo.photographer_url,
+        original_url: photo.src.original,
+        large_url: photo.src.large,
+        medium_url: photo.src.medium,
+        small_url: photo.src.small,
+        alt_text: photo.alt,
+        provider: IMAGE_PROVIDER.PEXELS,
+        keyword: keyword.toLowerCase(), // Store keyword for mapping creation
+      }));
+      return transformedImages;
+    } else {
+      strapi.log.info(`No images found for keyword: ${keyword}`);
+      return [];
+    }
+  },
+  /**
    * Fetch images from API based on keywords from interest table
    * @param {number} perPage - Number of images per page (default: 12, max: 80)
    * @param {number} page - Page number (default: 1)
@@ -25,7 +80,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
           select: ["keyword", "createdAt"],
           orderBy: { createdAt: "desc" },
         });
-        
+
       const cursorKeyword = latestMapping
         ? String(latestMapping.keyword || "").toLowerCase()
         : null;
@@ -70,16 +125,6 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
         } (cursor interest id: ${cursorInterestId ?? "<none>"})`
       );
 
-      const pexelsApiKey = process.env.PEXELS_API_KEY;
-      const pexelsApiUrl = process.env.PEXELS_API_URL;
-
-      if (!pexelsApiKey || !pexelsApiUrl) {
-        strapi.log.error(
-          "PEXELS_API_KEY or PEXELS_API_URL environment variable is not set"
-        );
-        throw new Error("Pexels API key or Pexels API URL is required");
-      }
-
       const allImages = [];
 
       // Fetch images for each new interest
@@ -88,40 +133,12 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
           const keyword = interest.interest.toLowerCase();
           strapi.log.info(`Fetching images for keyword: ${keyword}`);
 
-          const response = await fetch(
-            `${pexelsApiUrl}/search?query=${encodeURIComponent(
-              keyword
-            )}&per_page=${perPage}&page=${page}`,
-            {
-              headers: {
-                Authorization: pexelsApiKey,
-              },
-            }
+          const transformedImages = await this.invokePexelsApi(
+            keyword,
+            perPage,
+            page
           );
-
-          if (!response.ok) {
-            strapi.log.error(
-              `Pexels API error for keyword "${keyword}": ${response.status} ${response.statusText}`
-            );
-            continue;
-          }
-
-          const data = await response.json();
-
-          if (data.photos && data.photos.length > 0) {
-            // Transform response data to match schema
-            const transformedImages = data.photos.map((photo) => ({
-              photographer: photo.photographer,
-              photographer_url: photo.photographer_url,
-              original_url: photo.src.original,
-              large_url: photo.src.large,
-              medium_url: photo.src.medium,
-              small_url: photo.src.small,
-              alt_text: photo.alt,
-              provider: IMAGE_PROVIDER.PEXELS,
-              keyword: keyword.toLowerCase(), // Store keyword for mapping creation
-            }));
-
+          if (transformedImages.length > 0) {
             allImages.push(...transformedImages);
             strapi.log.info(
               `Fetched ${transformedImages.length} images for keyword: ${keyword}`
@@ -129,7 +146,6 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
           } else {
             strapi.log.info(`No images found for keyword: ${keyword}`);
           }
-
           // Backoff: a small delay to respect rate limits
           await new Promise((resolve) => setTimeout(resolve, 100));
         } catch (error) {
@@ -143,6 +159,47 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       return allImages;
     } catch (error) {
       strapi.log.error("Error in fetchImagesFromPexels:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch and save images for an interest (for interest afterUpdate lifecycle)
+   * @param {number} interestId - Interest ID
+   * @returns {Promise<void>} Void
+   */
+  async fetchAndSaveImagesForInterest(interestId) {
+    try {
+      const interest = await strapi.entityService.findOne(
+        "api::interest.interest",
+        interestId
+      );
+      //== check if keyword has images
+      const keyword = interest.interest.toLowerCase();
+      const imageCount = await this.imageCountByKeyword(keyword);
+      if (imageCount > 0) {
+        strapi.log.info(
+          `Interest ${interestId} already has ${imageCount} images`
+        );
+        return;
+      }
+      strapi.log.info(
+        `Fetching images for keyword: ${keyword} for interest ${interestId}`
+      );
+
+      const transformedImages = await this.invokePexelsApi(keyword, 24, 1);
+      if (transformedImages.length > 0) {
+        const savedImages = await this.saveImagesToDatabase(transformedImages);
+        strapi.log.info(
+          `Saved ${savedImages.length} images to database for interest ${interestId}`
+        );
+      } else {
+        strapi.log.info(`No images found for interest: ${interestId}`);
+      }
+    } catch (error) {
+      strapi.log.error("Error in fetchAndSaveImagesForInterest:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -206,6 +263,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       return savedImages;
     } catch (error) {
       strapi.log.error("Error in saveImagesToDatabase:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -268,7 +326,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
    * @param {number} page - Page number
    * @returns {Promise<Object>} Result object with fetched and saved counts
    */
-  async fetchAndSaveImages(perPage = 12, page = 1) {
+  async fetchAndSaveImages(perPage = 24, page = 1) {
     try {
       strapi.log.info("Starting image fetch and save process...");
 
@@ -287,6 +345,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       };
     } catch (error) {
       strapi.log.error("Error in fetchAndSaveImages:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -330,7 +389,21 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       );
     } catch (error) {
       strapi.log.error("Error in getImageMappings:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
+  },
+
+  /**
+   * Find image by keyword
+   * @param {string} keyword - Keyword
+   * @returns {Promise<Array>} Array of image objects
+   */
+  async imageCountByKeyword(keyword) {
+    return (
+      await strapi.entityService.findMany("api::image.image", {
+        filters: { keyword: keyword },
+      })
+    ).length;
   },
 }));

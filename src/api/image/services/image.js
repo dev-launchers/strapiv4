@@ -46,7 +46,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
 
     const data = await response.json();
 
-    if (data.photos && data.photos?.length > 0) {
+    if (data.photos?.length > 0) {
       // Transform response data to match schema
       const transformedImages = data.photos.map((photo) => ({
         photographer: photo.photographer,
@@ -61,7 +61,8 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       }));
       return transformedImages;
     } else {
-      throw new Error(`No images found for keyword: ${keyword}`);
+      strapi.log.info(`No images found for keyword: ${keyword}`);
+      return [];
     }
   },
   /**
@@ -158,6 +159,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       return allImages;
     } catch (error) {
       strapi.log.error("Error in fetchImagesFromPexels:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -197,6 +199,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       }
     } catch (error) {
       strapi.log.error("Error in fetchAndSaveImagesForInterest:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -260,6 +263,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       return savedImages;
     } catch (error) {
       strapi.log.error("Error in saveImagesToDatabase:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -341,6 +345,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       };
     } catch (error) {
       strapi.log.error("Error in fetchAndSaveImages:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },
@@ -384,6 +389,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       );
     } catch (error) {
       strapi.log.error("Error in getImageMappings:", error);
+      strapi.plugin("sentry").service("sentry").sendError(error);
       throw error;
     }
   },

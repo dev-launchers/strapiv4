@@ -65,6 +65,7 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       return [];
     }
   },
+
   /**
    * Fetch images from API based on keywords from interest table
    * @param {number} perPage - Number of images per page (default: 12, max: 80)
@@ -178,9 +179,10 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
       //== check if keyword has images
       const keyword = interest.interest.toLowerCase();
       const imageCount = await this.imageCountByKeyword(keyword);
+      strapi.log.info(`Image count for keyword ${keyword}: ${imageCount}`);
       if (imageCount > 0) {
         strapi.log.info(
-          `Interest ${interestId} already has ${imageCount} images`
+          ` Interest ${interest.interest} already has ${imageCount} images`
         );
         return;
       }
@@ -194,8 +196,6 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
         strapi.log.info(
           `Saved ${savedImages.length} images to database for interest ${interestId}`
         );
-      } else {
-        strapi.log.info(`No images found for interest: ${interestId}`);
       }
     } catch (error) {
       strapi.log.error("Error in fetchAndSaveImagesForInterest:", error);
@@ -395,15 +395,24 @@ module.exports = createCoreService("api::image.image", ({ strapi }) => ({
   },
 
   /**
-   * Find image by keyword
+   * Check if keyword has images
    * @param {string} keyword - Keyword
-   * @returns {Promise<Array>} Array of image objects
+   * @returns {Promise<number>} Number of images
    */
   async imageCountByKeyword(keyword) {
-    return (
-      await strapi.entityService.findMany("api::image.image", {
-        filters: { keyword: keyword },
-      })
+    const imageCount = (
+      await strapi.entityService.findMany(
+        "api::image-keyword-mapping.image-keyword-mapping",
+        {
+          filters: { keyword: keyword },
+          populate: {
+            image: {
+              fields: ["id"],
+            },
+          },
+        }
+      )
     ).length;
+    return imageCount;
   },
 }));

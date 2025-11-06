@@ -1,9 +1,34 @@
+//import { errors } from '@strapi/utils';
+
+//const { ApplicationError } = errors;
+
 module.exports = {
-  beforeCreate(event) {
+  async beforeCreate(event) {
     // Set author and ideaOwner to the user sending the request
     const ctx = strapi.requestContext.get();
     event.params.data.author = ctx.state.user;
     event.params.data.ideaOwner = ctx.state.user;
+
+    // query for existing ideas with the same name, (ignore case) 
+    // and throw an error if any
+
+    const previousData = await strapi.db .query("api::idea-card.idea-card")
+      .findOne({
+        filters: { ideaName: { $eqi: event.params.data.ideaName } },
+      });
+
+      console.log('previousData', previousData);
+
+      if (previousData?.id) {
+        console.log('entered condition');
+        return ctx.badRequest('This attribute must be unique', { errors: [
+          {
+            message: 'This attribute must be unique',
+            name: 'ValidationError',
+            path: ['ideaName']
+          }
+        ] });
+      }
   },
 
   async afterCreate(event) {

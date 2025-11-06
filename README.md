@@ -5,7 +5,7 @@
 2. Setup NVM or alternative version manager for easy updates of versions (https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating, https://www.npmjs.com/package/n)
 3. Run `npm run init` first time to install dependencies and initialize your local database
 4. Run `npm run develop`
-5. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`. 
+5. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`.
 
 # Running from Docker
 Alternatively, you can run it with Docker. There are 2 make targets available to do this.

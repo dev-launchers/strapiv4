@@ -13,7 +13,8 @@
     "strapi": "strapi",
     "test": "playwright test",
     "test:postgres": "TEST_CONTAINER=true nyc playwright test",
-    "test:coverage": "nyc playwright test"
+    "test:coverage": "nyc playwright test",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@strapi/plugin-documentation": "4.15.0",
@@ -24,6 +25,7 @@
     "@strapi/strapi": "4.15.0",
     "better-sqlite3": "^9.2.2",
     "discord-webhook-node": "^1.1.8",
+    "git-cz": "^4.9.0",
     "jsonwebtoken": "^9.0.2",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.7.4",

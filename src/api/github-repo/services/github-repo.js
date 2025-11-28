@@ -207,7 +207,6 @@ class GithubManager {
         }
     }
 
-
 }
 
 module.exports = new GithubManager();

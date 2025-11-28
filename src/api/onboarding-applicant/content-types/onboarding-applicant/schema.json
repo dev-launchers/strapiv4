@@ -27,7 +27,7 @@
     "status": {
       "type": "enumeration",
       "enum": [
-        "form_submitted",
+        "formSubmitted",
         "docSent",
         "signed",
         "completed"

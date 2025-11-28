@@ -1469,7 +1469,7 @@ export interface ApiOnboardingApplicantOnboardingApplicant
     discordUsername: Attribute.String;
     personalEmail: Attribute.Email;
     status: Attribute.Enumeration<
-      ['form_submitted', 'docSent', 'signed', 'completed']
+      ['formSubmitted', 'docSent', 'signed', 'completed']
     >;
     consent: Attribute.Boolean;
     githubInviteSent: Attribute.Boolean & Attribute.DefaultTo<false>;

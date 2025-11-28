@@ -128,17 +128,20 @@ class GithubManager {
     }
 
     async getInstallationToken() {
-        const now = Math.floor(Date.now() / 1000);
+        const currentTimeStampInSeconds = Math.floor(Date.now() / 1000);
 
         if (privateKey.startsWith('LS0t') || !privateKey.startsWith('-----BEGIN')) {
             // Looks base64-encoded
             privateKey = Buffer.from(privateKey, 'base64').toString('utf8');
         }
 
+        const oneMinuteInSeconds = 60;
+        const tenMinutesInSeconds = 600;
+
         const token = jwt.sign(
             {
-                iat: now - 60,
-                exp: now + 600,
+                iat: currentTimeStampInSeconds - oneMinuteInSeconds,
+                exp: currentTimeStampInSeconds + tenMinutesInSeconds,
                 iss: appId,
             },
             privateKey,

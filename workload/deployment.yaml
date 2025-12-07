@@ -47,6 +47,11 @@ spec:
             secretKeyRef:
               name: auth
               key: discord-client-id
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-token
         - name: CLIENT_SECRET
           valueFrom:
             secretKeyRef:
@@ -175,6 +180,16 @@ spec:
             secretKeyRef:
               name: v-match
               key: preferences
+        - name: PEXELS_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: strapi-config
+              key: pexels_api_url
+        - name: PEXELS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pexels
+              key: api-key
         volumeMounts:
         - name: google-directory-key
           mountPath: "/etc/google-directory"

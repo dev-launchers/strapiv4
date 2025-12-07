@@ -796,6 +796,13 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     notes: Attribute.Text;
     comments: Attribute.Text;
     resumeUrl: Attribute.String;
+    website: Attribute.String;
+    status: Attribute.String;
+    opportunity: Attribute.Relation<
+      'api::applicant.applicant',
+      'oneToOne',
+      'api::opportunity.opportunity'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -889,6 +896,37 @@ export interface ApiCommentComment extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDepartmentDepartment extends Schema.CollectionType {
+  collectionName: 'departments';
+  info: {
+    singularName: 'department';
+    pluralName: 'departments';
+    displayName: 'Department ';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Title: Attribute.String;
+    Description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::department.department',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::department.department',
       'oneToOne',
       'admin::user'
     > &
@@ -1063,6 +1101,11 @@ export interface ApiIdeaCardIdeaCard extends Schema.CollectionType {
   };
   attributes: {
     ideaName: Attribute.String & Attribute.Required & Attribute.Unique;
+    ideaImage: Attribute.Relation<
+      'api::idea-card.idea-card',
+      'oneToOne',
+      'api::image.image'
+    >;
     tagline: Attribute.String;
     description: Attribute.Text & Attribute.Required;
     targetAudience: Attribute.Text;
@@ -1111,6 +1154,83 @@ export interface ApiIdeaCardIdeaCard extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::idea-card.idea-card',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiImageImage extends Schema.CollectionType {
+  collectionName: 'images';
+  info: {
+    singularName: 'image';
+    pluralName: 'images';
+    displayName: 'Image';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    original_url: Attribute.String;
+    large_url: Attribute.String;
+    medium_url: Attribute.String;
+    small_url: Attribute.String;
+    alt_text: Attribute.String;
+    photographer: Attribute.String;
+    photographer_url: Attribute.String;
+    provider: Attribute.String;
+    image_keyword_mappings: Attribute.Relation<
+      'api::image.image',
+      'oneToMany',
+      'api::image-keyword-mapping.image-keyword-mapping'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::image.image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::image.image',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiImageKeywordMappingImageKeywordMapping
+  extends Schema.CollectionType {
+  collectionName: 'image_keyword_mappings';
+  info: {
+    singularName: 'image-keyword-mapping';
+    pluralName: 'image-keyword-mappings';
+    displayName: 'ImageKeywordMappings';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    keyword: Attribute.String;
+    image: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
+      'manyToOne',
+      'api::image.image'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::image-keyword-mapping.image-keyword-mapping',
       'oneToOne',
       'admin::user'
     > &
@@ -1394,6 +1514,13 @@ export interface ApiOpportunityOpportunity extends Schema.CollectionType {
     startDate: Attribute.Date;
     responsibilities: Attribute.Text;
     whyJoin: Attribute.Text;
+    postedDate: Attribute.Date;
+    updateDate: Attribute.Date;
+    department: Attribute.Relation<
+      'api::opportunity.opportunity',
+      'oneToOne',
+      'api::department.department'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1697,11 +1824,14 @@ declare module '@strapi/types' {
       'api::applicant.applicant': ApiApplicantApplicant;
       'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
+      'api::department.department': ApiDepartmentDepartment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;
       'api::event.event': ApiEventEvent;
       'api::github-repo.github-repo': ApiGithubRepoGithubRepo;
       'api::google-meet.google-meet': ApiGoogleMeetGoogleMeet;
       'api::idea-card.idea-card': ApiIdeaCardIdeaCard;
+      'api::image.image': ApiImageImage;
+      'api::image-keyword-mapping.image-keyword-mapping': ApiImageKeywordMappingImageKeywordMapping;
       'api::interest.interest': ApiInterestInterest;
       'api::like.like': ApiLikeLike;
       'api::member.member': ApiMemberMember;

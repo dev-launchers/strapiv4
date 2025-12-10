@@ -173,8 +173,9 @@
     },
     "skills": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::interest.interest"
+      "relation": "manyToMany",
+      "target": "api::skill.skill",
+      "mappedBy": "users_permissions_users"
     },
     "applicants": {
       "type": "relation",

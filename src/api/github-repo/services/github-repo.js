@@ -7,7 +7,6 @@ const axios = require('axios');
 const CACHE_TTL = 10 * 60 * 1000;
 const { createCoreService } = require('@strapi/strapi').factories;
 
-
 const jwt = require('jsonwebtoken');
 const appId = process.env.GITHUB_APP_ID;
 const installationId = process.env.GITHUB_APP_INSTALLATION_ID;
@@ -129,18 +128,21 @@ class GithubManager {
     }
 
     async getInstallationToken() {
-        const now = Math.floor(Date.now() / 1000);
+        const currentTimeStampInSeconds = Math.floor(Date.now() / 1000);
 
         if (privateKey.startsWith('LS0t') || !privateKey.startsWith('-----BEGIN')) {
             // Looks base64-encoded
             privateKey = Buffer.from(privateKey, 'base64').toString('utf8');
         }
 
+        const oneMinuteInSeconds = 60;
+        const tenMinutesInSeconds = 600;
+
         const token = jwt.sign(
             {
-            iat: now - 60,
-            exp: now + 600,
-            iss: appId,
+                iat: currentTimeStampInSeconds - oneMinuteInSeconds,
+                exp: currentTimeStampInSeconds + tenMinutesInSeconds,
+                iss: appId,
             },
             privateKey,
             { algorithm: 'RS256' }

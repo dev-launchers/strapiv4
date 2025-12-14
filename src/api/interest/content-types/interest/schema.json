@@ -35,9 +35,9 @@
       "target": "api::category.category",
       "mappedBy": "interests"
     },
-    "domains": {
+    "domain": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "oneToOne",
       "target": "api::domain.domain"
     }
   }

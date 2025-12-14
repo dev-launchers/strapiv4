@@ -4,7 +4,8 @@
   "info": {
     "singularName": "domain",
     "pluralName": "domains",
-    "displayName": "Domain"
+    "displayName": "Domain",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,9 +17,6 @@
     },
     "description": {
       "type": "string"
-    },
-    "active": {
-      "type": "boolean"
     }
   }
 }

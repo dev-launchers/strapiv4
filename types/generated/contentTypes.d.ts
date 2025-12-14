@@ -973,6 +973,7 @@ export interface ApiDomainDomain extends Schema.CollectionType {
     singularName: 'domain';
     pluralName: 'domains';
     displayName: 'Domain';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -980,7 +981,6 @@ export interface ApiDomainDomain extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     description: Attribute.String;
-    active: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1293,9 +1293,9 @@ export interface ApiInterestInterest extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
-    domains: Attribute.Relation<
+    domain: Attribute.Relation<
       'api::interest.interest',
-      'oneToMany',
+      'oneToOne',
       'api::domain.domain'
     >;
     createdAt: Attribute.DateTime;
@@ -1773,9 +1773,9 @@ export interface ApiSkillSkill extends Schema.CollectionType {
       'manyToMany',
       'plugin::users-permissions.user'
     >;
-    domains: Attribute.Relation<
+    domain: Attribute.Relation<
       'api::skill.skill',
-      'oneToMany',
+      'oneToOne',
       'api::domain.domain'
     >;
     createdAt: Attribute.DateTime;

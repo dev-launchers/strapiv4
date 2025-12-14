@@ -4,7 +4,8 @@
   "info": {
     "singularName": "interest",
     "pluralName": "interests",
-    "displayName": "Interest"
+    "displayName": "Interest",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -33,6 +34,11 @@
       "relation": "manyToMany",
       "target": "api::category.category",
       "mappedBy": "interests"
+    },
+    "domain": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::domain.domain"
     }
   }
 }

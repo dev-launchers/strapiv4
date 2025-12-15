@@ -62,11 +62,6 @@
       ],
       "required": true
     },
-    "skills": {
-      "type": "component",
-      "repeatable": true,
-      "component": "skills.skills"
-    },
     "yearsOfExperience": {
       "type": "decimal",
       "required": true,

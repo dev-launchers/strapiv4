@@ -622,7 +622,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     interests: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
+      'oneToMany',
       'api::interest.interest'
     >;
     idea_cards: Attribute.Relation<
@@ -667,11 +667,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::subscription.subscription'
     >;
     professionalRole: Attribute.Component<'role.role'>;
-    skills: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::interest.interest'
-    >;
     applicants: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -681,6 +676,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     github: Attribute.String;
     availability: Attribute.Enumeration<
       ['Immediately available', 'One to two weeks', 'One month plus']
+    >;
+    skills: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::interest.interest'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -771,7 +771,6 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     >;
     level: Attribute.Enumeration<['beginner', 'intermediate', 'advanced']> &
       Attribute.Required;
-    skills: Attribute.Component<'skills.skills', true>;
     yearsOfExperience: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetMinMax<{
@@ -1244,17 +1243,13 @@ export interface ApiInterestInterest extends Schema.CollectionType {
     singularName: 'interest';
     pluralName: 'interests';
     displayName: 'Interest';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     interest: Attribute.String & Attribute.Required & Attribute.Unique;
-    users_permissions_users: Attribute.Relation<
-      'api::interest.interest',
-      'manyToMany',
-      'plugin::users-permissions.user'
-    >;
     projects: Attribute.Relation<
       'api::interest.interest',
       'manyToMany',
@@ -1265,6 +1260,7 @@ export interface ApiInterestInterest extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
+    Discriminator: Attribute.Enumeration<['Skill', 'Interest']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

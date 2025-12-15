@@ -72,7 +72,12 @@
     },
     "involveLevel": {
       "type": "enumeration",
-      "enum": ["none", "minimum", "medium", "highly"],
+      "enum": [
+        "none",
+        "minimum",
+        "medium",
+        "highly"
+      ],
       "default": "highly",
       "required": true
     },

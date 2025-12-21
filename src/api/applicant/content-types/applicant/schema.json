@@ -115,6 +115,11 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::opportunity.opportunity"
+    },
+    "interests": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::interest.interest"
     }
   }
 }

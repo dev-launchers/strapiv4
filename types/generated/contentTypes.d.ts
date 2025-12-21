@@ -802,52 +802,22 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
       'oneToOne',
       'api::opportunity.opportunity'
     >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::applicant.applicant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::applicant.applicant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
-  info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    category: Attribute.String;
     interests: Attribute.Relation<
-      'api::category.category',
-      'manyToMany',
+      'api::applicant.applicant',
+      'oneToMany',
       'api::interest.interest'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::category.category',
+      'api::applicant.applicant',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::category.category',
+      'api::applicant.applicant',
       'oneToOne',
       'admin::user'
     > &
@@ -1255,12 +1225,7 @@ export interface ApiInterestInterest extends Schema.CollectionType {
       'manyToMany',
       'api::project.project'
     >;
-    categories: Attribute.Relation<
-      'api::interest.interest',
-      'manyToMany',
-      'api::category.category'
-    >;
-    Discriminator: Attribute.Enumeration<['Skill', 'Interest']>;
+    category: Attribute.Enumeration<['Skill', 'Interest']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1818,7 +1783,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::applicant.applicant': ApiApplicantApplicant;
-      'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
       'api::department.department': ApiDepartmentDepartment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;

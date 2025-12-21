@@ -23,13 +23,7 @@
       "target": "api::project.project",
       "mappedBy": "interests"
     },
-    "categories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::category.category",
-      "mappedBy": "interests"
-    },
-    "Discriminator": {
+    "category": {
       "type": "enumeration",
       "enum": [
         "Skill",

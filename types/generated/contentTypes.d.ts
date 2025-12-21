@@ -622,7 +622,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     interests: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
+      'oneToMany',
       'api::interest.interest'
     >;
     idea_cards: Attribute.Relation<
@@ -667,11 +667,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::subscription.subscription'
     >;
     professionalRole: Attribute.Component<'role.role'>;
-    skills: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::interest.interest'
-    >;
     applicants: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -681,6 +676,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     github: Attribute.String;
     availability: Attribute.Enumeration<
       ['Immediately available', 'One to two weeks', 'One month plus']
+    >;
+    skills: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::interest.interest'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -771,7 +771,6 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
     >;
     level: Attribute.Enumeration<['beginner', 'intermediate', 'advanced']> &
       Attribute.Required;
-    skills: Attribute.Component<'skills.skills', true>;
     yearsOfExperience: Attribute.Decimal &
       Attribute.Required &
       Attribute.SetMinMax<{
@@ -803,52 +802,22 @@ export interface ApiApplicantApplicant extends Schema.CollectionType {
       'oneToOne',
       'api::opportunity.opportunity'
     >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::applicant.applicant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::applicant.applicant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
-  info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    category: Attribute.String;
     interests: Attribute.Relation<
-      'api::category.category',
-      'manyToMany',
+      'api::applicant.applicant',
+      'oneToMany',
       'api::interest.interest'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::category.category',
+      'api::applicant.applicant',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::category.category',
+      'api::applicant.applicant',
       'oneToOne',
       'admin::user'
     > &
@@ -1244,27 +1213,19 @@ export interface ApiInterestInterest extends Schema.CollectionType {
     singularName: 'interest';
     pluralName: 'interests';
     displayName: 'Interest';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     interest: Attribute.String & Attribute.Required & Attribute.Unique;
-    users_permissions_users: Attribute.Relation<
-      'api::interest.interest',
-      'manyToMany',
-      'plugin::users-permissions.user'
-    >;
     projects: Attribute.Relation<
       'api::interest.interest',
       'manyToMany',
       'api::project.project'
     >;
-    categories: Attribute.Relation<
-      'api::interest.interest',
-      'manyToMany',
-      'api::category.category'
-    >;
+    category: Attribute.Enumeration<['Skill', 'Interest']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1822,7 +1783,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::applicant.applicant': ApiApplicantApplicant;
-      'api::category.category': ApiCategoryCategory;
       'api::comment.comment': ApiCommentComment;
       'api::department.department': ApiDepartmentDepartment;
       'api::dl-tal-community.dl-tal-community': ApiDlTalCommunityDlTalCommunity;

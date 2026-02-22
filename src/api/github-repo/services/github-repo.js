@@ -6,11 +6,17 @@ const axios = require('axios');
 // Cache fetching from Github for 10 minutes
 const CACHE_TTL = 10 * 60 * 1000;
 const { createCoreService } = require('@strapi/strapi').factories;
+const USER_AGENT = 'Strapi-App';
 
 const jwt = require('jsonwebtoken');
 const appId = process.env.GITHUB_APP_ID;
 const installationId = process.env.GITHUB_APP_INSTALLATION_ID;
-let privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
+const rawPrivateKey = process.env.GITHUB_APP_PRIVATE_KEY;
+const privateKey = rawPrivateKey
+    ? (rawPrivateKey.startsWith('LS0t') || !rawPrivateKey.startsWith('-----BEGIN')
+        ? Buffer.from(rawPrivateKey, 'base64').toString('utf8')
+        : rawPrivateKey)
+    : undefined;
 
 
 class GithubManager {
@@ -128,13 +134,10 @@ class GithubManager {
     }
 
     async getInstallationToken() {
+        // Date.now() is converted from ms to seconds cause Github expect s JWT time claims in seconds
         const now = Math.floor(Date.now() / 1000);
 
-        if (privateKey.startsWith('LS0t') || !privateKey.startsWith('-----BEGIN')) {
-            // Looks base64-encoded
-            privateKey = Buffer.from(privateKey, 'base64').toString('utf8');
-        }
-
+        // JWT claims: issued 60s ago to allow clock skew, expires in 10 minutes, and identifies the GitHub App.
         const token = jwt.sign(
             {
                 iat: now - 60,
@@ -152,7 +155,7 @@ class GithubManager {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: 'application/vnd.github+json',
-                'User-Agent': 'Strapi-App',
+                'User-Agent': USER_AGENT,
             },
             }
         );
@@ -169,12 +172,14 @@ class GithubManager {
       
         try {
             const installationToken = await this.getInstallationToken();
+            console.log("tokennnnnnnnn")
+            console.log(installationToken)
             // Get the GitHub user ID
             const userResp = await axios.get(`https://api.github.com/users/${username}`, {
                 headers: {
                     Accept: 'application/vnd.github+json',
                     Authorization: `token ${installationToken}`,
-                    'User-Agent': 'Strapi-App',
+                    'User-Agent': USER_AGENT,
                 },
             });
       
@@ -192,7 +197,7 @@ class GithubManager {
                     headers: {
                     Authorization: `token ${installationToken}`,
                     Accept: 'application/vnd.github+json',
-                    'User-Agent': 'Strapi-App',
+                    'User-Agent': USER_AGENT,
                     },
                 }
           );
@@ -208,6 +213,4 @@ class GithubManager {
 }
 
 module.exports = new GithubManager();
-
-
 

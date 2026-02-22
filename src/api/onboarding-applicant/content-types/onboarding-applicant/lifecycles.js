@@ -1,15 +1,28 @@
 module.exports = {
+    // Get the previous status before change
+    async beforeUpdate(event) {
+      const { where } = event.params;
+      if (!where?.id) return;
+      const prev = await strapi.entityService.findOne(
+        'api::onboarding-applicant.onboarding-applicant',
+        where.id,
+        { fields: ['status'] }
+      );
+      event.state = { ...(event.state || {}), prevStatus: prev?.status };
+    },
     // Using afterUpdate to ensure that the status is actually set to 'signed' in Strapi when the hook runs
     async afterUpdate(event) {
       const { result, params } = event; 
       const { data } = params;
+      const updatedFields = Object.keys(data || {});
+      if (updatedFields.length === 1 && updatedFields[0] === 'githubInviteSent') {
+        return;
+      }
   
-      const prevStatus = result.status; // current status
-      const newStatus = data.status;
+      const prevStatus = event.state?.prevStatus;
+      const newStatus = result.status;
   
-      console.log("Comparing the previous status to the new status:");
-      console.log("Previous status:", prevStatus);
-      console.log("New status:", newStatus);
+      console.log(`Comparing status change: ${prevStatus} -> ${newStatus}`);
   
       // Trigger only if status changed to 'signed'AND invite hasn't been sent
       if (newStatus === 'signed' && prevStatus !== 'signed' && !result.githubInviteSent) {

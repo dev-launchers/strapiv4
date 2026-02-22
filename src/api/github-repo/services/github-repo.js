@@ -172,8 +172,6 @@ class GithubManager {
       
         try {
             const installationToken = await this.getInstallationToken();
-            console.log("tokennnnnnnnn")
-            console.log(installationToken)
             // Get the GitHub user ID
             const userResp = await axios.get(`https://api.github.com/users/${username}`, {
                 headers: {

@@ -1101,6 +1101,11 @@ export interface ApiIdeaCardIdeaCard extends Schema.CollectionType {
   };
   attributes: {
     ideaName: Attribute.String & Attribute.Required & Attribute.Unique;
+    ideaImage: Attribute.Relation<
+      'api::idea-card.idea-card',
+      'oneToOne',
+      'api::image.image'
+    >;
     tagline: Attribute.String;
     description: Attribute.Text & Attribute.Required;
     targetAudience: Attribute.Text;

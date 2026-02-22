@@ -1,0 +1,17 @@
+module.exports = {
+  async afterUpdate(event) {
+    try {
+      const { id, publishedAt } = event.result;
+      if (publishedAt) {
+        await strapi
+          .service("api::image.image")
+          .fetchAndSaveImagesForInterest(id);
+      }
+    } catch (error) {
+      console.error(
+        "Error: Image fetch and save failed in interest afterUpdate:",
+        error
+      );
+    }
+  },
+};

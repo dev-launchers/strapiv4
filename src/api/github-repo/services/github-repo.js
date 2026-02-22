@@ -135,13 +135,15 @@ class GithubManager {
 
     async getInstallationToken() {
         // Date.now() is converted from ms to seconds cause Github expect s JWT time claims in seconds
-        const now = Math.floor(Date.now() / 1000);
+        const currentTimeStampInSeconds = Math.floor(Date.now() / 1000);
+        const oneMinuteInSeconds = 60;
+        const tenMinutesInSeconds = 600;
 
         // JWT claims: issued 60s ago to allow clock skew, expires in 10 minutes, and identifies the GitHub App.
         const token = jwt.sign(
             {
-                iat: now - 60,
-                exp: now + 600,
+                iat: currentTimeStampInSeconds - oneMinuteInSeconds,
+                exp: currentTimeStampInSeconds + tenMinutesInSeconds,
                 iss: appId,
             },
             privateKey,

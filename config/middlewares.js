@@ -20,7 +20,7 @@ const DevLaunchersSubdomains = [
   'https://apiv4.devlaunchers.org',
 ];
 
-module.exports = [
+module.exports = ({ env }) => [
   'strapi::errors',
 
   {
@@ -36,22 +36,14 @@ module.exports = [
             'blob:',
             'dl.airtable.com',
             'https://market-assets.strapi.io',
-            /**
-             * Note: If using a STORAGE_URL replace `https://${process.env.STORAGE_ACCOUNT}.blob.core.windows.net` w/ process.env.STORAGE_URL
-             * If using a CDN URL make sure to include that url in the CSP headers process.env.STORAGE_CDN_URL
-             */
-            process.env.STORAGE_URL,
+            env('STORAGE_CF_PUBLIC_ACCESS_HOSTNAME'),
           ],
           'media-src': [
             "'self'",
             'data:',
             'blob:',
             'dl.airtable.com',
-            /**
-             * Note: If using a STORAGE_URL replace `https://${process.env.STORAGE_ACCOUNT}.blob.core.windows.net` w/ process.env.STORAGE_URL
-             * If using a CDN URL make sure to include that url in the CSP headers process.env.STORAGE_CDN_URL
-             */
-            process.env.STORAGE_URL,
+            env('STORAGE_CF_PUBLIC_ACCESS_HOSTNAME'),
           ],
           upgradeInsecureRequests: null,
         },

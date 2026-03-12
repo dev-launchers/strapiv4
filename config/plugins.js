@@ -91,6 +91,7 @@ module.exports = ({ env }) => ({
         publicFiles: true,
         uniform: false,
         serviceAccount: env.json('GOOGLE_DRIVE_SERVICE_ACCOUNT'),
+        folderId: env('FOLDERID'),
       },
     },
   },

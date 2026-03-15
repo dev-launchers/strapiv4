@@ -154,20 +154,24 @@ module.exports = ({ strapi }) => ({
 
     const drive = google.drive({ version: 'v3', auth });
     // To send the file to trash
-    const body_value = {
-      trashed: true,
-    };
+    // const body_value = {
+    //   trashed: true,
+    // };
     try {
-      const response = await drive.files.update({
+      const response = await drive.files.delete({ // use permanent delete
         fileId: ctx.request.params.fileId,
-        requestBody: body_value,
+        // requestBody: body_value,
         supportsAllDrives: true,
       });
-      return response;
+      // return response;
+      return { success: true };
     } catch (error) {
+      if (error?.response?.status === 404) {
+        console.log('File already deleted');
+        return { success: true };
+      }
       console.log(error);
       ctx.throw(500, 'Delete File Failed');
-      return 'Delete File Failed';
     }
   },
 });

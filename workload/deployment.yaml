@@ -126,6 +126,31 @@ spec:
             secretKeyRef:
               name: storage
               key: container-name
+        - name: STORAGE_CF_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_access_key_id
+        - name: STORAGE_CF_ACCESS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_access_key_secret
+        - name: STORAGE_CF_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_endpoint
+        - name: STORAGE_CF_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_bucket
+        - name: STORAGE_CF_PUBLIC_ACCESS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_public_access_hostname
         - name: FRONTEND_URL
           valueFrom:
             configMapKeyRef:

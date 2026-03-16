@@ -1,25 +1,19 @@
 'use strict';
-const path = require('path');
-const process = require('process');
 const { google } = require('googleapis');
-// const get_service_account_path = () => {
-//   const service_account_path = path.join(
-//     process.cwd(),
-//     'config',
-//     'env',
-//     'google_drive_service_account.json'
-//   );
-//   return service_account_path;
-// };
 module.exports = ({ strapi }) => ({
   get: async (ctx) => {
-    // const google_drive_service_account_path = get_service_account_path();
-    
     const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
-
+    const folderId = strapi.config.get('plugin.googledrive.providerOptions.folderId');
+    if (!serviceAccount) {
+      ctx.throw(500, 'Google Drive plugin is not configured: serviceAccount is missing');
+      return;
+    }
+    if (!folderId) {
+      ctx.throw(500, 'Google Drive plugin is not configured: folderId is missing');
+      return;
+    }
     const scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
     const auth = new google.auth.GoogleAuth({
-      // keyFile: google_drive_service_account_path,
       credentials: serviceAccount,
       scopes: scopes,
     });
@@ -64,37 +58,20 @@ module.exports = ({ strapi }) => ({
     }
   },
   upload: async (ctx) => {
-    const fileInput = ctx.request.files?.files; // correct, showing the strapi terminal
-    // console.log('FILES', ctx.request.files);  
-    // console.log('BODY', ctx.request.body); // test whether the 'ctx.request.files?.files' is correct
-    
-
+    const fileInput = ctx.request.files?.files;
     if (!fileInput) {
       return ctx.badRequest('No files were uploaded');
     }
     const file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
-    // console.log('file object:', file); // test
-
-    // if (!ctx.request.files) {
-    //   return ctx.badRequest('No files were uploaded');
-    // }
-
-    // const google_drive_service_account_path = get_service_account_path();
     const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
     const folderId = strapi.config.get('plugin.googledrive.providerOptions.folderId')
-
     const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
     const auth = new google.auth.GoogleAuth({
-      // keyFile: google_drive_service_account_path,
       credentials: serviceAccount,
       scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
-
-    // const {
-    //   request: { body, files: { files } = {} },
-    // } = ctx;
     
     const uploadSingleFile = async (fileName, fileType, filePath) => {
       const fsnp = require('fs');
@@ -142,33 +119,33 @@ module.exports = ({ strapi }) => ({
     }
   },
   deleteFile: async (ctx) => {
-    // const google_drive_service_account_path = get_service_account_path();
     const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
     const scopes = ['https://www.googleapis.com/auth/drive'];
 
     const auth = new google.auth.GoogleAuth({
-      // keyFile: google_drive_service_account_path,
       credentials: serviceAccount,
       scopes: scopes,
     });
 
     const drive = google.drive({ version: 'v3', auth });
-    // To send the file to trash
-    // const body_value = {
-    //   trashed: true,
-    // };
+    // Use permanent delete instead of moving the file to trash.
+    // Moving to trash requires 'Manager' permission for service account in Google Drive
     try {
-      const response = await drive.files.delete({ // use permanent delete
+      await drive.files.delete({
         fileId: ctx.request.params.fileId,
-        // requestBody: body_value,
         supportsAllDrives: true,
       });
-      // return response;
       return { success: true };
     } catch (error) {
-      if (error?.response?.status === 404) {
+      const status = error?.response?.status;
+
+      if (status === 404) {
         console.log('File already deleted');
         return { success: true };
+      }
+      if (status === 401) {
+        console.log('Unauthoried: service account cannot access the file');
+        return ctx.unauthorized('Service account does not have access to this file');
       }
       console.log(error);
       ctx.throw(500, 'Delete File Failed');

@@ -78,6 +78,11 @@ module.exports = {
         subscription: readOnly,
       },
     },
+    "api::onboarding-applicant": {
+      controllers: {
+        "onboarding-applicant": readWrite,
+      },
+    },
     "api::opportunity": {
       controllers: {
         opportunity: readOnly,

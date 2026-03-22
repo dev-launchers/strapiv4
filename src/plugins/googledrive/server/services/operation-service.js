@@ -137,7 +137,7 @@ module.exports = ({ strapi }) => ({
       });
       return { success: true };
     } catch (error) {
-      const status = error?.response?.status;
+      const status = error?.response?.status || error?.code;
 
       if (status === 404) {
         console.log('File already deleted');

@@ -94,6 +94,11 @@ spec:
             configMapKeyRef:
               name: strapi-config
               key: url
+        - name: GOOGLE_DRIVE_FOLDERID
+          valueFrom:
+            secretKeyRef:
+              name: google-drive
+              key: folder-id
         - name: DEVLAUNCHERS_GOOGLE_DIRECTORY_JWT_SUBJECT
           valueFrom:
             secretKeyRef:

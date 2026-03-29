@@ -36,7 +36,7 @@ module.exports = {
       const applicant = await strapi.entityService.findOne(
         'api::onboarding-applicant.onboarding-applicant',
         result.id,
-        { fields: ['githubUsername', 'discordUsername', 'personalEmail', 'fullName', 'githubInviteSent', 'discordInviteSent'] }
+        { fields: ['githubUsername', 'personalEmail', 'fullName', 'githubInviteSent', 'discordInviteSent'] }
       );
 
       // --- GitHub Invite ---
@@ -62,7 +62,7 @@ module.exports = {
           const inviteLink = await strapi.service('api::discord.discord').createServerInvite();
           console.log(`Discord invite link generated: ${inviteLink}`);
 
-          await strapi.plugins['email'].services.email.send({
+          await strapi.plugin('email').service('email').send({
             to: applicant.personalEmail,
             subject: 'Welcome to Dev Launchers - Join our Discord!',
             text: `Hi ${applicant.fullName || 'there'},\n\nWelcome to Dev Launchers! Here is your invite link to join our Discord server:\n\n${inviteLink}\n\nThis link is single-use and expires in 7 days.\n\nSee you there!\nDev Launchers Team`,

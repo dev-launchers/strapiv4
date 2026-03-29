@@ -40,6 +40,10 @@
     "githubInviteSent": {
       "type": "boolean",
       "default": false
+    },
+    "discordInviteSent": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

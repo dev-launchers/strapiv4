@@ -33,7 +33,8 @@
       "mappedBy": "profile"
     },
     "displayName": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "profilePicture": {
       "allowedTypes": [

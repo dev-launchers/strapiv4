@@ -1,7 +1,33 @@
 module.exports = {
+    async beforeCreate(event) {
+      const { data } = event.params
+
+      if (data.displayName) {
+        // sanitize
+        data.displayName = data.displayName
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '_')
+          .replace(/[^a-z0-9_]/g, '');
+      }
+    },
+
+    async beforeUpdate(event) {
+      const { data } = event.params;
+      
+      if (data.displayName) {
+        // sanitize
+        data.displayName = data.displayName
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '_')
+          .replace(/[^a-z0-9_]/g, '');
+      }
+    },
 
     async afterUpdate(event) {
-      const profileId = event.params.data.id
+      // const profileId = event.params.data.id
+      const profileId = event.result.id
       const currentImageUrl = event.params.data.profilePictureUrl
 
       // Check if profilePicture is available

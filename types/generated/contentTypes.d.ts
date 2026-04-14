@@ -1521,7 +1521,7 @@ export interface ApiProfileProfile extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
-    displayName: Attribute.String;
+    displayName: Attribute.String & Attribute.Unique;
     profilePicture: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

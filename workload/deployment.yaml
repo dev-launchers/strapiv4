@@ -195,6 +195,21 @@ spec:
             secretKeyRef:
               name: integrations
               key: sentry-dsn
+        - name: GITHUB_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-id
+        - name: GITHUB_APP_INSTALLATION_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-installation-id
+        - name: GITHUB_APP_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-private-key
         - name: V_MATCH_USER
           valueFrom:
             secretKeyRef:

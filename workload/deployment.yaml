@@ -220,6 +220,16 @@ spec:
             secretKeyRef:
               name: pexels
               key: api-key
+        - name: DISCORD_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: discord-bot-token
+        - name: DISCORD_CHANNEL_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: discord-channel-id
         volumeMounts:
         - name: google-directory-key
           mountPath: "/etc/google-directory"

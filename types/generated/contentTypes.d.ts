@@ -1439,6 +1439,7 @@ export interface ApiOnboardingApplicantOnboardingApplicant
     >;
     consent: Attribute.Boolean;
     githubInviteSent: Attribute.Boolean & Attribute.DefaultTo<false>;
+    discordInviteSent: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

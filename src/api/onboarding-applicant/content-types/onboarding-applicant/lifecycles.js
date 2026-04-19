@@ -60,7 +60,7 @@ module.exports = {
       if (!applicant.discordInviteSent && applicant.personalEmail) {
         try {
           const inviteLink = await strapi.service('api::discord.discord').createServerInvite();
-          console.log(`Discord invite link generated: ${inviteLink}`);
+          console.log('Discord invite link generated');
 
           await strapi.plugin('email').service('email').send({
             to: applicant.personalEmail,

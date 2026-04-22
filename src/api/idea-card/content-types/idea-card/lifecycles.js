@@ -8,7 +8,10 @@ module.exports = {
 
     const previousData = await strapi.db.query("api::idea-card.idea-card")
       .findOne({
-        filters: { ideaName: { $eqi: event.params.data.ideaName } },
+        filters: { 
+          ideaName: { $eqi: event.params.data.ideaName } 
+      
+      },
       });
 
       if (previousData?.id) {

@@ -1,6 +1,6 @@
  # Dev Launchers Strapi Service
 
-TACO Tuesday
+
 
 # Getting Started
 1. Use Node v20

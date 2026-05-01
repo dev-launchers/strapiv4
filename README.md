@@ -1,7 +1,6 @@
  # Dev Launchers Strapi Service
 
 
-
 # Getting Started
 1. Use Node v20
 2. Setup NVM or alternative version manager for easy updates of versions (https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating, https://www.npmjs.com/package/n)

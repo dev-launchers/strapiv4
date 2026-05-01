@@ -11,8 +11,7 @@ module.exports = {
         filters: { 
           ideaName: { $eqi: event.params.data.ideaName } ,
           status: {$ne: "deleted"}
-      
-      },
+        },
       });
 
       if (previousData?.id) {

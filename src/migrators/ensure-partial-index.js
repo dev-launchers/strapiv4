@@ -6,7 +6,7 @@ async function ensureIdeaNameActiveIndex(strapi) {
   await knex.raw(`
     CREATE UNIQUE INDEX IF NOT EXISTS idx_idea_cards_idea_name_active
     ON idea_cards (LOWER(idea_name))
-    WHERE status IS NULL OR status <> 'deleted'
+    WHERE status <> 'deleted'
   `);
 }
 

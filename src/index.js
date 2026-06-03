@@ -2,6 +2,7 @@
 
 const bootstrapUserPermissions = require('./extensions/users-permissions/server/bootstrap');
 const runMigrations = require('./migrators');
+const { ensureIdeaNameActiveIndex } = require('./migrators/ensure-partial-index');
 
 module.exports = {
   /**
@@ -25,6 +26,9 @@ module.exports = {
     await bootstrapUserPermissions({ strapi });
 
     await runMigrations(strapi);
+
+    // Ensure custom partial unique index exists after Strapi startup/migration logic.
+    await ensureIdeaNameActiveIndex(strapi);
 
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],

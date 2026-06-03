@@ -15,7 +15,7 @@
     "ideaName": {
       "type": "string",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "ideaImage": {
       "type": "relation",

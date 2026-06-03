@@ -1069,7 +1069,7 @@ export interface ApiIdeaCardIdeaCard extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    ideaName: Attribute.String & Attribute.Required & Attribute.Unique;
+    ideaName: Attribute.String & Attribute.Required;
     ideaImage: Attribute.Relation<
       'api::idea-card.idea-card',
       'oneToOne',

@@ -1568,6 +1568,8 @@ export interface ApiProfileProfile extends Schema.CollectionType {
         maxLength: 20;
       }>;
     profilePicture: Attribute.Media;
+    firstName: Attribute.String;
+    lastName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

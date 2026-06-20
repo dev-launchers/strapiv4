@@ -23,6 +23,10 @@ spec:
       - key: virtual-kubelet.io/provider
         operator: Exists
         effect: PreferNoSchedule
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"
       volumes:
         - name: google-directory-key
           secret:

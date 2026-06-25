@@ -24,6 +24,7 @@ test.describe('/api/onboarding-applicants', () => {
     expect(applicant.attributes.status).toBe("formSubmitted");
     expect(applicant.attributes.consent).toBe(true);
     expect(applicant.attributes.githubInviteSent).toBe(false);
+    expect(applicant.attributes.discordInviteSent).toBe(false);
   });
 
   test("should read back the onboarding applicant", async ({ request }) => {
@@ -34,30 +35,33 @@ test.describe('/api/onboarding-applicants', () => {
     expect(applicant.attributes.fullName).toBe("Test Applicant");
     expect(applicant.attributes.personalEmail).toBe("testapplicant@example.com");
     expect(applicant.attributes.githubInviteSent).toBe(false);
+    expect(applicant.attributes.discordInviteSent).toBe(false);
   });
 
-  test("should update status to docSent without triggering invite", async ({ request }) => {
+  test("should update status to docSent without triggering invites", async ({ request }) => {
     const applicant = await api(request).put(`/api/onboarding-applicants/${applicantId}`, {
       status: "docSent",
     });
 
     expect(applicant.attributes.status).toBe("docSent");
     expect(applicant.attributes.githubInviteSent).toBe(false);
+    expect(applicant.attributes.discordInviteSent).toBe(false);
   });
 
-  test("should update status to signed and attempt GitHub invite", async ({ request }) => {
+  test("should update status to signed and attempt GitHub and Discord invites", async ({ request }) => {
     const applicant = await api(request).put(`/api/onboarding-applicants/${applicantId}`, {
       status: "signed",
     });
 
     expect(applicant.attributes.status).toBe("signed");
-    // In test env without GitHub credentials, the invite call will fail gracefully.
-    // The lifecycle hook catches the error, so githubInviteSent remains false.
-    // In production with valid credentials, this would be true.
+    // In test env without GitHub/Discord credentials, the invite calls will fail gracefully.
+    // The lifecycle hook catches errors, so both flags remain false.
+    // In production with valid credentials, both would be true.
     expect(applicant.attributes.githubInviteSent).toBe(false);
+    expect(applicant.attributes.discordInviteSent).toBe(false);
   });
 
-  test("should not re-trigger invite when status is already signed", async ({ request }) => {
+  test("should not re-trigger invites when status is already signed", async ({ request }) => {
     // Update a non-status field while status remains "signed"
     const applicant = await api(request).put(`/api/onboarding-applicants/${applicantId}`, {
       fullName: "Test Applicant Updated",
@@ -67,9 +71,10 @@ test.describe('/api/onboarding-applicants', () => {
     expect(applicant.attributes.status).toBe("signed");
     // prevStatus === newStatus === "signed", so the hook should NOT fire
     expect(applicant.attributes.githubInviteSent).toBe(false);
+    expect(applicant.attributes.discordInviteSent).toBe(false);
   });
 
-  test("should not trigger invite when githubUsername is missing", async ({ request }) => {
+  test("should not trigger GitHub invite when githubUsername is missing", async ({ request }) => {
     // Create an applicant without a GitHub username
     const noGithubApplicant = await api(request).post("/api/onboarding-applicants", {
       fullName: "No Github User",
@@ -86,8 +91,11 @@ test.describe('/api/onboarding-applicants', () => {
     });
 
     expect(updated.attributes.status).toBe("signed");
-    // No githubUsername means the hook skips the invite
+    // No githubUsername means the hook skips the GitHub invite
     expect(updated.attributes.githubInviteSent).toBe(false);
+    // Discord invite is still attempted (via email) since personalEmail exists
+    // but will fail in test env without Discord credentials
+    expect(updated.attributes.discordInviteSent).toBe(false);
   });
 
   test("should reject creation without required personalEmail", async ({ request }) => {

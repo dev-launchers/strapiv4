@@ -26,6 +26,7 @@ module.exports = {
 
     await runMigrations(strapi);
 
+
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],
       // afterCreate lifecycle to create a new team-membership entry when a new user is created

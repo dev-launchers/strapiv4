@@ -23,6 +23,10 @@ spec:
       - key: virtual-kubelet.io/provider
         operator: Exists
         effect: PreferNoSchedule
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"
       volumes:
         - name: google-directory-key
           secret:
@@ -94,6 +98,11 @@ spec:
             configMapKeyRef:
               name: strapi-config
               key: url
+        - name: GOOGLE_DRIVE_FOLDERID
+          valueFrom:
+            secretKeyRef:
+              name: google-drive
+              key: folder-id
         - name: DEVLAUNCHERS_GOOGLE_DIRECTORY_JWT_SUBJECT
           valueFrom:
             secretKeyRef:
@@ -126,6 +135,31 @@ spec:
             secretKeyRef:
               name: storage
               key: container-name
+        - name: STORAGE_CF_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_access_key_id
+        - name: STORAGE_CF_ACCESS_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_access_key_secret
+        - name: STORAGE_CF_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_endpoint
+        - name: STORAGE_CF_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_bucket
+        - name: STORAGE_CF_PUBLIC_ACCESS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: r2-storage
+              key: cf_public_access_hostname
         - name: FRONTEND_URL
           valueFrom:
             configMapKeyRef:
@@ -165,6 +199,21 @@ spec:
             secretKeyRef:
               name: integrations
               key: sentry-dsn
+        - name: GITHUB_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-id
+        - name: GITHUB_APP_INSTALLATION_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-installation-id
+        - name: GITHUB_APP_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: github-strapi-invite-new-member-app-private-key
         - name: V_MATCH_USER
           valueFrom:
             secretKeyRef:
@@ -190,6 +239,16 @@ spec:
             secretKeyRef:
               name: pexels
               key: api-key
+        - name: DISCORD_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: discord-bot-token
+        - name: DISCORD_CHANNEL_ID
+          valueFrom:
+            secretKeyRef:
+              name: integrations
+              key: discord-channel-id
         volumeMounts:
         - name: google-directory-key
           mountPath: "/etc/google-directory"

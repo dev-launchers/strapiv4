@@ -7,6 +7,14 @@
 4. Run `npm run develop`
 5. Go to http://localhost:1337/admin using email `local-admin@devlaunchers.org` and password `W&x5ZzOMtBCVt1YAUiuSzt~5`.
 
+## Commit & Release
+We are using semantic versioning to tag release. Follow https://github.com/semantic-release/semantic-release#commit-message-format
+to format the commit messages.
+
+We've created a command to guide you create conventional commit message all you need to do is run `npm run commit`
+
+The release cadence is every 4 weeks. We will create a PR to merge the master branch into the release branch.
+
 # Running from Docker
 Alternatively, you can run it with Docker. There are 2 make targets available to do this.
 - Ensure that Docker is running. This usually means that you need to start up Docker Desktop.

@@ -303,19 +303,6 @@ export interface RoleRole extends Schema.Component {
   };
 }
 
-export interface SkillsSkills extends Schema.Component {
-  collectionName: 'components_skills_skills';
-  info: {
-    name: 'skills';
-    icon: 'adjust';
-    displayName: 'skills';
-    description: '';
-  };
-  attributes: {
-    skill: Attribute.String & Attribute.Required;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -338,7 +325,6 @@ declare module '@strapi/types' {
       'project.task': ProjectTask;
       'repo-changes.repo-changes': RepoChangesRepoChanges;
       'role.role': RoleRole;
-      'skills.skills': SkillsSkills;
     }
   }
 }

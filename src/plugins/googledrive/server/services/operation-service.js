@@ -1,22 +1,20 @@
 'use strict';
-const path = require('path');
-const process = require('process');
 const { google } = require('googleapis');
-const get_service_account_path = () => {
-  const service_account_path = path.join(
-    process.cwd(),
-    'config',
-    'env',
-    'google_drive_service_account.json'
-  );
-  return service_account_path;
-};
 module.exports = ({ strapi }) => ({
   get: async (ctx) => {
-    const google_drive_service_account_path = get_service_account_path();
+    const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
+    const folderId = strapi.config.get('plugin.googledrive.providerOptions.folderId');
+    if (!serviceAccount) {
+      ctx.throw(500, 'Google Drive plugin is not configured: serviceAccount is missing');
+      return;
+    }
+    if (!folderId) {
+      ctx.throw(500, 'Google Drive plugin is not configured: folderId is missing');
+      return;
+    }
     const scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
     const auth = new google.auth.GoogleAuth({
-      keyFile: google_drive_service_account_path,
+      credentials: serviceAccount,
       scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
@@ -60,29 +58,27 @@ module.exports = ({ strapi }) => ({
     }
   },
   upload: async (ctx) => {
-    if (!ctx.request.files) {
+    const fileInput = ctx.request.files?.files;
+    if (!fileInput) {
       return ctx.badRequest('No files were uploaded');
     }
-
-    const google_drive_service_account_path = get_service_account_path();
-
+    const file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
+    const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
+    const folderId = strapi.config.get('plugin.googledrive.providerOptions.folderId')
     const scopes = ['https://www.googleapis.com/auth/drive.file'];
 
     const auth = new google.auth.GoogleAuth({
-      keyFile: google_drive_service_account_path,
+      credentials: serviceAccount,
       scopes: scopes,
     });
     const drive = google.drive({ version: 'v3', auth });
-
-    const {
-      request: { body, files: { files } = {} },
-    } = ctx;
+    
     const uploadSingleFile = async (fileName, fileType, filePath) => {
       const fsnp = require('fs');
 
       const fileMetadata = {
         name: fileName,
-        parents: [process.env.FOLDERID],
+        parents: [folderId],
         mimeType: fileType, //mime-types to get the file types
       };
       const media = {
@@ -98,7 +94,7 @@ module.exports = ({ strapi }) => ({
           fields: 'id, name,parents,webViewLink,mimeType',
         });
 
-        if (!createResponse.data.parents.includes(process.env.FOLDERID)) {
+        if (!createResponse.data.parents.includes(folderId)) {
           throw new Error('File was not created in the expected folder.');
         }
         return createResponse.data;
@@ -111,9 +107,9 @@ module.exports = ({ strapi }) => ({
 
     try {
       const uploadResponse = await uploadSingleFile(
-        files['name'],
-        files['type'],
-        files.path
+        file.name,
+        file.type,
+        file.path
       );
       return uploadResponse;
     } catch (err) {
@@ -123,31 +119,36 @@ module.exports = ({ strapi }) => ({
     }
   },
   deleteFile: async (ctx) => {
-    const google_drive_service_account_path = get_service_account_path();
-
-    const scopes = ['https://www.googleapis.com/auth/drive.file'];
+    const serviceAccount = strapi.config.get('plugin.googledrive.providerOptions.serviceAccount');
+    const scopes = ['https://www.googleapis.com/auth/drive'];
 
     const auth = new google.auth.GoogleAuth({
-      keyFile: google_drive_service_account_path,
+      credentials: serviceAccount,
       scopes: scopes,
     });
 
     const drive = google.drive({ version: 'v3', auth });
-    // To send the file to trash
-    const body_value = {
-      trashed: true,
-    };
+    // Use permanent delete instead of moving the file to trash.
+    // Moving to trash requires 'Manager' permission for service account in Google Drive
     try {
-      const response = await drive.files.update({
+      await drive.files.delete({
         fileId: ctx.request.params.fileId,
-        requestBody: body_value,
         supportsAllDrives: true,
       });
-      return response;
+      return { success: true };
     } catch (error) {
+      const status = error?.response?.status || error?.code;
+
+      if (status === 404) {
+        console.log('File already deleted');
+        return { success: true };
+      }
+      if (status === 401) {
+        console.log('Unauthoried: service account cannot access the file');
+        return ctx.unauthorized('Service account does not have access to this file');
+      }
       console.log(error);
       ctx.throw(500, 'Delete File Failed');
-      return 'Delete File Failed';
     }
   },
 });

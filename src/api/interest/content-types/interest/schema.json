@@ -4,7 +4,8 @@
   "info": {
     "singularName": "interest",
     "pluralName": "interests",
-    "displayName": "Interest"
+    "displayName": "Interest",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,23 +17,18 @@
       "required": true,
       "unique": true
     },
-    "users_permissions_users": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "interests"
-    },
     "projects": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::project.project",
       "mappedBy": "interests"
     },
-    "categories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::category.category",
-      "mappedBy": "interests"
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Skill",
+        "Interest"
+      ]
     }
   }
 }

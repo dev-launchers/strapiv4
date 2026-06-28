@@ -1,9 +1,30 @@
+const { errors } = require('@strapi/utils');
+const { ValidationError } = errors;
+
 module.exports = {
-  beforeCreate(event) {
+  async beforeCreate(event) {
     // Set author and ideaOwner to the user sending the request
     const ctx = strapi.requestContext.get();
     event.params.data.author = ctx.state.user;
     event.params.data.ideaOwner = ctx.state.user;
+
+    const previousData = await strapi.db.query("api::idea-card.idea-card")
+      .findOne({
+        filters: { 
+          ideaName: { $eqi: event.params.data.ideaName } ,
+          status: {$ne: "deleted"}
+        },
+      });
+
+      if (previousData?.id) {
+        return ctx.badRequest('This attribute must be unique', { errors: [
+          {
+            message: 'This attribute must be unique',
+            name: 'ValidationError',
+            path: ['ideaName']
+          }
+        ] });
+      }
   },
 
   async afterCreate(event) {
@@ -44,7 +65,9 @@ module.exports = {
   },
 
   async beforeUpdate(event) {
-    const { where } = event.params;
+    const { where, data } = event.params;
+
+    // Fetch the existing record before it gets updated
     const previousData = await strapi.entityService.findOne(
       "api::idea-card.idea-card",
       where.id
@@ -52,6 +75,33 @@ module.exports = {
 
     // Store the previous status in the context
     event.params.data.previousStatus = previousData.status;
+
+    // Only run duplicate check if ideaName is being changed
+    if (data.ideaName &&
+        data.ideaName.toLowerCase().trim() !==
+        previousData.ideaName?.toLowerCase().trim()) {
+      const duplicateIdea = await strapi.db
+        .query("api::idea-card.idea-card")
+        .findOne({
+          filters: {
+            ideaName: { $eqi: data.ideaName },
+            status: { $ne: "deleted" },
+            id: { $ne: where.id }, // exclude current row
+          },
+        });
+
+      if (duplicateIdea?.id) {
+        throw new ValidationError("This attribute must be unique boi", {
+          errors: [
+            {
+              message: "This attribute must be unique boi",
+              name: "ValidationError",
+              path: ["ideaName"],
+            },
+          ],
+        });
+      }
+    }
   },
 
   async afterUpdate(event) {

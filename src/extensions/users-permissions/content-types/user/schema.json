@@ -70,9 +70,8 @@
     },
     "interests": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::interest.interest",
-      "inversedBy": "users_permissions_users"
+      "relation": "oneToMany",
+      "target": "api::interest.interest"
     },
     "idea_cards": {
       "type": "relation",
@@ -171,11 +170,6 @@
       "repeatable": false,
       "component": "role.role"
     },
-    "skills": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::interest.interest"
-    },
     "applicants": {
       "type": "relation",
       "relation": "oneToMany",
@@ -195,6 +189,11 @@
         "One to two weeks",
         "One month plus"
       ]
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::interest.interest"
     }
   }
 }

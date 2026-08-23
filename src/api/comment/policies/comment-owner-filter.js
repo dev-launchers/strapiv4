@@ -1,15 +1,22 @@
 module.exports = async (ctx) => {
   const user = ctx.state.user;
 
-  if (!user || !ctx.params?.id) {
+  const id = Number(ctx.params?.id);
+
+  if (!user || !Number.isInteger(id)) {
     return false;
   }
 
-  const comment = await strapi.entityService.findOne(
-    "api::comment.comment",
-    ctx.params.id,
-    { populate: ["user"] }
-  );
+  let comment;
+  try {
+    comment = await strapi.entityService.findOne(
+      'api::comment.comment',
+      id,
+      { populate: ['user'] }
+    );
+  } catch {
+    return false;
+  }
 
   if (!comment || !comment.user) {
     return false;

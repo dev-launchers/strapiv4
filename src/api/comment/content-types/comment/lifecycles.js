@@ -6,6 +6,15 @@ module.exports = {
     event.params.data.author = ctx.state.user.username;
   },
 
+  beforeUpdate(event) {
+    // Only content fields (e.g. text) are editable — prevent the owner
+    // from reassigning the comment via the update payload.
+    delete event.params.data.user;
+    delete event.params.data.author;
+    delete event.params.data.authorId;
+    delete event.params.data.idea_card;
+  },
+
   async afterCreate(event) {
     const { id: commentId, text: commentText } = event.result;
     const comment = await strapi.entityService.findOne(

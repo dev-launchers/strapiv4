@@ -1,0 +1,44 @@
+// Excel header -> Strapi attribute (api::member.member)
+const FIELD_MAPPING = {
+  // Names + contact
+  "First \n": "firstName",
+  "Last Name": "lastName",
+  "Personal Email": "personalEmail",
+  "Dev Launchers Email": "devLaunchersEmail",
+
+  // Role & org
+  "Role": "role",
+  "Team": "team",                 // enum in schema
+  "Type": "Types",                // enum in schema
+
+  // DocuSign / Discord / onboarding
+  "DocuSign\n": "docuSign",       // enum in schema
+  "Discord Join Date (Start Date)": "discordJoinDate",
+  "Onboarding PackageSent": "onboardingPackageSent",
+  "OP Sent Date": "OPSentDate",
+  "Added on Discord": "addedOnDiscord",
+  "Discord": "discord",
+  "Discord Access": "discordAccess",
+
+  // GitHub / Google groups
+  "Added on Github": "addedOnGithub",
+  "Github": "github",
+  "GitHub Access": "githubAccess",          // enum in schema
+  "Added to Google Groups": "addedToGoogleGroups",
+  "Google Suite Access": "GoogleSuiteAccess",
+
+  // Follow-up / onboarding complete
+  "2 Week FUP": "TwoWeekFup",
+  "Fully Onboarded Date": "FullyOnboardedDate",
+
+  // Status / tenure
+  "Status": "status",                       // enum in schema
+  "End Date (should this be moved to the Tenure tab?)": "EndDate",
+  "Duration active (months)": "DurationActiveMonths",
+  "Duration active (years)": "DurationActiveYears",
+
+  // Offboarding / notes
+  "Reason for leaving?": "ReasonForLeaving",
+  "Fully Offboarded Date": "FullyOffboardedDate",
+  "Note": "note"
+};
